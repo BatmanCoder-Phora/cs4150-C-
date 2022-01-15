@@ -31,7 +31,7 @@ namespace submission
                 anagramAl2(line); 
             }
             // see  how many groups of anagrams are in the dictionary 
-            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToHashSet())
+            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
             {
                 if (text.Value.Count > 0)
                     result++;
