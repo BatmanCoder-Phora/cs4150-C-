@@ -48,7 +48,7 @@ namespace submission
         public static void anagramAl2(string line)
         {
             bool wasadded = false;
-            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToHashSet())
+            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
             {
                 char[] first = text.Key.ToCharArray();
                 char[] second = line.ToCharArray();
