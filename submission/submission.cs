@@ -41,9 +41,9 @@ namespace submission
             Console.ReadLine();
         }
         /// <summary>
-        /// 
+        /// A method that checks if a word is an anagram for an of the words in a list. 
         /// </summary>
-        /// <param name="line"></param>
+        /// <param name="line">The word we are check is an anagram</param>
         /// <exception cref="NotImplementedException"></exception>
         public static void anagramAl2(string line)
         {
