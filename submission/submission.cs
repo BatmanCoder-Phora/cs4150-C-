@@ -38,7 +38,7 @@ namespace submission
             }
             //print the number of groups that are anagrams 
             Console.WriteLine("\n" + result);
-            Console.ReadLine();
+    //        Console.ReadLine();
         }
         /// <summary>
         /// A method that checks if a word is an anagram for an of the words in a list. 
