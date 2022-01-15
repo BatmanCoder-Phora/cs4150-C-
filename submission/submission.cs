@@ -1,9 +1,14 @@
-﻿using System;
+﻿/*
+ * Author: Sephora Bateman 
+ * Class: CS 4150
+ * Problem Set #1
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
+
 
 namespace submission
 {
