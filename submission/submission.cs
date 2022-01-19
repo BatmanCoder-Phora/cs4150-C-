@@ -24,13 +24,11 @@ namespace submission
             string[] linespilt = line.Split(' ');
             Int32.TryParse(linespilt[0], out numberOfWords);
 
-            // grab the rest of the words and pair them.
-            int i = 0;
-            while(i < numberOfWords)
+            // grab the rest of the words and pair them. 
+            for (int i = 0; i < numberOfWords; i++)
             {
                 line = Console.ReadLine();
                 anagramAl2(line);
-                i++;
             }
             // see  how many groups of anagrams are in the dictionary 
             foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
@@ -50,11 +48,11 @@ namespace submission
         {
             bool wasadded = false;
             char[] second = line.ToCharArray();
+            Array.Sort(second);
             foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
             {
                 char[] first = text.Key.ToCharArray();
                 Array.Sort(first);
-                Array.Sort(second);
                 if (first.SequenceEqual(second)) // compare the two strings
                 {
                     matchedwords[text.Key].Add(line);
