@@ -16,7 +16,7 @@ namespace submission
         static void Main(string[] args)
         {
             // n and k variables and create other needed any other variables
-            int numberOfWords = 0;
+            int numberOfWords;
             int result = 0;
             string line;
             // get the numbers of words in the list and their length. 
