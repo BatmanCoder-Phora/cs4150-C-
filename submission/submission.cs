@@ -13,6 +13,7 @@ namespace submission
     public class submission
     {
         public static Dictionary<string, HashSet<string>> matchedwords = new Dictionary<string, HashSet<string>>();
+        public static HashSet<string> mw = new HashSet<string>();
         static void Main(string[] args)
         {
             // n and k variables and create other needed any other variables
@@ -28,16 +29,13 @@ namespace submission
             for (int i = 0; i < numberOfWords; i++)
             {
                 line = Console.ReadLine();
-                anagramAl2(line);
+                anagramAl3(line);
             }
             // see  how many groups of anagrams are in the dictionary 
-            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
-            {
-                if (text.Value.Count > 0)
-                    result++;
-            }
+             result = matchedwords.Count;
             //print the number of groups that are anagrams 
             Console.WriteLine(result);
+            Console.ReadLine();
         }
         /// <summary>
         /// A method that checks if a word is an anagram for an of the words in a list. 
@@ -61,6 +59,35 @@ namespace submission
             }
             if (!wasadded)
                 matchedwords.Add(line, new HashSet<string>() { });
+        }
+
+        /// A method that checks if a word is an anagram for an of the words in a list. 
+        /// </summary>
+        /// <param name="line">The word we are check is an anagram</param>
+        /// <exception cref="NotImplementedException"></exception>
+        public static void anagramAl3(string line)
+        {
+            bool wasadded = false;
+            char[] second = line.ToCharArray();
+            Array.Sort(second);
+            string secondstring = new string(second);
+
+            foreach (string test in mw)
+            {
+                if (test.Equals(secondstring))
+                {
+                    wasadded = true;
+                    if(matchedwords.ContainsKey(test) == false)
+                        matchedwords.Add(secondstring, new HashSet<string>() { });
+                    matchedwords[test].Add(secondstring);
+                }
+            }
+            if (!wasadded)
+            {
+                string input = new string(second);
+                mw.Add(input.Trim());
+            }
+                
         }
     }
 }
