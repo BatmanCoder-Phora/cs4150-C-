@@ -43,7 +43,6 @@ namespace submission
             }
             //print the number of groups that are anagrams 
             Console.WriteLine("\n" + result);
-            //        Console.ReadLine();
         }
         /// <summary>
         /// A method that checks if a word is an anagram for an of the words in a list. 
@@ -53,10 +52,10 @@ namespace submission
         public static void anagramAl2(string line)
         {
             bool wasadded = false;
+            char[] second = line.ToCharArray();
             foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
             {
                 char[] first = text.Key.ToCharArray();
-                char[] second = line.ToCharArray();
                 Array.Sort(first);
                 Array.Sort(second);
                 if (first.SequenceEqual(second)) // compare the two strings
