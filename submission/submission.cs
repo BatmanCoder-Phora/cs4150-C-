@@ -12,13 +12,14 @@ namespace submission
 
     public class submission
     {
+        // public variables to store groups of matched words. 
         public static Dictionary<string, HashSet<string>> matchedwords = new Dictionary<string, HashSet<string>>();
         public static HashSet<string> mw = new HashSet<string>();
         static void Main(string[] args)
         {
             // n and k variables and create other needed any other variables
             int numberOfWords;
-            int result = 0;
+            int result;
             string line;
             // get the numbers of words in the list and their length. 
             line = Console.ReadLine();
@@ -29,61 +30,42 @@ namespace submission
             for (int i = 0; i < numberOfWords; i++)
             {
                 line = Console.ReadLine();
-                anagramAl3(line);
+                FindAnagramAl1(line);
             }
-            // see  how many groups of anagrams are in the dictionary 
+            // see how many groups of anagrams are in the dictionary 
              result = matchedwords.Count;
             //print the number of groups that are anagrams 
             Console.WriteLine(result);
         }
-        /// <summary>
+ 
         /// A method that checks if a word is an anagram for an of the words in a list. 
         /// </summary>
         /// <param name="line">The word we are check is an anagram</param>
         /// <exception cref="NotImplementedException"></exception>
-        public static void anagramAl2(string line)
+        public static void FindAnagramAl1(string line)
         {
+            // Variable to track when a word matches
             bool wasadded = false;
-            char[] second = line.ToCharArray();
-            Array.Sort(second);
-            foreach (KeyValuePair<string, HashSet<string>> text in matchedwords.ToArray())
-            {
-                char[] first = text.Key.ToCharArray();
-                Array.Sort(first);
-                if (first.SequenceEqual(second)) // compare the two strings
-                {
-                    matchedwords[text.Key].Add(line);
-                    wasadded = true;
-                }
-            }
-            if (!wasadded)
-                matchedwords.Add(line, new HashSet<string>() { });
-        }
-
-        /// A method that checks if a word is an anagram for an of the words in a list. 
-        /// </summary>
-        /// <param name="line">The word we are check is an anagram</param>
-        /// <exception cref="NotImplementedException"></exception>
-        public static void anagramAl3(string line)
-        {
-            bool wasadded = false;
-            char[] second = line.ToCharArray();
-            Array.Sort(second);
-            string secondstring = new string(second);
-
+            // spilt the word we pass into the method
+            char[] word = line.ToCharArray();
+            Array.Sort(word);
+            string RestringWord = new string(word);
+            /* run through the hashset if any match another stored word add them
+               to the dictionary(if it isn't already a key add one). */
             foreach (string test in mw)
             {
-                if (test.Equals(secondstring))
+                if (test.Equals(RestringWord))
                 {
                     wasadded = true;
                     if(matchedwords.ContainsKey(test) == false)
-                        matchedwords.Add(secondstring, new HashSet<string>() { });
-                    matchedwords[test].Add(secondstring);
+                        matchedwords.Add(RestringWord, new HashSet<string>() { });
+                    matchedwords[test].Add(RestringWord);
                 }
             }
+            // if there are no matches add it to the hashset. 
             if (!wasadded)
             {
-                string input = new string(second);
+                string input = new string(word);
                 mw.Add(input.Trim());
             }
                 
