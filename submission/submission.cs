@@ -5,7 +5,6 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace submission
 {
@@ -14,7 +13,7 @@ namespace submission
     {
         // public variables to store groups of matched words. 
         public static Dictionary<string, HashSet<string>> matchedwords = new Dictionary<string, HashSet<string>>();
-        public static HashSet<string> mw = new HashSet<string>();
+        public static HashSet<string> sortedwords = new HashSet<string>();
         static void Main(string[] args)
         {
             // n and k variables and create other needed any other variables
@@ -52,7 +51,7 @@ namespace submission
             string RestringWord = new string(word);
             /* run through the hashset if any match another stored word add them
                to the dictionary(if it isn't already a key add one). */
-            foreach (string test in mw)
+            foreach (string test in sortedwords)
             {
                 if (test.Equals(RestringWord))
                 {
@@ -66,7 +65,7 @@ namespace submission
             if (!wasadded)
             {
                 string input = new string(word);
-                mw.Add(input.Trim());
+                sortedwords.Add(input.Trim());
             }
                 
         }
