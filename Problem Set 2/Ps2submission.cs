@@ -15,11 +15,14 @@ namespace Problem_Set_2
         static void Main(string[] args)
         {
             int miniPosition = 12;
-            //Console.ReadLine();
-
-
-            Console.WriteLine(miniPosition);
             Console.ReadLine();
+
+
+
+            //   Console.ReadLine();
+
+            // print the poistion of where the minimum is minimum 
+            Console.WriteLine("minimum" + " " + miniPosition);
         }
 
         public void alTwo()
