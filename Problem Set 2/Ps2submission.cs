@@ -12,13 +12,13 @@ namespace Problem_Set_2
         /// The main function for a program that finds the minium vales in a circle array. 
         /// </summary>
         /// <param name="args"></param>
-        public void main(string[] args)
+        static void Main(string[] args)
         {
-            int miniPosition = 0;
+            int miniPosition = 12;
             //Console.ReadLine();
 
 
-            Console.WriteLine("minimum" + miniPosition);
+            Console.WriteLine(miniPosition);
             Console.ReadLine();
         }
 
