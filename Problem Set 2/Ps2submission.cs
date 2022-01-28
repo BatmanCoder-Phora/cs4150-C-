@@ -11,34 +11,46 @@ namespace Problem_Set_2
         static public int qCounter = 4;//TEST TAKE IT OUT 
         static public int last;
         static public int lastsec;
+        static public int lastslope;
         static public int firstslope = 1;
-        static public int Lastslope = 0;
-        static public int min = int.MaxValue;
+        static public int minvalue = int.MaxValue;
         static public int first;
         static public int secfirst;
+       // static public  int addtionalp;
+        public static Dictionary<int, int> values = new Dictionary<int, int>();
         /// <summary>
         /// The main function for a program that finds the minium vales in a circle array. 
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            // read the array size
+            // read the array size 
             string line = Console.ReadLine();
             Int32.TryParse(line, out int arrayLength);
             arrayLength -= 1;
-
-            // get the first point and last point only once. 
-             first = queryAraay(0);
-             secfirst = queryAraay(0 + 1);
-             last = queryAraay(arrayLength);
-             lastsec = queryAraay(arrayLength - 1);
-             firstslope = secfirst - first;
+            
+            // get the first point and last point only once and add them to the values dictionary 
+            first = queryAraay(0);
+            secfirst = queryAraay(0 + 1);
+            last = queryAraay(arrayLength);
+            lastsec = queryAraay(arrayLength - 1);
+            values.Add(0, first);
+            values.Add(arrayLength, last);
+            values.Add(0 + 1, secfirst);
+            values.Add(arrayLength - 1, lastsec);
+            firstslope = secfirst - first;
+            lastslope = last - lastsec;
 
             // find the min 
-            algorithmToFindMin(0, (arrayLength));
+            algorithmToFindMin(0, arrayLength);
 
 
-            // print the poistion of where the minimum is minimum 
+            // print the poistion in the array of where the minimum is. 
+            int min = 0; ;
+            foreach(KeyValuePair<int, int> kvp in values)
+                if (kvp.Value == minvalue)
+                    min = kvp.Key;
+
             Console.WriteLine("minimum" + " " + min);
             Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
         }
@@ -49,55 +61,76 @@ namespace Problem_Set_2
         /// <exception cref="NotImplementedException"></exception>
         private static void algorithmToFindMin(int start, int arrayLength)
         {
-            // to many q  
-            int mid, midTwo;
-            int midcal = (start + arrayLength) / 2;
+            int mid = 0, midsec = 0;
+            int midcalculation = (start + arrayLength)/2;
 
-            if (midcal == start || (midcal+1) == start+1)
-            { mid = first; midTwo = secfirst; }
-            else if (midcal == arrayLength || (midcal+1) == arrayLength-1)
-            { mid = last; midTwo = lastsec; }
+            //base case
+            if (midcalculation == start || midcalculation == arrayLength)
+                return;
+            int addtionalp;
+            bool right;
+
+            if ((firstslope > 0 && lastslope > 0))
+            { addtionalp = midcalculation + 1;}
+            else
+            { addtionalp = midcalculation  - 1; }
+
+            if (values.ContainsKey(midcalculation))
+                values.TryGetValue((int)midcalculation, out mid);
             else
             {
-                mid = queryAraay(midcal);
-                midTwo = queryAraay(midcal - 1);
-                qCounter += 2;
+                mid = queryAraay(midcalculation);
+                values.Add(midcalculation, mid);
+                qCounter++;
             }
+            if (values.ContainsKey(addtionalp))
+                values.TryGetValue(addtionalp, out midsec);
+            else
+            {
+                midsec = queryAraay(addtionalp);
+                values.Add(addtionalp, midsec);
+                qCounter++;
+            }
+            int midslope;
+            if (lastslope > 0 && firstslope > 0)
+              midslope = midsec - mid;
+            else
+                midslope = mid - midsec;
+            // update the min. 
+            if (midsec < minvalue)
+                minvalue = midsec;
+             if (mid < midsec && mid<minvalue)
+                minvalue = mid;
 
-            if (midcal == start || midcal == arrayLength)
-                return;
-
-            int midslope = (mid - midTwo);
-
-            // how to even check the slope 
+          if(midslope > 0)
+            {
+                if (firstslope > 0)
+                {
+                    if (mid > first)
+                        algorithmToFindMin(midcalculation, arrayLength);
+                    else if (mid < first)
+                        algorithmToFindMin(start, midcalculation);
+                }
+                if (lastslope > 0)
+                    algorithmToFindMin(midcalculation, arrayLength);
+                else
+                    algorithmToFindMin(start, midcalculation);
+            }
             if (midslope < 0)
             {
-                if(!(Lastslope < 0))
+                if (firstslope < 0)
                 {
-                    firstslope = midslope;
-                    if (midTwo < mid && midTwo < min)
-                        min = midcal-1;
-                    else if (mid < min)
-                        min = midcal;
-                    algorithmToFindMin(midcal, arrayLength);                  
+                    if (midcalculation < first)
+                        algorithmToFindMin(midcalculation, arrayLength);
+                    else if (midcalculation > first)
+                        algorithmToFindMin(start, midcalculation);
                 }
-                
+                else
+                    algorithmToFindMin(midcalculation, arrayLength);
             }
-            if (midslope > 0)
-            {
-                if (!(firstslope > 0))
-                {
-                    Lastslope = midslope;
-                    if (midTwo < min && midTwo<mid)
-                        min = midcal - 1;
-                    else 
-                        min = midcal;
-                    algorithmToFindMin(start , midcal);
-                }
-                
-            }
-            // spepical edge cases. 
         }
+     
+
         /// <summary>
         /// Helpful method to make queries. 
         /// </summary>
