@@ -8,6 +8,10 @@ namespace Problem_Set_2
 {
     public class Ps2submission
     {
+        static public int qCounter = 2;//TEST TAKE IT OUT 
+        static public int last;
+        static public int lastsec;
+        static public int firstslope = 1;
         /// <summary>
         /// The main function for a program that finds the minium vales in a circle array. 
         /// </summary>
@@ -15,16 +19,17 @@ namespace Problem_Set_2
         static void Main(string[] args)
         {
             int miniPosition;
-            // read the array size 
+            // read the array size
             string line = Console.ReadLine();
             Int32.TryParse(line, out int arrayLength);
 
-            miniPosition = algorithmToFindMin(0,(arrayLength-1));
 
-             Console.ReadLine();
+            miniPosition = algorithmToFindMin(0,(arrayLength-1));
+            
 
             // print the poistion of where the minimum is minimum 
             Console.WriteLine("minimum" + " " + miniPosition);
+            Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
         }
         /// <summary>
         /// An algorithm to find 
@@ -34,29 +39,20 @@ namespace Problem_Set_2
         private static int algorithmToFindMin(int start,int arrayLength)
         {
             //make quies to find min.
+            
             int min = 0;
             int first = queryAraay(start);
-            int last  = queryAraay(arrayLength);
+            int secfirst = queryAraay(start + 1);
+            firstslope = secfirst - first;
             int mid = queryAraay((start + arrayLength)/2);
             int midTwo = queryAraay(((start + arrayLength)/ 2)-1);
-            int slope = (midTwo - first);
-            int slopeTwo = (last - mid);
+            last = queryAraay(arrayLength);
+            lastsec = queryAraay(arrayLength - 1);
+            //qCounter += 4;// TEST TAKE OUT 
+            int midslope = (mid - midTwo);
+            int Lastslope = (last - lastsec);
 
-            // if the min hasn't come yet 
-            if (slope > 0 && slopeTwo < 0)
-                algorithmToFindMin(arrayLength / 2, arrayLength);
-            // if the min has passed. 
-            if(slope < 0 && slopeTwo > 0)
-                algorithmToFindMin(start, arrayLength);
-
-             // special cases
-           if(slope > 0 && slopeTwo > 0)
-            //  if(slopetwo > slope)
-                algorithmToFindMin(start, mid);
-            if (slope < 0 && slopeTwo < 0)
-                algorithmToFindMin(mid, arrayLength);
-            if (slope == 0 && slopeTwo == 0)
-                 min = start;
+            
             return min;
         }
         /// <summary>
@@ -65,7 +61,7 @@ namespace Problem_Set_2
         /// <param name="queryNumber"></param>
         private static int queryAraay(int queryNumber)
         {
-            Console.WriteLine(queryNumber);
+            Console.WriteLine("query" + " " + queryNumber);
             string line = Console.ReadLine();
             Int32.TryParse(line, out int qn);
             return qn;
