@@ -38,22 +38,26 @@ namespace Problem_Set_2
         /// <exception cref="NotImplementedException"></exception>
         private static int algorithmToFindMin(int start,int arrayLength)
         {
-            //make quies to find min.
-            
+            // to many q   
             int min = 0;
             int first = queryAraay(start);
             int secfirst = queryAraay(start + 1);
-            firstslope = secfirst - first;
             int mid = queryAraay((start + arrayLength)/2);
             int midTwo = queryAraay(((start + arrayLength)/ 2)-1);
             last = queryAraay(arrayLength);
             lastsec = queryAraay(arrayLength - 1);
-            //qCounter += 4;// TEST TAKE OUT 
             int midslope = (mid - midTwo);
             int Lastslope = (last - lastsec);
+            firstslope = secfirst - first;
 
-            
-            return min;
+            // how to even check the slope 
+            if(midslope > 0 && Lastslope < 0)
+                // what should i do 
+            if(midslope < 0 && firstslope > 0)
+            if(midslope < 0 && firstslope < 0)
+            if(midslope < 0 && Lastslope < 0)
+            { }
+          return min;
         }
         /// <summary>
         /// Helpful method to make queries. 
