@@ -8,7 +8,7 @@ namespace Problem_Set_2
 {
     public class Ps2submission
     {
-        static public int qCounter = 2;//TEST TAKE IT OUT 
+        static public int qCounter = 4;//TEST TAKE IT OUT 
         static public int last;
         static public int lastsec;
         static public int firstslope = 1;
@@ -52,6 +52,7 @@ namespace Problem_Set_2
             int midcal = (start + arrayLength) / 2;
             int mid = queryAraay(midcal);
             int midTwo = queryAraay(((start + arrayLength)/ 2)-1);
+            qCounter += 2;
             int midslope = (mid - midTwo);
 
             // how to even check the slope 
@@ -69,8 +70,15 @@ namespace Problem_Set_2
             }
             if (midslope > 0)
             {
+                if (firstslope < 0)
+                {
+                    min = firstslope;
+                }
+                else
+                {
                     Lastslope = midslope;
-                min = algorithmToFindMin(start, midcal);
+                    min = algorithmToFindMin(midcal + 1, arrayLength);
+                }
             }
         //    if (midslope < 0 && Lastslope < 0)
             
