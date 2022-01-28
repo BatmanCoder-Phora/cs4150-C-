@@ -51,11 +51,11 @@ namespace Problem_Set_2
             firstslope = secfirst - first;
 
             // how to even check the slope 
-            if(midslope > 0 && Lastslope < 0)
-                // what should i do 
-            if(midslope < 0 && firstslope > 0)
-            if(midslope < 0 && firstslope < 0)
-            if(midslope < 0 && Lastslope < 0)
+            if(midslope < 0 && Lastslope > 0)
+                 min = algorithmToFindMin((start + arrayLength) / 2, arrayLength);
+            if(midslope > 0 && firstslope < 0)
+                min = algorithmToFindMin(start, (start + arrayLength) / 2);
+        //    if (midslope < 0 && Lastslope < 0)
             { }
           return min;
         }
