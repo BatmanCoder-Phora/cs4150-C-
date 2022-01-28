@@ -12,6 +12,7 @@ namespace Problem_Set_2
         static public int last;
         static public int lastsec;
         static public int firstslope = 1;
+        static public int Lastslope = 0;
         /// <summary>
         /// The main function for a program that finds the minium vales in a circle array. 
         /// </summary>
@@ -22,9 +23,17 @@ namespace Problem_Set_2
             // read the array size
             string line = Console.ReadLine();
             Int32.TryParse(line, out int arrayLength);
+            arrayLength -= 1;
 
+            // get the first point and last point only once. 
+            int first = queryAraay(0);
+            int secfirst = queryAraay(0 + 1);
+            last = queryAraay(arrayLength);
+            lastsec = queryAraay(arrayLength - 1);
+            firstslope = secfirst - first;
 
-            miniPosition = algorithmToFindMin(0,(arrayLength-1));
+            // find the min 
+            miniPosition = algorithmToFindMin(0,(arrayLength));
             
 
             // print the poistion of where the minimum is minimum 
@@ -40,23 +49,31 @@ namespace Problem_Set_2
         {
             // to many q   
             int min = 0;
-            int first = queryAraay(start);
-            int secfirst = queryAraay(start + 1);
-            int mid = queryAraay((start + arrayLength)/2);
+            int midcal = (start + arrayLength) / 2;
+            int mid = queryAraay(midcal);
             int midTwo = queryAraay(((start + arrayLength)/ 2)-1);
-            last = queryAraay(arrayLength);
-            lastsec = queryAraay(arrayLength - 1);
             int midslope = (mid - midTwo);
-            int Lastslope = (last - lastsec);
-            firstslope = secfirst - first;
 
             // how to even check the slope 
-            if(midslope < 0 && Lastslope > 0)
-                 min = algorithmToFindMin((start + arrayLength) / 2, arrayLength);
-            if(midslope > 0 && firstslope < 0)
-                min = algorithmToFindMin(start, (start + arrayLength) / 2);
+            if (midslope < 0)
+            {
+                if(Lastslope > 0)
+                {
+                    min = Lastslope;
+                }
+                else
+                {
+                    firstslope = midslope;
+                    min = algorithmToFindMin(midcal + 1, arrayLength);
+                }
+            }
+            if (midslope > 0)
+            {
+                    Lastslope = midslope;
+                min = algorithmToFindMin(start, midcal);
+            }
         //    if (midslope < 0 && Lastslope < 0)
-            { }
+            
           return min;
         }
         /// <summary>
