@@ -146,17 +146,26 @@ namespace Problem_Set_2
                 if (firstslope > 0)
                 {
                     if (mid > first)
+                    {
+                        firstslope = midslope;
                         algorithmToFindMin(midcalculation, arrayLength);
+                    }
                     else if (mid < first)
+                    {
+                        lastslope = midslope;
                         algorithmToFindMin(start, midcalculation);
-                }
-                if (lastslope > 0)
+                    }
+                } 
+            /*    if (lastslope > 0)
                 {
                     firstslope = midslope;
                     algorithmToFindMin(midcalculation, arrayLength);
-                }
+                } */
                 else
+                {
+                    lastslope = midslope;
                     algorithmToFindMin(start, midcalculation);
+                }
             }
             // if the midslope is positive than check if the start is negative depending on the response shift the graph. 
             if (midslope < 0)
@@ -164,9 +173,15 @@ namespace Problem_Set_2
                 if (firstslope < 0)
                 {
                     if (mid < first)
+                    {
+                        firstslope = midslope;
                         algorithmToFindMin(midcalculation, arrayLength);
+                    }
                     else if (mid > first)
+                    {
+                        lastslope = midslope;
                         algorithmToFindMin(start, midcalculation);
+                    }
                 }
                 else
                 {
