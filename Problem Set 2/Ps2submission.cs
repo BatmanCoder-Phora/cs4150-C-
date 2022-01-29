@@ -22,7 +22,7 @@ namespace Problem_Set_2
         static public int minvalue = int.MaxValue;
         static public int first;
         static public int secfirst;
-       // static public  int addtionalp;
+        // static public  int addtionalp;
         public static Dictionary<int, int> values = new Dictionary<int, int>();
         /// <summary>
         /// The main function for a program that finds the minium vales in a circle array. 
@@ -42,7 +42,7 @@ namespace Problem_Set_2
                 first = queryAraay(0);
                 min = 0;
             }
-            else if(arrayLength == 1)
+            else if (arrayLength == 1)
             {
                 first = queryAraay(0);
                 secfirst = queryAraay(0 + 1);
@@ -83,12 +83,12 @@ namespace Problem_Set_2
 
             // print the poistion in the array of where the minimum is. 
 
-            foreach(KeyValuePair<int, int> kvp in values)
+            foreach (KeyValuePair<int, int> kvp in values)
                 if (kvp.Value == minvalue)
                     min = kvp.Key;
 
             Console.WriteLine("minimum" + " " + min);
-          //  Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
+            //  Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
         }
         /// <summary>
         /// An algorithm to find the position of the minimum value.
@@ -98,17 +98,18 @@ namespace Problem_Set_2
         private static void algorithmToFindMin(int start, int arrayLength)
         {
             int mid = 0, midsec = 0;
-            int midcalculation = (start + arrayLength)/2;
+            int midcalculation = (start + arrayLength) / 2;
 
             //base case
             if (midcalculation == start || midcalculation == arrayLength)
                 return;
             int addtionalp;
             bool wasAdded = false;
+
             if ((firstslope > 0 && lastslope > 0))
             { addtionalp = midcalculation + 1; wasAdded = true; }
             else
-            {addtionalp = midcalculation - 1;}
+            { addtionalp = midcalculation - 1; }
 
             // sees if the dictionary already found the value for the requested numbers if not makes a query.
             if (values.ContainsKey(midcalculation))
@@ -130,24 +131,25 @@ namespace Problem_Set_2
             // figures out how to find the slope. 
             int midslope;
             if (wasAdded)
-              midslope = midsec - mid;
+                midslope = midsec - mid;
             else
-              midslope = mid - midsec;
+                midslope = mid - midsec;
 
             // update the min. 
             if (midsec < minvalue)
                 minvalue = midsec;
-             if (mid < midsec && mid<minvalue)
+            if (mid < midsec && mid < minvalue)
                 minvalue = mid;
 
-             // if the midslope is positive than check if the start is positive depending on the response shift the graph. 
-          if(midslope > 0)
+            // if the midslope is positive than check if the start is positive depending on the response shift the graph. 
+            if (midslope > 0)
             {
                 if (firstslope > 0)
                 {
                     if (mid > first)
                     {
                         firstslope = midslope;
+                        first = mid;
                         algorithmToFindMin(midcalculation, arrayLength);
                     }
                     else if (mid < first)
@@ -155,7 +157,7 @@ namespace Problem_Set_2
                         lastslope = midslope;
                         algorithmToFindMin(start, midcalculation);
                     }
-                } 
+                }
                 else
                 {
                     lastslope = midslope;
@@ -170,6 +172,7 @@ namespace Problem_Set_2
                     if (mid < first)
                     {
                         firstslope = midslope;
+                        first = mid;
                         algorithmToFindMin(midcalculation, arrayLength);
                     }
                     else if (mid > first)
@@ -185,7 +188,7 @@ namespace Problem_Set_2
                 }
             }
         }
-     
+
 
         /// <summary>
         /// Helpful method to make queries. 
