@@ -134,6 +134,10 @@ namespace Problem_Set_2
                 midslope = mid - midsec;
 
             // update the min. 
+            if (first < last)
+                minvalue = first;
+            if(last < first)
+                minvalue = last;
             if (midsec < minvalue)
                 minvalue = midsec;
             if (mid < midsec && mid < minvalue)
