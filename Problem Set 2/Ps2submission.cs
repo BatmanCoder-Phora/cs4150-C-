@@ -118,7 +118,6 @@ namespace Problem_Set_2
             {
                 mid = queryAraay(midcalculation);
                 values.Add(midcalculation, mid);
-                qCounter++;
             }
             if (values.ContainsKey(addtionalp))
                 values.TryGetValue(addtionalp, out midsec);
@@ -126,7 +125,6 @@ namespace Problem_Set_2
             {
                 midsec = queryAraay(addtionalp);
                 values.Add(addtionalp, midsec);
-                qCounter++;
             }
             // figures out how to find the slope. 
             int midslope;
