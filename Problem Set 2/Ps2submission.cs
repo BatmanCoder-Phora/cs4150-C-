@@ -151,7 +151,10 @@ namespace Problem_Set_2
                         algorithmToFindMin(start, midcalculation);
                 }
                 if (lastslope > 0)
+                {
+                    firstslope = midslope;
                     algorithmToFindMin(midcalculation, arrayLength);
+                }
                 else
                     algorithmToFindMin(start, midcalculation);
             }
@@ -167,6 +170,7 @@ namespace Problem_Set_2
                 }
                 else
                 {
+                    firstslope = midslope;
                     algorithmToFindMin(midcalculation, arrayLength);
                 }
             }
