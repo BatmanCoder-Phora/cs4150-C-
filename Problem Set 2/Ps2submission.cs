@@ -2,7 +2,6 @@
  * Author: Sephora Bateman 
  * Class: CS 4150
  * Problem Set #2
- * TESTS: Passing small test up to twenty
  */
 using System;
 using System.Collections.Generic;
@@ -160,6 +159,7 @@ namespace Problem_Set_2
                 else
                 {
                     lastslope = midslope;
+                    last = mid;
                     algorithmToFindMin(start, midcalculation);
                 }
             }
@@ -178,6 +178,7 @@ namespace Problem_Set_2
                     else if (mid > first)
                     {
                         lastslope = midslope;
+                        last = mid;
                         algorithmToFindMin(start, midcalculation);
                     }
                 }
