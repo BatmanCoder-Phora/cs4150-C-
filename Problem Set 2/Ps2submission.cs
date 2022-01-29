@@ -155,6 +155,7 @@ namespace Problem_Set_2
                     else if (mid < first)
                     {
                         lastslope = midslope;
+                        first = mid;
                         algorithmToFindMin(start, midcalculation);
                     }
                 }
@@ -184,6 +185,7 @@ namespace Problem_Set_2
                 else
                 {
                     firstslope = midslope;
+                    first = mid;
                     algorithmToFindMin(midcalculation, arrayLength);
                 }
             }
