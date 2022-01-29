@@ -14,16 +14,14 @@ namespace Problem_Set_2
 {
     public class Ps2submission
     {
-        static public int qCounter = 4;//TEST TAKE IT OUT 
         static public int last;
-        static public int lastsec;
+        static public int beforeLast;
         static public int lastslope;
         static public int firstslope = 1;
         static public int minvalue = int.MaxValue;
         static public int first;
-        static public int secfirst;
+        static public int afterFirst;
         static public bool firstHasNotBeenChanged = true;
-        // static public  int addtionalp;
         public static Dictionary<int, int> values = new Dictionary<int, int>();
         /// <summary>
         /// The main function for a program that finds the minium vales in a circle array. 
@@ -39,15 +37,12 @@ namespace Problem_Set_2
 
             // get the first point and last point only once and add them to the values dictionary depending on the length 
             if (arrayLength == 0)
-            {
-                first = queryAraay(0);
-                min = 0;
-            }
+            { min = 0; }
             else if (arrayLength == 1)
             {
                 first = queryAraay(0);
-                secfirst = queryAraay(0 + 1);
-                if (first > secfirst)
+                afterFirst = queryAraay(0 + 1);
+                if (first > afterFirst)
                     min = 1;
                 else
                     min = 0;
@@ -55,11 +50,11 @@ namespace Problem_Set_2
             else if (arrayLength == 2)
             {
                 first = queryAraay(0);
-                secfirst = queryAraay(0 + 1);
+                afterFirst = queryAraay(0 + 1);
                 last = queryAraay(arrayLength);
-                if (first < secfirst && first < last)
+                if (first < afterFirst && first < last)
                     min = 0;
-                else if (secfirst < first && secfirst < last)
+                else if (afterFirst < first && afterFirst < last)
                     min = 1;
                 else
                     min = arrayLength;
@@ -67,15 +62,15 @@ namespace Problem_Set_2
             else
             {
                 first = queryAraay(0);
-                secfirst = queryAraay(0 + 1);
+                afterFirst = queryAraay(1);
+                beforeLast = queryAraay(arrayLength - 1);
                 last = queryAraay(arrayLength);
-                lastsec = queryAraay(arrayLength - 1);
                 values.Add(0, first);
                 values.Add(arrayLength, last);
-                values.Add(0 + 1, secfirst);
-                values.Add(arrayLength - 1, lastsec);
-                firstslope = secfirst - first;
-                lastslope = last - lastsec;
+                values.Add(1, afterFirst);
+                values.Add(arrayLength - 1, beforeLast);
+                firstslope = afterFirst - first;
+                lastslope = last - beforeLast;
 
                 // find the min 
                 algorithmToFindMin(0, arrayLength);
@@ -89,7 +84,6 @@ namespace Problem_Set_2
                     min = kvp.Key;
 
             Console.WriteLine("minimum" + " " + min);
-            //  Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
         }
         /// <summary>
         /// An algorithm to find the position of the minimum value.
