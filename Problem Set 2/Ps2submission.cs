@@ -186,7 +186,7 @@ namespace Problem_Set_2
                 {
                     firstslope = midslope;
                     first = mid;
-                    algorithmToFindMin(start, midcalculation);
+                    algorithmToFindMin(midcalculation, arrayLength);
                 }
             }
         }
