@@ -104,9 +104,9 @@ namespace Problem_Set_2
             if (midcalculation == start || midcalculation == arrayLength)
                 return;
             int addtionalp;
-
+            bool wasAdded = false;
             if ((firstslope > 0 && lastslope > 0))
-            { addtionalp = midcalculation + 1; }
+            { addtionalp = midcalculation + 1; wasAdded = true; }
             else
             {addtionalp = midcalculation - 1;}
 
@@ -129,7 +129,7 @@ namespace Problem_Set_2
             }
             // figures out how to find the slope. 
             int midslope;
-            if (lastslope > 0 && firstslope > 0)
+            if (wasAdded)
               midslope = midsec - mid;
             else
               midslope = mid - midsec;
@@ -160,13 +160,15 @@ namespace Problem_Set_2
             {
                 if (firstslope < 0)
                 {
-                    if (midcalculation < first)
+                    if (mid < first)
                         algorithmToFindMin(midcalculation, arrayLength);
-                    else if (midcalculation > first)
+                    else if (mid > first)
                         algorithmToFindMin(start, midcalculation);
                 }
                 else
+                {
                     algorithmToFindMin(midcalculation, arrayLength);
+                }
             }
         }
      
