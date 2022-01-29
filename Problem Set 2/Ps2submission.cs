@@ -16,7 +16,7 @@ namespace Problem_Set_2
         static public int last;
         static public int beforeLast;
         static public int lastslope;
-        static public int firstslope = 1;
+        static public int firstslope;
         static public int minvalue = int.MaxValue;
         static public int first;
         static public int afterFirst;
