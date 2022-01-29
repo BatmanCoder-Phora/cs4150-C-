@@ -22,6 +22,7 @@ namespace Problem_Set_2
         static public int minvalue = int.MaxValue;
         static public int first;
         static public int secfirst;
+        static public bool firstHasNotBeenChanged = true;
         // static public  int addtionalp;
         public static Dictionary<int, int> values = new Dictionary<int, int>();
         /// <summary>
@@ -134,7 +135,7 @@ namespace Problem_Set_2
                 midslope = mid - midsec;
 
             // update the min. 
-            if (first < last)
+            if (first < last && firstHasNotBeenChanged)
                 minvalue = first;
             if(last < first)
                 minvalue = last;
@@ -148,6 +149,7 @@ namespace Problem_Set_2
             {
                 if (firstslope > 0)
                 {
+                    firstHasNotBeenChanged = false;
                     if (mid > first)
                     {
                         firstslope = midslope;
@@ -172,6 +174,7 @@ namespace Problem_Set_2
             {
                 if (firstslope < 0)
                 {
+                    firstHasNotBeenChanged = false;
                     if (mid < first)
                     {
                         firstslope = midslope;
