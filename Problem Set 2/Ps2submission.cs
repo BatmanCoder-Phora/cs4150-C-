@@ -1,4 +1,10 @@
-﻿using System;
+﻿/*
+ * Author: Sephora Bateman 
+ * Class: CS 4150
+ * Problem Set #2
+ * TESTS: Passing small test up to twenty
+ */
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,35 +30,65 @@ namespace Problem_Set_2
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+            int min = 0;
             // read the array size 
             string line = Console.ReadLine();
             Int32.TryParse(line, out int arrayLength);
             arrayLength -= 1;
-            
-            // get the first point and last point only once and add them to the values dictionary 
-            first = queryAraay(0);
-            secfirst = queryAraay(0 + 1);
-            last = queryAraay(arrayLength);
-            lastsec = queryAraay(arrayLength - 1);
-            values.Add(0, first);
-            values.Add(arrayLength, last);
-            values.Add(0 + 1, secfirst);
-            values.Add(arrayLength - 1, lastsec);
-            firstslope = secfirst - first;
-            lastslope = last - lastsec;
 
-            // find the min 
-            algorithmToFindMin(0, arrayLength);
+            // get the first point and last point only once and add them to the values dictionary depending on the length 
+            if (arrayLength == 0)
+            {
+                first = queryAraay(0);
+                min = 0;
+            }
+            else if(arrayLength == 1)
+            {
+                first = queryAraay(0);
+                secfirst = queryAraay(0 + 1);
+                if (first > secfirst)
+                    min = 1;
+                else
+                    min = 0;
+            }
+            else if (arrayLength == 2)
+            {
+                first = queryAraay(0);
+                secfirst = queryAraay(0 + 1);
+                last = queryAraay(arrayLength);
+                if (first < secfirst && first < last)
+                    min = 0;
+                else if (secfirst < first && secfirst < last)
+                    min = 1;
+                else
+                    min = arrayLength;
+            }
+            else
+            {
+                first = queryAraay(0);
+                secfirst = queryAraay(0 + 1);
+                last = queryAraay(arrayLength);
+                lastsec = queryAraay(arrayLength - 1);
+                values.Add(0, first);
+                values.Add(arrayLength, last);
+                values.Add(0 + 1, secfirst);
+                values.Add(arrayLength - 1, lastsec);
+                firstslope = secfirst - first;
+                lastslope = last - lastsec;
+
+                // find the min 
+                algorithmToFindMin(0, arrayLength);
+            }
 
 
             // print the poistion in the array of where the minimum is. 
-            int min = 0; ;
+
             foreach(KeyValuePair<int, int> kvp in values)
                 if (kvp.Value == minvalue)
                     min = kvp.Key;
 
             Console.WriteLine("minimum" + " " + min);
-            Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
+          //  Console.WriteLine("number of queries" + " " + qCounter);// TESTS TAKE IT OUT 
         }
         /// <summary>
         /// An algorithm to find the position of the minimum value.
@@ -68,13 +104,12 @@ namespace Problem_Set_2
             if (midcalculation == start || midcalculation == arrayLength)
                 return;
             int addtionalp;
-            bool right;
 
             if ((firstslope > 0 && lastslope > 0))
             { addtionalp = midcalculation + 1;}
             else
             { addtionalp = midcalculation  - 1; }
-
+            
             if (values.ContainsKey(midcalculation))
                 values.TryGetValue((int)midcalculation, out mid);
             else
