@@ -34,7 +34,6 @@ namespace Problem_Set_2
             // read the array size 
             string line = Console.ReadLine();
             int arrayLength = Int32.Parse(line);
-          //  Int32.TryParse(line, out int arrayLength);
             arrayLength -= 1;
 
             // get the first point and last point only once and add them to the values dictionary depending on the length 
@@ -181,7 +180,6 @@ namespace Problem_Set_2
             Console.WriteLine("query" + " " + queryNumber);
             string line = Console.ReadLine();
             int qn = Int32.Parse(line);
-           // Int32.TryParse(line, out int qn);
             return qn;
         }
     }
