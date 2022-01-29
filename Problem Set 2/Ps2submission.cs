@@ -33,6 +33,7 @@ namespace Problem_Set_2
             int min = 0;
             // read the array size 
             string line = Console.ReadLine();
+          //  int arraylength = Int32.Parse(line);
             Int32.TryParse(line, out int arrayLength);
             arrayLength -= 1;
 
@@ -106,10 +107,11 @@ namespace Problem_Set_2
             int addtionalp;
 
             if ((firstslope > 0 && lastslope > 0))
-            { addtionalp = midcalculation + 1;}
+            { addtionalp = midcalculation + 1; }
             else
-            { addtionalp = midcalculation  - 1; }
-            
+            {addtionalp = midcalculation - 1;}
+
+            // sees if the dictionary already found the value for the requested numbers if not makes a query.
             if (values.ContainsKey(midcalculation))
                 values.TryGetValue((int)midcalculation, out mid);
             else
@@ -126,17 +128,20 @@ namespace Problem_Set_2
                 values.Add(addtionalp, midsec);
                 qCounter++;
             }
+            // figures out how to find the slope. 
             int midslope;
             if (lastslope > 0 && firstslope > 0)
               midslope = midsec - mid;
             else
-                midslope = mid - midsec;
+              midslope = mid - midsec;
+
             // update the min. 
             if (midsec < minvalue)
                 minvalue = midsec;
              if (mid < midsec && mid<minvalue)
                 minvalue = mid;
 
+             // if the midslope is positive than check if the start is positive depending on the response shift the graph. 
           if(midslope > 0)
             {
                 if (firstslope > 0)
@@ -151,6 +156,7 @@ namespace Problem_Set_2
                 else
                     algorithmToFindMin(start, midcalculation);
             }
+            // if the midslope is positive than check if the start is negative depending on the response shift the graph. 
             if (midslope < 0)
             {
                 if (firstslope < 0)
@@ -169,7 +175,7 @@ namespace Problem_Set_2
         /// <summary>
         /// Helpful method to make queries. 
         /// </summary>
-        /// <param name="queryNumber"></param>
+        /// <param name="queryNumber">The number we ant the information for</param>
         private static int queryAraay(int queryNumber)
         {
             Console.WriteLine("query" + " " + queryNumber);
