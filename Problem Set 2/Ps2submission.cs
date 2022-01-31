@@ -13,6 +13,7 @@ namespace Problem_Set_2
 {
     public class Ps2submission
     {
+        
         static public int last;
         static public int beforeLast;
         static public int lastslope;
@@ -91,15 +92,17 @@ namespace Problem_Set_2
         /// <exception cref="NotImplementedException"></exception>
         private static void algorithmToFindMin(int start, int arrayLength)
         {
+            //local 
             int mid = 0, midsec = 0;
             int midcalculation = (start + arrayLength) / 2;
+            int addtionalp;
+            bool wasAdded = false;
 
             //base case
             if (midcalculation == start || midcalculation == arrayLength)
                 return;
-            int addtionalp;
-            bool wasAdded = false;
 
+            // something to help find rether we grab the second middle point before or after the middle. 
             if ((firstslope > 0 && lastslope > 0))
             { addtionalp = midcalculation + 1; wasAdded = true; }
             else
@@ -163,7 +166,7 @@ namespace Problem_Set_2
                     algorithmToFindMin(start, midcalculation);
                 }
             }
-            // if the midslope is positive than check if the start is negative depending on the response shift the graph. 
+            // if the midslope is negative than check if the start is negative depending on the response shift the graph. 
             if (midslope < 0)
             {
                 if (firstslope < 0)
