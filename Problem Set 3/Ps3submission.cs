@@ -13,14 +13,17 @@ namespace Problem_Set_3
 {
     public class Ps3submission
     {
+        public static int minsandshops;
+        public static long nofDestinations;
+        public static long passedDes;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            int numOfDestinations;
-            int numOfFerryRoutes;
+            long numOfDestinations;
+            long numOfFerryRoutes;
             string line;
 
             line = Console.ReadLine();
@@ -34,7 +37,7 @@ namespace Problem_Set_3
                 findMinNumOfShops(line);
             }
 
-            Console.WriteLine("");
+            Console.WriteLine(minsandshops);
         }
         /// <summary>
         /// 
