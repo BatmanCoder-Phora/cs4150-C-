@@ -13,9 +13,10 @@ namespace Problem_Set_3
 {
     public class Ps3submission
     {
-        public static int minsandshops;
         public static long nofDestinations;
         public static long passedDes;
+        public static Dictionary<int,int> islandsAndFerries = new Dictionary<int, int>();
+        public static HashSet<int> islands = new HashSet<int>();
         /// <summary>
         /// 
         /// </summary>
@@ -34,16 +35,28 @@ namespace Problem_Set_3
             for (int i = 0; i < numOfFerryRoutes; i++)
             {
                 line = Console.ReadLine();
-                findMinNumOfShops(line);
+                string[] spilt = line.Split(' ');
+                int island = Int32.Parse(spilt[0]);
+                int ferry = Int32.Parse(spilt[1]);
+                if (i <= numOfDestinations)
+                    islands.Add(i);
+                        
+                if(islandsAndFerries.ContainsKey(island))
+                   islandsAndFerries.Add(island, 0);
+                else
+                {
+                    islandsAndFerries.TryGetValue(island, out int value);
+                    islandsAndFerries.Remove(island);
+                    islandsAndFerries.Add(island, (value | (1 << ferry)));
+                }
             }
-
-            Console.WriteLine(minsandshops);
+            findMinNumOfShops();
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="line"></param>
-        public  static void findMinNumOfShops(string line)
+        public  static void findMinNumOfShops()
         {
 
         }
