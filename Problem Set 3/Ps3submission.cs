@@ -14,18 +14,20 @@ namespace Problem_Set_3
     public class Ps3submission
     {
         public static long nofDestinations;
-        public static long passedDes;
+        public static long passedDes = 0;
         public static Dictionary<int,int> islandsAndFerries = new Dictionary<int, int>();
         public static HashSet<int> islands = new HashSet<int>();
+        public static long numOfDestinations;
+        public static long numOfFerryRoutes;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-            long numOfDestinations;
-            long numOfFerryRoutes;
+
             string line;
+            int index = 1;
 
             line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
@@ -34,31 +36,40 @@ namespace Problem_Set_3
 
             for (int i = 0; i < numOfFerryRoutes; i++)
             {
-                line = Console.ReadLine();
-                string[] spilt = line.Split(' ');
-                int island = Int32.Parse(spilt[0]);
-                int ferry = Int32.Parse(spilt[1]);
-                if (i <= numOfDestinations)
-                    islands.Add(i);
-                        
-                if(islandsAndFerries.ContainsKey(island))
-                   islandsAndFerries.Add(island, 0);
-                else
-                {
-                    islandsAndFerries.TryGetValue(island, out int value);
-                    islandsAndFerries.Remove(island);
-                    islandsAndFerries.Add(island, (value | (1 << ferry)));
-                }
+                inputIslandAndFerryData(line, i);
+               
             }
-            findMinNumOfShops();
+            findMinNumOfShops(islands,passedDes,index);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="line"></param>
-        public  static void findMinNumOfShops()
-        {
 
+        private static void inputIslandAndFerryData(string line, int i)
+        {
+            line = Console.ReadLine();
+            string[] spilt = line.Split(' ');
+            int island = Int32.Parse(spilt[0]);
+            int ferry = Int32.Parse(spilt[1]);
+            if (i <= numOfDestinations)
+                nofDestinations = nofDestinations | (1 << i);
+
+            if (islandsAndFerries.ContainsKey(island))
+                islandsAndFerries.Add(island, 0);
+            else
+            {
+                islandsAndFerries.TryGetValue(island, out int value);
+                islandsAndFerries.Remove(island);
+                islandsAndFerries.Add(island, (value | (1 << ferry)));
+            }
+        }
+
+        private static void findMinNumOfShops(HashSet<int> islands, long passedDes, int index)
+        {
+            if (passedDes == nofDestinations)
+                return;
+
+
+            findMinNumOfShops(islands,passedDes, index + 1);
+            islands.Add(index);
+            findMinNumOfShops(islands, passedDes, index + 1);
         }
     }
 }
