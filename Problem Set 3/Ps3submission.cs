@@ -3,6 +3,11 @@
  * Class: CS 4150
  * Problem Set #3
  */
+
+/*
+ * WHAT TO WORK ON FOR CODE:
+ *  - fix islandsANdFerryData method so it is the correct amount in the dictionary.
+ * */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,7 +67,10 @@ namespace Problem_Set_3
 
             // inculde orphan islands. 
             if (!islandsAndFerries.ContainsKey(island))
+            {
                 islandsAndFerries.Add(island, ferry);
+                islandsAndFerries.Add(ferry, island);
+            }
             else
             {
                 islandsAndFerries.TryGetValue(island, out int value);
@@ -70,6 +78,7 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (value | (1 << ferry)));
             }
         }
+
         /// <summary>
         /// Finds the smallest number of shops that need to be built. 
         /// </summary>
