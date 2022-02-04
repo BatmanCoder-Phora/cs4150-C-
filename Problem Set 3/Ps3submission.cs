@@ -6,7 +6,9 @@
 
 /*
  * WHAT TO WORK ON FOR CODE:
- *  - fix islandsANdFerryData method so it is the correct amount in the dictionary.
+ *  - work on the fidnminisland function. 
+ *     - ophan clause is working 
+ *       - fix the else caluse and the matching island clause. 
  * */
 using System;
 using System.Collections.Generic;
@@ -23,8 +25,10 @@ namespace Problem_Set_3
         public static int minislands;
         public static long numOfDestinations;
         public static long numOfFerryRoutes;
+        public static long islandsWithShops;
         public static Dictionary<int,int> islandsAndFerries = new Dictionary<int, int>();
-        public static HashSet<int> islands = new HashSet<int>();
+        //public static HashSet<int> islands = new HashSet<int>();
+
         /// <summary>
         /// 
         /// </summary>
@@ -40,39 +44,49 @@ namespace Problem_Set_3
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
-            for (int i = 0; i < numOfFerryRoutes; i++)
-                inputIslandAndFerryData(i); // store the islands and their data into some data sturctures. 
 
-            
-            findMinNumOfShops(islands,passedDes,index);
+            for (int i = 1; i <= numOfDestinations; i++)
+                if (i <= numOfDestinations)
+                    nofDestinations = nofDestinations | (1 << i);
+
+            int number = 1;
+            while (true)// store the islands and their data into some data sturctures. 
+            {
+                line = Console.ReadLine();
+                if (number >= numOfFerryRoutes)
+                    break;
+                else
+                    inputIslandAndFerryData(line);
+                number++;
+            }
+
+
+            findMinNumOfShops(islandsWithShops, passedDes,index);
 
             // Print the min number of islands and the islands it takes. 
             Console.WriteLine(minislands);
             for (int i = 1; i <= numOfDestinations; i++)
-                if ((passedDes & (1 << i)) != 0)
+            {
+                long tester = (islandsWithShops & (1 << i));
+                if ((islandsWithShops & (1 << i)) != 0) // wrong variable
                     Console.WriteLine(i + ' ');
+            }
         }
         /// <summary>
         ///  Stores the islands and the ferry routes in a dictionary also figure out the destination. 
         /// </summary>
         /// <param name="i"></param>
-        private static void inputIslandAndFerryData(int i)
+        private static void inputIslandAndFerryData(string line)
         {
-            if (i <= numOfDestinations)
-            {
-                nofDestinations = nofDestinations | (1 << i);
-                islands.Add(i);
-            }
-            string line = Console.ReadLine();
             string[] spilt = line.Split(' ');
             int island = Int32.Parse(spilt[0]);
             int ferry = Int32.Parse(spilt[1]);
 
             if (!islandsAndFerries.ContainsKey(island))
-                islandsAndFerries.Add(island, (1 << island));
-            
+                islandsAndFerries.Add(island, (1 << island));     
             if(!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1 << ferry));
+
             islandsAndFerries.TryGetValue(island, out int value);
             islandsAndFerries.TryGetValue(ferry, out int valueferry);
             islandsAndFerries[island] = (value | (1 << ferry));
@@ -85,14 +99,39 @@ namespace Problem_Set_3
         /// <param name="islands"> the list of islands.</param>
         /// <param name="passedDes">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static void findMinNumOfShops(HashSet<int> islands, long passedDes, int index)
+        private static  void findMinNumOfShops(long islandsWithShops, long passedDes, int index)
         {
-            if (index > numOfDestinations) //
+            // base case for no soultion. 
+            if (index > numOfDestinations) 
                return;
-
-            if (passedDes == nofDestinations) // base case
+            // base case for min soultion
+            if (passedDes == nofDestinations)
                 return;
+            // Look for orphan island and macthing island numbers. 
+            islandsAndFerries.TryGetValue((int)index, out int value);
+            if (value == 0)
+            {
+                passedDes = passedDes | (1 << index);
+                islandsWithShops = islandsWithShops | (1 << index);
+                minislands++;
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+            }         
+          /*  else if()
+            {
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+            } */
+            else
+            {
+               
+                islandsWithShops = islandsWithShops | (1 << index);
+                for (int i = 1; i <= numOfDestinations; i++)
+                    if ((value & (1 << i)) != 0 && (passedDes & (1 << i)) != 0) 
+                      passedDes = passedDes | (1 << i);
 
+                //minislands++;
+                //findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+                //  findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+            }
         }
     }
 }
