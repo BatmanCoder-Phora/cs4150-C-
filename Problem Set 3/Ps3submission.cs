@@ -40,10 +40,10 @@ namespace Problem_Set_3
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
-            for (int i = 1; i < numOfFerryRoutes; i++)
+            for (int i = 0; i < numOfFerryRoutes; i++)
                 inputIslandAndFerryData(i); // store the islands and their data into some data sturctures. 
-            
 
+            
             findMinNumOfShops(islands,passedDes,index);
 
             // Print the min number of islands and the islands it takes. 
@@ -69,15 +69,14 @@ namespace Problem_Set_3
             int ferry = Int32.Parse(spilt[1]);
 
             if (!islandsAndFerries.ContainsKey(island))
-            {
-                islandsAndFerries.Add(island, 0);
-                islandsAndFerries.Add(ferry, 0);
-            }
+                islandsAndFerries.Add(island, (1 << island));
+            
+            if(!islandsAndFerries.ContainsKey(ferry))
+                islandsAndFerries.Add(ferry, (1 << ferry));
             islandsAndFerries.TryGetValue(island, out int value);
             islandsAndFerries.TryGetValue(ferry, out int valueferry);
             islandsAndFerries[island] = (value | (1 << ferry));
             islandsAndFerries[ferry] = (valueferry | (1 << island));
-
         }
 
         /// <summary>
