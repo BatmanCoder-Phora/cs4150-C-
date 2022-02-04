@@ -27,10 +27,9 @@ namespace Problem_Set_3
         public static long numOfFerryRoutes;
         public static long islandsWithShops;
         public static Dictionary<int,int> islandsAndFerries = new Dictionary<int, int>();
-        //public static HashSet<int> islands = new HashSet<int>();
 
         /// <summary>
-        /// 
+        /// main function to slove for min islands. 
         /// </summary>
         /// <param name="args"></param>
         static void Main(string[] args)
@@ -38,6 +37,7 @@ namespace Problem_Set_3
 
             string line;
             int index = 1;
+            // is there a way to get rid of all these loops.
 
             line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
@@ -61,14 +61,14 @@ namespace Problem_Set_3
             }
 
 
-            findMinNumOfShops(islandsWithShops, passedDes,index);
+            findMinNumOfShops(islandsWithShops, passedDes,index,minislands);
 
             // Print the min number of islands and the islands it takes. 
             Console.WriteLine(minislands);
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 long tester = (islandsWithShops & (1 << i));
-                if ((islandsWithShops & (1 << i)) != 0) // wrong variable
+                if ((islandsWithShops & (1 << i)) != 0)
                     Console.WriteLine(i + ' ');
             }
         }
@@ -99,38 +99,39 @@ namespace Problem_Set_3
         /// <param name="islands"> the list of islands.</param>
         /// <param name="passedDes">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static  void findMinNumOfShops(long islandsWithShops, long passedDes, int index)
+        private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
-            // base case for no soultion. 
-            if (index > numOfDestinations) 
-               return;
             // base case for min soultion
             if (passedDes == nofDestinations)
                 return;
-            // Look for orphan island and macthing island numbers. 
-            islandsAndFerries.TryGetValue((int)index, out int value);
+            // base case for no soultion. 
+            if (index > numOfDestinations)
+                return;
+            // Look for orphan 
+            islandsAndFerries.TryGetValue(index, out int value);
             if (value == 0)
             {
+                minislands++;
                 passedDes = passedDes | (1 << index);
                 islandsWithShops = islandsWithShops | (1 << index);
-                minislands++;
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1);
-            }         
-          /*  else if()
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1,minislands);
+            }
+            /*  else if()// looks for  macthing island numbers. 
+              {
+                  findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+              } */
+            else // normal branching. 
             {
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1);
-            } */
-            else
-            {
-               
+
+                long tempislandswithshops = islandsWithShops;
+
                 islandsWithShops = islandsWithShops | (1 << index);
                 for (int i = 1; i <= numOfDestinations; i++)
-                    if ((value & (1 << i)) != 0 && (passedDes & (1 << i)) != 0) 
+                    if ((value & (1 << i)) != 0 && (passedDes & (1 << i)) != 1) 
                       passedDes = passedDes | (1 << i);
 
-                //minislands++;
-                //findMinNumOfShops(islandsWithShops, passedDes, index + 1);
-                //  findMinNumOfShops(islandsWithShops, passedDes, index + 1);
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands++);
+                findMinNumOfShops(tempislandswithshops, 0, index + 1, minislands);
             }
         }
     }
