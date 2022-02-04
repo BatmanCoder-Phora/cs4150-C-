@@ -75,7 +75,9 @@ namespace Problem_Set_3
             {
                 islandsAndFerries.TryGetValue(island, out int value);
                 islandsAndFerries.Remove(island);
-                islandsAndFerries.Add(island, (value | (1 << ferry)));
+                int input = (value | (1 << ferry)) + (value | (1 << island));
+                islandsAndFerries.Add(island, input);
+                islandsAndFerries.Add(ferry, (1 << island));
             }
         }
 
