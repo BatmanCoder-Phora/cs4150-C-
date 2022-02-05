@@ -58,7 +58,7 @@ namespace Problem_Set_3
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 long tester = (islandsWithShops & (1 << i));
-                if ((islandsWithShops & (1 << i)) != 0)
+                if ((islandsWithShops & (1L << i)) != 0)
                     Console.WriteLine(i + ' ');
             }
         }
@@ -74,14 +74,14 @@ namespace Problem_Set_3
             int ferry = Int32.Parse(spilt[1]);
 
             if (!islandsAndFerries.ContainsKey(island))
-                islandsAndFerries.Add(island, (1 << island));     
+                islandsAndFerries.Add(island, (1L << island));     
             if(!islandsAndFerries.ContainsKey(ferry))
-                islandsAndFerries.Add(ferry, (1 << ferry));
+                islandsAndFerries.Add(ferry, (1L << ferry));
 
             islandsAndFerries.TryGetValue(island, out long value);
             islandsAndFerries.TryGetValue(ferry, out long valueferry);
-            islandsAndFerries[island] = (value | (1 << ferry));
-            islandsAndFerries[ferry] = (valueferry | (1 << island));
+            islandsAndFerries[island] = (value | (1L << ferry));
+            islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
         /// <summary>
@@ -104,12 +104,18 @@ namespace Problem_Set_3
             islandsAndFerries.TryGetValue(index, out long value);
             long tempislandswithshops = islandsWithShops;
             for (int i = 1; i <= numOfDestinations; i++)
-                if ((value & (1 << i)) != 0 && (passedDes & (1 << i)) != 1)
-                {
-                    passedDes = passedDes | (1 << i);
-                }
-            islandsWithShops = islandsWithShops | (1 << index);
+            {
+                long test = (value & (1L << i));
+                long test2 = (passedDes & (1L << i));
 
+                if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
+                {
+                    passedDes = passedDes | (1L << i);
+
+                    if((islandsWithShops & (1L << i)) == 0)
+                      islandsWithShops = islandsWithShops | (1L << index);
+                }
+            }
             findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands++);
             findMinNumOfShops(tempislandswithshops, 0, index + 1, minislands);
         }
