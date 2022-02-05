@@ -84,10 +84,20 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-            islandsAndFerries.TryGetValue(island, out long value);
-            islandsAndFerries.TryGetValue(ferry, out long valueferry);
+          //  islandsAndFerries.TryGetValue(island, out long value);
+            long value = getislandRoutes(island);
+            //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
+            long valueferry = getislandRoutes(ferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
+        }
+
+        private static long getislandRoutes(int island)
+        {
+            foreach (KeyValuePair<int, long> kvp in islandsAndFerries)
+                if (kvp.Key == island)
+                    return kvp.Value;
+            return 0;    
         }
 
         /// <summary>
@@ -110,7 +120,8 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return false;
 
-            islandsAndFerries.TryGetValue(index, out long value);
+          //  islandsAndFerries.TryGetValue(index, out long value);
+            long value = getislandRoutes(index);
             long tempislandswithshops = islandsWithShops;
             long temppassedDes = passedDes;
             int tempminisland = minislands;
