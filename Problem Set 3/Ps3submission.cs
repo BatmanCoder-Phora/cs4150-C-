@@ -25,7 +25,7 @@ namespace Problem_Set_3
         public static long numOfDestinations;
         public static long numOfFerryRoutes;
         public static long islandsWithShops;
-        public static Dictionary<int,long> islandsAndFerries = new Dictionary<int, long>();
+        public static Dictionary<int, long> islandsAndFerries = new Dictionary<int, long>();
         public static HashSet<long> results = new HashSet<long>();
 
         /// <summary>
@@ -37,32 +37,35 @@ namespace Problem_Set_3
 
             int index = 1;
             int minislands = 0;
-        // is there a way to get rid of all these loops.
+            // is there a way to get rid of all these loops.
 
-        string line = Console.ReadLine();
+            string line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
             // grab the number of destinations. 
             for (int i = 1; i <= numOfDestinations; i++)
-                 islandNumbers = islandNumbers | (1 << i);
+                islandNumbers = islandNumbers | (1 << i);
 
             // input all the ferry route data into a data structure. 
             for (int i = 0; i < numOfFerryRoutes; i++)
                 inputIslandAndFerryData(line);
 
+
             // locate the min number of shops 
-            findMinNumOfShops(islandsWithShops, passedDes,index,minislands);
+            findMinNumOfShops(islandsWithShops, passedDes, index, minislands, "starting branch");
 
             // Print the min number of islands and the islands it takes. 
             Console.WriteLine(minisl);
             long answer = results.Min();
+            string stringAnser = "";
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 if ((answer & (1L << i)) != 0)
-                    Console.WriteLine(i + " ");
+                    stringAnser = stringAnser + (i.ToString() + " ");
             }
+            Console.WriteLine(stringAnser.Trim());
 
         }
         /// <summary>
@@ -77,8 +80,8 @@ namespace Problem_Set_3
             int ferry = Int32.Parse(spilt[1]);
 
             if (!islandsAndFerries.ContainsKey(island))
-                islandsAndFerries.Add(island, (1L << island));     
-            if(!islandsAndFerries.ContainsKey(ferry))
+                islandsAndFerries.Add(island, (1L << island));
+            if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
             islandsAndFerries.TryGetValue(island, out long value);
@@ -93,21 +96,24 @@ namespace Problem_Set_3
         /// <param name="islands"> the list of islands.</param>
         /// <param name="passedDes">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
+        private static bool findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands, string v)
         {
+          
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
                 results.Add(islandsWithShops);
                 minisl = minislands;
-                return;
+                return true;
             }
             // base case for no soultion. 
             if (index > numOfDestinations)
-                return;
+                return false;
 
             islandsAndFerries.TryGetValue(index, out long value);
             long tempislandswithshops = islandsWithShops;
+            long temppassedDes = passedDes;
+            int tempminisland = minislands;
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
@@ -115,15 +121,18 @@ namespace Problem_Set_3
                     passedDes = passedDes | (1L << i);
                     if ((islandsWithShops & (1L << index)) == 0)
                     {
+                        minislands++;
                         islandsWithShops = islandsWithShops | (1L << index);
                     }
                 }
             }
             // find out how to store the minnumber of islands. still some twerks to do. 
             // still getting twoo many options for a larger set. 
-              findMinNumOfShops(islandsWithShops, passedDes, index+1, minislands);
-              findMinNumOfShops(tempislandswithshops, 0, index+1, minislands);
+            return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland, "took the excudled branch") ||
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands, "took the accepted branch.");
+               
+
+
         }
- 
     }
 }
