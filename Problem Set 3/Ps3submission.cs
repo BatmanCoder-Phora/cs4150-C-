@@ -7,8 +7,7 @@
 /*
  * WHAT TO WORK ON FOR CODE:
  *  - work on the fidnminisland function. 
- *     - ophan clause is working 
- *       - fix the else caluse and the matching island clause. 
+ *       - fix the simple algorithum. 
  * */
 using System;
 using System.Collections.Generic;
@@ -22,11 +21,12 @@ namespace Problem_Set_3
     {
         public static long islandNumbers;
         public static long passedDes = 0;
-        public static int minislands;
+        public static int minisl;
         public static long numOfDestinations;
         public static long numOfFerryRoutes;
         public static long islandsWithShops;
         public static Dictionary<int,long> islandsAndFerries = new Dictionary<int, long>();
+        public static HashSet<long> results = new HashSet<long>();
 
         /// <summary>
         /// main function to slove for min islands. 
@@ -36,9 +36,10 @@ namespace Problem_Set_3
         {
 
             int index = 1;
-            // is there a way to get rid of all these loops.
+            int minislands = 0;
+        // is there a way to get rid of all these loops.
 
-            string line = Console.ReadLine();
+        string line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
@@ -51,16 +52,18 @@ namespace Problem_Set_3
             for (int i = 0; i < numOfFerryRoutes; i++)
                 inputIslandAndFerryData(line);
 
+            // locate the min number of shops 
             findMinNumOfShops(islandsWithShops, passedDes,index,minislands);
 
             // Print the min number of islands and the islands it takes. 
-            Console.WriteLine(minislands);
+            Console.WriteLine(minisl);
+            long answer = results.Min();
             for (int i = 1; i <= numOfDestinations; i++)
             {
-                long tester = (islandsWithShops & (1 << i));
-                if ((islandsWithShops & (1L << i)) != 0)
-                    Console.WriteLine(i + ' ');
+                if ((answer & (1L << i)) != 0)
+                    Console.WriteLine(i + " ");
             }
+
         }
         /// <summary>
         ///  Stores the islands and the ferry routes in a dictionary also figure out the destination. 
@@ -95,6 +98,8 @@ namespace Problem_Set_3
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
+                results.Add(islandsWithShops);
+                minisl = minislands;
                 return;
             }
             // base case for no soultion. 
@@ -105,19 +110,19 @@ namespace Problem_Set_3
             long tempislandswithshops = islandsWithShops;
             for (int i = 1; i <= numOfDestinations; i++)
             {
-                long test = (value & (1L << i));
-                long test2 = (passedDes & (1L << i));
-
                 if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
                 {
                     passedDes = passedDes | (1L << i);
-
-                    if((islandsWithShops & (1L << i)) == 0)
-                      islandsWithShops = islandsWithShops | (1L << index);
+                    if ((islandsWithShops & (1L << index)) == 0)
+                    {
+                        islandsWithShops = islandsWithShops | (1L << index);
+                    }
                 }
             }
-            findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands++);
-            findMinNumOfShops(tempislandswithshops, 0, index + 1, minislands);
+            // find out how to store the minnumber of islands. still some twerks to do. 
+            // still getting twoo many options for a larger set. 
+              findMinNumOfShops(islandsWithShops, passedDes, index+1, minislands);
+              findMinNumOfShops(tempislandswithshops, 0, index+1, minislands);
         }
  
     }
