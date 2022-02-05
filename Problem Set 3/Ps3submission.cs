@@ -54,7 +54,7 @@ namespace Problem_Set_3
 
 
             // locate the min number of shops 
-            findMinNumOfShops(islandsWithShops, passedDes, index, minislands, "starting branch");
+            findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
 
             // Print the min number of islands and the islands it takes. 
             Console.WriteLine(minisl);
@@ -106,7 +106,7 @@ namespace Problem_Set_3
         /// <param name="islands"> the list of islands.</param>
         /// <param name="passedDes">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static bool findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands, string v)
+        private static bool findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
           
             // base case for min soultion
@@ -125,22 +125,32 @@ namespace Problem_Set_3
             long tempislandswithshops = islandsWithShops;
             long temppassedDes = passedDes;
             int tempminisland = minislands;
-            for (int i = 1; i <= numOfDestinations; i++)
+            if (value == 0)
             {
-                if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
+                minislands++;
+                passedDes = passedDes | (1L << index);
+                islandsWithShops = islandsWithShops | (1L << index);
+                return findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }
+            else
+            {
+                for (int i = 1; i <= numOfDestinations; i++)
                 {
-                    passedDes = passedDes | (1L << i);
-                    if ((islandsWithShops & (1L << index)) == 0)
+                    if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
                     {
-                        minislands++;
-                        islandsWithShops = islandsWithShops | (1L << index);
+                        passedDes = passedDes | (1L << i);
+                        if ((islandsWithShops & (1L << index)) == 0)
+                        {
+                            minislands++;
+                            islandsWithShops = islandsWithShops | (1L << index);
+                        }
                     }
                 }
             }
             // find out how to store the minnumber of islands. still some twerks to do. 
             // still getting twoo many options for a larger set. 
-            return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland, "took the excudled branch") ||
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands, "took the accepted branch.");
+            return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
                
 
 
