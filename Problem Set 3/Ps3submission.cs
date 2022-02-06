@@ -7,7 +7,7 @@
 /*
  * WHAT TO WORK ON FOR CODE:
  *  - work on the fidnminisland function. 
- *       - fix the simple algorithum. 
+ *       passing some test, failing more. orphan clause works. some test beacuse of time, other beacuse of wrong output. 
  * */
 using System;
 using System.Collections.Generic;
