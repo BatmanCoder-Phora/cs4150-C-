@@ -47,7 +47,7 @@ namespace Problem_Set_3
 
             // grab the number of destinations. 
             for (int i = 1; i <= numOfDestinations; i++)
-                islandNumbers = islandNumbers | (1 << i);
+                islandNumbers = (islandNumbers | (1L << i));
 
             // input all the ferry route data into a data structure. 
             for (int i = 0; i < numOfFerryRoutes; i++)
@@ -60,7 +60,7 @@ namespace Problem_Set_3
             // Print the min number of islands and the islands it takes.
             long Keyanswer = results.Keys.Min();
             Console.WriteLine(Keyanswer);
-            long answer = results.MinBy(Key => Key.Key).Value;
+            long answer = getvaluefromdictioanry(results, Keyanswer);
 
             for (int i = 1; i <= numOfDestinations; i++)
             {
@@ -87,14 +87,14 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
           //  islandsAndFerries.TryGetValue(island, out long value);
-            long value = getislandRoutes(island);
+            long value = getvaluefromdictioanry(islandsAndFerries, island);
             //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
-            long valueferry = getislandRoutes(ferry);
+            long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
-        private static long getislandRoutes(int island)
+        private static long getvaluefromdictioanry(Dictionary<int,long> dictionary, long island)
         {
             foreach (KeyValuePair<int, long> kvp in islandsAndFerries)
                 if (kvp.Key == island)
@@ -122,7 +122,7 @@ namespace Problem_Set_3
                 return false;
 
           //  islandsAndFerries.TryGetValue(index, out long value);
-            long value = getislandRoutes(index);
+            long value = getvaluefromdictioanry(islandsAndFerries,index);
             if (value == 0) // orphan cluase. 
             {
                 minislands++;
