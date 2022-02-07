@@ -86,13 +86,12 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-             //  islandsAndFerries.TryGetValue(island, out long value);
-            long value = getvaluefromdictioanry(islandsAndFerries, island);
+            //  islandsAndFerries.TryGetValue(island, out long value);
             //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
+            // doe shave a contains value 
+            long value = getvaluefromdictioanry(islandsAndFerries, island);
             long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
-            if (!islandsAndFerries.ContainsValue(value))
              islandsAndFerries[island] = (value | (1L << ferry));
-            if (!islandsAndFerries.ContainsValue(valueferry))
                 islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
