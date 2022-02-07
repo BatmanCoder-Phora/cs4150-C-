@@ -90,8 +90,10 @@ namespace Problem_Set_3
             long value = getvaluefromdictioanry(islandsAndFerries, island);
             //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
             long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
-            islandsAndFerries[island] = (value | (1L << ferry));
-            islandsAndFerries[ferry] = (valueferry | (1L << island));
+            if (!islandsAndFerries.ContainsValue(value))
+             islandsAndFerries[island] = (value | (1L << ferry));
+            if (!islandsAndFerries.ContainsValue(valueferry))
+                islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
         private static long getvaluefromdictioanry(Dictionary<int,long> dictionary, long island)
