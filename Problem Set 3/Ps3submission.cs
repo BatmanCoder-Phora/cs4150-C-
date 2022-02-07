@@ -91,8 +91,8 @@ namespace Problem_Set_3
             // doe shave a contains value 
             long value = getvaluefromdictioanry(islandsAndFerries, island);
             long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
-             islandsAndFerries[island] = (value | (1L << ferry));
-                islandsAndFerries[ferry] = (valueferry | (1L << island));
+            islandsAndFerries[island] = (value | (1L << ferry));
+            islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
         private static long getvaluefromdictioanry(Dictionary<int,long> dictionary, long island)
