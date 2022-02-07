@@ -123,15 +123,6 @@ namespace Problem_Set_3
 
           //  islandsAndFerries.TryGetValue(index, out long value);
             long value = getvaluefromdictioanry(islandsAndFerries,index);
-            if (value == 0) // orphan cluase. 
-            {
-                minislands++;
-                passedDes = passedDes | (1L << index);
-                islandsWithShops = islandsWithShops | (1L << index);
-                return findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-            }
-            else
-            {
                 // temps to roll back. 
                 long tempislandswithshops = islandsWithShops;
                 long temppassedDes = passedDes;
@@ -153,9 +144,6 @@ namespace Problem_Set_3
                 // still getting too many options for a larger set. 
                 return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-            }  
-
-
         }
     }
 }
