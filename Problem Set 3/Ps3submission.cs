@@ -34,8 +34,6 @@ namespace Problem_Set_3
         /// <param name="args"></param>
         static void Main(string[] args)
         {
-
-            int index = 1;
             int minislands = 0;
             string stringAnser = "";
             // is there a way to get rid of all these loops.
@@ -53,7 +51,7 @@ namespace Problem_Set_3
             for (int i = 0; i < numOfFerryRoutes; i++)
                 inputIslandAndFerryData(line);
 
-
+            int index = 1;
             // locate the min number of shops 
             findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
 
@@ -86,14 +84,18 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-            //  islandsAndFerries.TryGetValue(island, out long value);
             long value = getvaluefromdictioanry(islandsAndFerries, island);
-            //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
             long valueferry = getvaluefromdictioanry(islandsAndFerries, ferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
+        /// <summary>
+        /// my get value method, which appears to be quicker than dictionaries trygetvalue. 
+        /// </summary>
+        /// <param name="dictionary">the inputted dictionary</param>
+        /// <param name="island"> the island I want to check</param>
+        /// <returns></returns>
         private static long getvaluefromdictioanry(Dictionary<int, long> dictionary, long island)
         {
             foreach (KeyValuePair<int, long> kvp in dictionary)
@@ -108,27 +110,28 @@ namespace Problem_Set_3
         /// <param name="islands"> the list of islands.</param>
         /// <param name="passedDes">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static bool findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
+        private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
 
             // base case for min soultion
             if (passedDes == islandNumbers)
+           
             {
-                results.Add(minislands, islandsWithShops);
-                return true;
+                if(results.ContainsKey(minislands) == false)
+                  results.Add(minislands, islandsWithShops);
+                return ;
             }
             // base case for no soultion. 
             if (index > numOfDestinations)
-                return false;
+                return;
 
-            //  islandsAndFerries.TryGetValue(index, out long value);
             long value = getvaluefromdictioanry(islandsAndFerries, index);
             if (value == 0) // orphan cluase. 
             {
                 minislands++;
                 passedDes = passedDes | (1L << index);
                 islandsWithShops = islandsWithShops | (1L << index);
-                return findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
             else
             {
@@ -136,6 +139,7 @@ namespace Problem_Set_3
                 long tempislandswithshops = islandsWithShops;
                 long temppassedDes = passedDes;
                 int tempminisland = minislands;
+
                 for (int i = 1; i <= numOfDestinations; i++)
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
@@ -149,9 +153,8 @@ namespace Problem_Set_3
                     }
                 }
 
-                // find out how to store the minnumber of islands. still some twerks to do. 
-                // still getting too many options for a larger set. 
-                return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
+                // still getting too many sandwhich shops for a larger set. 
+                findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
 
