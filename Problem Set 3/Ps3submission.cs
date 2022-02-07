@@ -96,7 +96,7 @@ namespace Problem_Set_3
 
         private static long getvaluefromdictioanry(Dictionary<int,long> dictionary, long island)
         {
-            foreach (KeyValuePair<int, long> kvp in islandsAndFerries)
+            foreach (KeyValuePair<int, long> kvp in dictionary)
                 if (kvp.Key == island)
                     return kvp.Value;
             return 0;    
