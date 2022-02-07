@@ -35,7 +35,7 @@ namespace Problem_Set_3
         static void Main(string[] args)
         {
 
-            int index = 1;
+            int index = 0;
             int minislands = 0;
             string stringAnser = "";
             // is there a way to get rid of all these loops.
@@ -58,10 +58,11 @@ namespace Problem_Set_3
             findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
 
             // Print the min number of islands and the islands it takes.
-            long Keyanswer = results.Keys.Min();
+            int Keyanswer = results.Keys.Min();
             Console.WriteLine(Keyanswer);
-            long answer = getvaluefromdictioanry(results, Keyanswer);
-
+            //long answer = getvaluefromdictioanry(results, Keyanswer);
+            long answer;
+            results.TryGetValue(Keyanswer, out answer);
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 if ((answer & (1L << i)) != 0)
@@ -85,12 +86,13 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
+            long value;
+            long valueferry;
+             islandsAndFerries.TryGetValue(island, out value);
+             islandsAndFerries.TryGetValue(ferry, out  valueferry);
 
-            //  islandsAndFerries.TryGetValue(island, out long value);
-            //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
-            // doe shave a contains value 
-            long value = getvaluefromdictioanry(islandsAndFerries, island);
-            long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
+           // long value = getvaluefromdictioanry(islandsAndFerries, island);
+           // long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
@@ -119,11 +121,11 @@ namespace Problem_Set_3
                 return true;
             }
             // base case for no soultion. 
-            if (index > numOfDestinations)
+            if (index > (numOfDestinations-1))
                 return false;
-
-          //  islandsAndFerries.TryGetValue(index, out long value);
-            long value = getvaluefromdictioanry(islandsAndFerries,index);
+            long value;
+            islandsAndFerries.TryGetValue(index, out value);
+           // long value = getvaluefromdictioanry(islandsAndFerries,index);
                 // temps to roll back. 
                 long tempislandswithshops = islandsWithShops;
                 long temppassedDes = passedDes;
