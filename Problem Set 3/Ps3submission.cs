@@ -26,7 +26,7 @@ namespace Problem_Set_3
         public static long numOfFerryRoutes;
         public static long islandsWithShops;
         public static Dictionary<int, long> islandsAndFerries = new Dictionary<int, long>();
-        public static HashSet<long> results = new HashSet<long>();
+        public static Dictionary<int, long> results = new Dictionary<int, long>();
 
         /// <summary>
         /// main function to slove for min islands. 
@@ -37,6 +37,7 @@ namespace Problem_Set_3
 
             int index = 1;
             int minislands = 0;
+            string stringAnser = "";
             // is there a way to get rid of all these loops.
 
             string line = Console.ReadLine();
@@ -56,10 +57,11 @@ namespace Problem_Set_3
             // locate the min number of shops 
             findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
 
-            // Print the min number of islands and the islands it takes. 
-            Console.WriteLine(minisl);
-            long answer = results.Min();
-            string stringAnser = "";
+            // Print the min number of islands and the islands it takes.
+            long Keyanswer = results.Keys.Min();
+            Console.WriteLine(Keyanswer);
+            long answer = results.MinBy(Key => Key.Key).Value;
+
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 if ((answer & (1L << i)) != 0)
@@ -112,8 +114,7 @@ namespace Problem_Set_3
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
-                results.Add(islandsWithShops);
-                minisl = minislands;
+                results.Add(minislands,islandsWithShops);
                 return true;
             }
             // base case for no soultion. 
