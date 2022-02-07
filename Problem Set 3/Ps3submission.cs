@@ -1,8 +1,8 @@
 ﻿/*
- * Author: Sephora Bateman 
- * Class: CS 4150
- * Problem Set #3
- */
+* Author: Sephora Bateman 
+* Class: CS 4150
+* Problem Set #3
+*/
 
 /*
  * WHAT TO WORK ON FOR CODE:
@@ -35,7 +35,7 @@ namespace Problem_Set_3
         static void Main(string[] args)
         {
 
-            int index = 0;
+            int index = 1;
             int minislands = 0;
             string stringAnser = "";
             // is there a way to get rid of all these loops.
@@ -58,11 +58,10 @@ namespace Problem_Set_3
             findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
 
             // Print the min number of islands and the islands it takes.
-            int Keyanswer = results.Keys.Min();
+            long Keyanswer = results.Keys.Min();
             Console.WriteLine(Keyanswer);
-            //long answer = getvaluefromdictioanry(results, Keyanswer);
-            long answer;
-            results.TryGetValue(Keyanswer, out answer);
+            long answer = getvaluefromdictioanry(results, Keyanswer);
+
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 if ((answer & (1L << i)) != 0)
@@ -86,23 +85,21 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
-            long value;
-            long valueferry;
-             islandsAndFerries.TryGetValue(island, out value);
-             islandsAndFerries.TryGetValue(ferry, out  valueferry);
 
-           // long value = getvaluefromdictioanry(islandsAndFerries, island);
-           // long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
+            //  islandsAndFerries.TryGetValue(island, out long value);
+            long value = getvaluefromdictioanry(islandsAndFerries, island);
+            //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
+            long valueferry = getvaluefromdictioanry(islandsAndFerries, ferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
-        private static long getvaluefromdictioanry(Dictionary<int,long> dictionary, long island)
+        private static long getvaluefromdictioanry(Dictionary<int, long> dictionary, long island)
         {
             foreach (KeyValuePair<int, long> kvp in dictionary)
                 if (kvp.Key == island)
                     return kvp.Value;
-            return 0;    
+            return 0;
         }
 
         /// <summary>
@@ -113,19 +110,28 @@ namespace Problem_Set_3
         /// <param name="index">the island we are checking.</param>
         private static bool findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
-          
+
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
-                results.Add(minislands,islandsWithShops);
+                results.Add(minislands, islandsWithShops);
                 return true;
             }
             // base case for no soultion. 
-            if (index > (numOfDestinations-1))
+            if (index > numOfDestinations)
                 return false;
-            long value;
-            islandsAndFerries.TryGetValue(index, out value);
-           // long value = getvaluefromdictioanry(islandsAndFerries,index);
+
+            //  islandsAndFerries.TryGetValue(index, out long value);
+            long value = getvaluefromdictioanry(islandsAndFerries, index);
+            if (value == 0) // orphan cluase. 
+            {
+                minislands++;
+                passedDes = passedDes | (1L << index);
+                islandsWithShops = islandsWithShops | (1L << index);
+                return findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }
+            else
+            {
                 // temps to roll back. 
                 long tempislandswithshops = islandsWithShops;
                 long temppassedDes = passedDes;
@@ -145,9 +151,11 @@ namespace Problem_Set_3
 
                 // find out how to store the minnumber of islands. still some twerks to do. 
                 // still getting too many options for a larger set. 
-                // fix this method. 
                 return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }
+
+
         }
     }
 }
