@@ -86,7 +86,7 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-          //  islandsAndFerries.TryGetValue(island, out long value);
+             //  islandsAndFerries.TryGetValue(island, out long value);
             long value = getvaluefromdictioanry(islandsAndFerries, island);
             //  islandsAndFerries.TryGetValue(ferry, out long valueferry);
             long valueferry = getvaluefromdictioanry(islandsAndFerries,ferry);
