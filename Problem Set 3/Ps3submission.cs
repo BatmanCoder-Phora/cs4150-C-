@@ -123,10 +123,19 @@ namespace Problem_Set_3
 
           //  islandsAndFerries.TryGetValue(index, out long value);
             long value = getislandRoutes(index);
-            // temps to roll back. 
-            long tempislandswithshops = islandsWithShops;
-            long temppassedDes = passedDes;
-            int tempminisland = minislands;
+            if (value == 0) // orphan cluase. 
+            {
+                minislands++;
+                passedDes = passedDes | (1L << index);
+                islandsWithShops = islandsWithShops | (1L << index);
+                return findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }
+            else
+            {
+                // temps to roll back. 
+                long tempislandswithshops = islandsWithShops;
+                long temppassedDes = passedDes;
+                int tempminisland = minislands;
                 for (int i = 1; i <= numOfDestinations; i++)
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
@@ -139,12 +148,12 @@ namespace Problem_Set_3
                         }
                     }
                 }
-            
-            // find out how to store the minnumber of islands. still some twerks to do. 
-            // still getting too many options for a larger set. 
-            return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-               
+
+                // find out how to store the minnumber of islands. still some twerks to do. 
+                // still getting too many options for a larger set. 
+                return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
+                    findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }  
 
 
         }
