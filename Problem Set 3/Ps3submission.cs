@@ -143,6 +143,7 @@ namespace Problem_Set_3
 
                 // find out how to store the minnumber of islands. still some twerks to do. 
                 // still getting too many options for a larger set. 
+                // fix this method. 
                 return findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland) ||
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
         }
