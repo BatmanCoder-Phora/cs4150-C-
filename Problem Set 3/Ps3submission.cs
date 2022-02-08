@@ -87,11 +87,12 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-            long value, valueferry;
-            islandsAndFerries.TryGetValue(island, out value);
-            islandsAndFerries.TryGetValue(ferry, out valueferry);
-            islandsAndFerries[island] = (value | (1L << ferry));
-            islandsAndFerries[ferry] = (valueferry | (1L << island));
+                long value, valueferry;
+                islandsAndFerries.TryGetValue(island, out value);
+                islandsAndFerries.TryGetValue(ferry, out valueferry);
+                islandsAndFerries[island] = (value | (1L << ferry));
+                islandsAndFerries[ferry] = (valueferry | (1L << island));
+            
         }
 
         /// <summary>
@@ -105,7 +106,6 @@ namespace Problem_Set_3
             long tempislandswithshops = islandsWithShops;
             long temppassedDes = passedDes;
             int tempminisland = minislands;
-            bool alreadyPassed = true;
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
@@ -120,23 +120,9 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
+
             long value;
             islandsAndFerries.TryGetValue(index, out value);
-                // temps to roll back. 
-                for (int i = 1; i <= numOfDestinations; i++)
-                {
-                    if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
-                    {
-                        alreadyPassed = false;
-                        passedDes = passedDes | (1L << i);
-                        if ((islandsWithShops & (1L << index)) == 0)
-                        {
-                            minislands++;
-                            islandsWithShops = islandsWithShops | (1L << index);
-                        }
-                    }
-                }
-            /* Purning methods */
             if (value == 0) // orphan cluase. 
             {
                 minislands++;
@@ -144,13 +130,17 @@ namespace Problem_Set_3
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
-            else if (alreadyPassed == true) // if we already have the island and it's routes exculde from tree. 
-            { findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland); }
-            else
+            // temps to roll back. 
+            passedDes = passedDes | value;
+            if ((islandsWithShops & (1L << index)) == 0)
             {
-                findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+               minislands++;
+               islandsWithShops = islandsWithShops | (1L << index);
             }
+            /* Purning methods */
+            findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
+            findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            
             
 
 
