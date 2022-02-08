@@ -43,16 +43,19 @@ namespace Problem_Set_3
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
-            // grab the number of destinations. // could get rid of this for loop but how. 
-              for (int i = 1; i <= numOfDestinations; i++)
-                 islandNumbers = (islandNumbers | (1L << i));
-
-
-            // input all the ferry route data into a data structure. 
-            for (int i = 0; i < numOfFerryRoutes; i++)
+            // grab the number of destinations. 
+            for (int i = 1; i <= numOfDestinations; i++)
             {
-                inputIslandAndFerryData(line);
+                islandNumbers = (islandNumbers | (1L << i));
+                int j = 0;
             }
+
+
+              //   input all the ferry route data into a data structure. 
+                for (int i = 0; i < numOfFerryRoutes; i++)
+                {
+                  inputIslandAndFerryData(line);
+                } 
 
             int index = 1;
             // locate the min number of shops 
@@ -102,9 +105,9 @@ namespace Problem_Set_3
             long tempislandswithshops = islandsWithShops;
             long temppassedDes = passedDes;
             int tempminisland = minislands;
-
+            bool alreadyPassed = true;
             // base case for min soultion
-            if (passedDes == islandNumbers)       
+            if (passedDes == islandNumbers)
             {
                 if (minislands < minisl)
                 {
@@ -117,7 +120,7 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-            long value; 
+            long value;
             islandsAndFerries.TryGetValue(index, out value);
             if (value == 0) // orphan cluase. 
             {
@@ -126,13 +129,14 @@ namespace Problem_Set_3
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
-            // purphas another pruning method here but what??
             else
             {
-                for (int i = 1; i <= numOfDestinations; i++) // get rid of this
+                // temps to roll back. 
+                for (int i = 1; i <= numOfDestinations; i++)
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
                     {
+                        alreadyPassed = false;
                         passedDes = passedDes | (1L << i);
                         if ((islandsWithShops & (1L << index)) == 0)
                         {
@@ -141,8 +145,13 @@ namespace Problem_Set_3
                         }
                     }
                 }
-                findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                if (alreadyPassed == true)
+                    findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
+                else
+                {
+                    findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
+                    findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                }
             }
 
 
