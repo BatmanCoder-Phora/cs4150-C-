@@ -129,7 +129,7 @@ namespace Problem_Set_3
             // purphas another pruning method here but what??
             else
             {
-                for (int i = 1; i <= numOfDestinations; i++)
+                for (int i = 1; i <= numOfDestinations; i++) // get rid of this
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
                     {
