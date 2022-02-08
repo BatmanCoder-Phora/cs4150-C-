@@ -130,16 +130,19 @@ namespace Problem_Set_3
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
-            // temps to roll back. 
-            passedDes = passedDes | value;
-            if ((islandsWithShops & (1L << index)) == 0)
-            {
-               minislands++;
-               islandsWithShops = islandsWithShops | (1L << index);
+            else
+            {            
+                
+                // temps to roll back. 
+                passedDes = passedDes | value;
+                if ((islandsWithShops & (1L << index)) == 0)
+                {
+                    minislands++;
+                    islandsWithShops = islandsWithShops | (1L << index);
+                }
+                findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
-            /* Purning methods */
-            findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
-            findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             
             
 
