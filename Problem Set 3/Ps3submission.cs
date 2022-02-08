@@ -26,6 +26,9 @@ namespace Problem_Set_3
         public static long numOfDestinations;
         public static long numOfFerryRoutes;
         public static long islandsWithShops;
+        public static long tempislandswithshops;
+        public static long temppassedDes;
+        public static int tempminisland;
         public static Dictionary<int, long> islandsAndFerries = new Dictionary<int, long>();
 
         /// <summary>
@@ -47,7 +50,6 @@ namespace Problem_Set_3
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 islandNumbers = (islandNumbers | (1L << i));
-                int j = 0;
             }
 
 
@@ -85,8 +87,7 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(island))
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
-                islandsAndFerries.Add(ferry, (1L << ferry));
-
+                islandsAndFerries.Add(ferry, (1L << ferry));                
                 long value, valueferry;
                 islandsAndFerries.TryGetValue(island, out value);
                 islandsAndFerries.TryGetValue(ferry, out valueferry);
@@ -103,9 +104,9 @@ namespace Problem_Set_3
         /// <param name="index">the island we are checking.</param>
         private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
-            long tempislandswithshops = islandsWithShops;
-            long temppassedDes = passedDes;
-            int tempminisland = minislands;
+             tempislandswithshops = islandsWithShops;
+             temppassedDes = passedDes;
+             tempminisland = minislands;
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
