@@ -111,7 +111,7 @@ namespace Problem_Set_3
                     minisl = minislands;
                     result = islandsWithShops;
                 }
-                return ;
+                return;
             }
             // base case for no soultion. 
             if (index > numOfDestinations)
