@@ -6,8 +6,8 @@
 
 /*
  * WHAT TO WORK ON FOR CODE:
- *  - work on the fidnminisland function. 
- *       passing some test, failing more. orphan clause works. some test beacuse of time, other beacuse of wrong output. 
+ *  - work on the timing issue. 
+ *     
  * */
 using System;
 using System.Collections.Generic;
@@ -61,7 +61,7 @@ namespace Problem_Set_3
             // Print the min number of islands and the islands it takes.
             long Keyanswer = results.Keys.Min();
             Console.WriteLine(Keyanswer);
-            // long answer = getvaluefromdictioanry(results, Keyanswer);
+
             long answer;
             results.TryGetValue((int)Keyanswer, out answer);
 
@@ -89,27 +89,11 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-            //            long value = getvaluefromdictioanry(islandsAndFerries, island);
-            //          long valueferry = getvaluefromdictioanry(islandsAndFerries, ferry);
             long value, valueferry;
             islandsAndFerries.TryGetValue(island, out value);
             islandsAndFerries.TryGetValue(ferry, out valueferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
-        }
-
-        /// <summary>
-        /// my get value method, which appears to be quicker than dictionaries trygetvalue. 
-        /// </summary>
-        /// <param name="dictionary">the inputted dictionary</param>
-        /// <param name="island"> the island I want to check</param>
-        /// <returns></returns>
-        private static long getvaluefromdictioanry(Dictionary<int, long> dictionary, long island)
-        {
-            foreach (KeyValuePair<int, long> kvp in dictionary)
-                if (kvp.Key == island)
-                    return kvp.Value;
-            return 0;
         }
 
         /// <summary>
@@ -135,7 +119,7 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-            long value; //getvaluefromdictioanry(islandsAndFerries, index);
+            long value; 
             islandsAndFerries.TryGetValue(index, out value);
             if (value == 0) // orphan cluase. 
             {
