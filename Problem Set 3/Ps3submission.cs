@@ -43,7 +43,7 @@ namespace Problem_Set_3
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
-            // grab the number of destinations. 
+            // grab the number of destinations. // could get rid of this for loop but how. 
               for (int i = 1; i <= numOfDestinations; i++)
                  islandNumbers = (islandNumbers | (1L << i));
 
@@ -126,9 +126,9 @@ namespace Problem_Set_3
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
+            // purphas another pruning method here but what??
             else
             {
-                // temps to roll back. 
                 for (int i = 1; i <= numOfDestinations; i++)
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
