@@ -44,12 +44,15 @@ namespace Problem_Set_3
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
             // grab the number of destinations. 
-            for (int i = 1; i <= numOfDestinations; i++)
-                islandNumbers = (islandNumbers | (1L << i));
+              for (int i = 1; i <= numOfDestinations; i++)
+                 islandNumbers = (islandNumbers | (1L << i));
+
 
             // input all the ferry route data into a data structure. 
             for (int i = 0; i < numOfFerryRoutes; i++)
+            {
                 inputIslandAndFerryData(line);
+            }
 
             int index = 1;
             // locate the min number of shops 
@@ -58,7 +61,9 @@ namespace Problem_Set_3
             // Print the min number of islands and the islands it takes.
             long Keyanswer = results.Keys.Min();
             Console.WriteLine(Keyanswer);
-            long answer = getvaluefromdictioanry(results, Keyanswer);
+            // long answer = getvaluefromdictioanry(results, Keyanswer);
+            long answer;
+            results.TryGetValue((int)Keyanswer, out answer);
 
             for (int i = 1; i <= numOfDestinations; i++)
             {
@@ -84,8 +89,11 @@ namespace Problem_Set_3
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
 
-            long value = getvaluefromdictioanry(islandsAndFerries, island);
-            long valueferry = getvaluefromdictioanry(islandsAndFerries, ferry);
+            //            long value = getvaluefromdictioanry(islandsAndFerries, island);
+            //          long valueferry = getvaluefromdictioanry(islandsAndFerries, ferry);
+            long value, valueferry;
+            islandsAndFerries.TryGetValue(island, out value);
+            islandsAndFerries.TryGetValue(ferry, out valueferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
@@ -112,10 +120,12 @@ namespace Problem_Set_3
         /// <param name="index">the island we are checking.</param>
         private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
+            long tempislandswithshops = islandsWithShops;
+            long temppassedDes = passedDes;
+            int tempminisland = minislands;
 
             // base case for min soultion
-            if (passedDes == islandNumbers)
-           
+            if (passedDes == islandNumbers)       
             {
                 if(results.ContainsKey(minislands) == false)
                   results.Add(minislands, islandsWithShops);
@@ -125,21 +135,18 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-            long value = getvaluefromdictioanry(islandsAndFerries, index);
+            long value; //getvaluefromdictioanry(islandsAndFerries, index);
+            islandsAndFerries.TryGetValue(index, out value);
             if (value == 0) // orphan cluase. 
             {
                 minislands++;
                 passedDes = passedDes | (1L << index);
                 islandsWithShops = islandsWithShops | (1L << index);
-                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
             else
             {
                 // temps to roll back. 
-                long tempislandswithshops = islandsWithShops;
-                long temppassedDes = passedDes;
-                int tempminisland = minislands;
-
                 for (int i = 1; i <= numOfDestinations; i++)
                 {
                     if ((value & (1L << i)) != 0 && (passedDes & (1L << i)) == 0)
@@ -152,10 +159,8 @@ namespace Problem_Set_3
                         }
                     }
                 }
-
-                // still getting too many sandwhich shops for a larger set. 
                 findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
-                    findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
 
 
