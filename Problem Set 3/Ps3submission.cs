@@ -1,5 +1,4 @@
-﻿
-/*
+﻿/*
 * Author: Sephora Bateman 
 * Class: CS 4150
 * Problem Set #3
@@ -123,18 +122,23 @@ namespace Problem_Set_3
 
             long value;
             islandsAndFerries.TryGetValue(index, out value);
-
-                if(value == 0 )
-                    passedDes = passedDes | (1L << index);
-                else
-                    passedDes = passedDes | value;
+            if (value == 0)
+            {
+                minislands++;
+                passedDes = passedDes | (1L << index);
+                islandsWithShops = islandsWithShops | (1L << index);
+                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+            }
+            else
+            {
+                passedDes = passedDes | value;
 
                 minislands++;
                 islandsWithShops = islandsWithShops | (1L << index);
 
                 if (passedDes != temppassedDes)
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-
+            }
         }
     }
 }
