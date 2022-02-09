@@ -122,35 +122,28 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-         //   bool test = ((islandCoverage & (1L << index)) != 0);
-
-
                 long value;
                 islandsAndFerries.TryGetValue(index, out value);
                 islandCoverage = islandCoverage | value;
-                if (value == 0) // orphan cluase. 
-                {
-                    minislands++;
-                    islandCoverage = islandCoverage | (1L << index);
-                    islandsWithShops = islandsWithShops | (1L << index);
-                    findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
-                }
-                else if (islandCoverage == oldislandCoverage)
-                {
-                    findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
-                }
-                else
-                {
-                    
-                /*  if (islandCoverage == islandNumbers) // if we already have those islands checked off exculde that island.
-                    {
-                        findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
-                    } */ 
-                    findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
-                    minislands++;
-                    islandsWithShops = islandsWithShops | (1L << index);
-                    findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
-                }
+
+            if (islandCoverage == oldislandCoverage)
+            {
+                findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
+            }
+            if (value == 0) // orphan cluase. 
+            {
+                minislands++;
+                islandCoverage = islandCoverage | (1L << index);
+                islandsWithShops = islandsWithShops | (1L << index);
+                findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
+             }
+             else
+             {
+                findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
+                minislands++;
+                islandsWithShops = islandsWithShops | (1L << index);
+                findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
+             }
 
             }
 
