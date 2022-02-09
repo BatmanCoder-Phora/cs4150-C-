@@ -1,4 +1,5 @@
 ﻿
+
 /*
 * Author: Sephora Bateman 
 * Class: CS 4150
@@ -46,7 +47,7 @@ namespace Problem_Set_3
             string line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
             numOfDestinations = Int32.Parse(linespilt[0]);
-           long numOfFerryRoutes = Int32.Parse(linespilt[1]);
+            long numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
             // grab the number of destinations. 
             for (int i = 1; i <= numOfDestinations; i++)
@@ -103,51 +104,46 @@ namespace Problem_Set_3
         /// <param name="index">the island we are checking.</param>
         private static void findMinNumOfShops(long islandsWithShops, long islandCoverage, int index, int minislands)
         {
-           
+
             long oldislandCoverage = islandCoverage;
             // base case for min soultion
-            if (islandCoverage > islandNumbers)
+            if (minislands > minisl)
                 return;
-
             if (islandCoverage == islandNumbers)
             {
-                if (minislands < minisl)
-                {
                     minisl = minislands;
                     result = islandsWithShops;
-                }
-                return;
+                    return;
             }
             // base case for no soultion. 
             if (index > numOfDestinations)
                 return;
 
-                long value;
-                islandsAndFerries.TryGetValue(index, out value);
-                islandCoverage = islandCoverage | value;
-
-            if (islandCoverage == oldislandCoverage)
-            {
-                findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
-            }
+            long value;
+            islandsAndFerries.TryGetValue(index, out value);
+            islandCoverage = islandCoverage | value;
             if (value == 0) // orphan cluase. 
             {
                 minislands++;
                 islandCoverage = islandCoverage | (1L << index);
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
-             }
-             else
-             {
+            }
+            else if (islandCoverage == oldislandCoverage)
+            {
+                findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
+            }
+            else
+            {
                 findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
                 minislands++;
                 islandsWithShops = islandsWithShops | (1L << index);
                 findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
-             }
-
             }
 
-
         }
-    
+
+
+    }
+
 }
