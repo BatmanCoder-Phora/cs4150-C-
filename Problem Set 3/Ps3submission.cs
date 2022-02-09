@@ -123,15 +123,7 @@ namespace Problem_Set_3
 
             long value;
             islandsAndFerries.TryGetValue(index, out value);
-       /*     if (value == 0) // orphan cluase. 
-            {
-                minislands++;
-                passedDes = passedDes | (1L << index);
-                islandsWithShops = islandsWithShops | (1L << index);
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-            }
-            else
-            { */
+
                 if(value == 0 )
                     passedDes = passedDes | (1L << index);
                 else
@@ -142,7 +134,7 @@ namespace Problem_Set_3
 
                 if (passedDes != temppassedDes)
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-         //   }
+
         }
     }
 }
