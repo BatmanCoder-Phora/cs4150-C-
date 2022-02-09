@@ -38,7 +38,7 @@ namespace Problem_Set_3
         static void Main(string[] args)
         {
             int minislands = 0;
-            long passedDes = 0;
+            long islandCoverage = 0;
             long islandsWithShops = 0;
             string stringAnser = "";
             // is there a way to get rid of all these loops.
@@ -61,7 +61,7 @@ namespace Problem_Set_3
 
             int index = 1;
             // locate the min number of shops 
-            findMinNumOfShops(islandsWithShops, passedDes, index, minislands);
+            findMinNumOfShops(islandsWithShops, islandCoverage, index, minislands);
 
 
             Console.WriteLine(minisl);
@@ -99,16 +99,17 @@ namespace Problem_Set_3
         /// Finds the smallest number of shops that need to be built. 
         /// </summary>
         /// <param name="islands"> the list of islands.</param>
-        /// <param name="passedDes">The islands we have passed</param>
+        /// <param name="islandCoverage">The islands we have passed</param>
         /// <param name="index">the island we are checking.</param>
-        private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
+        private static void findMinNumOfShops(long islandsWithShops, long islandCoverage, int index, int minislands)
         {
-           long temppassedDes = passedDes;
+           
+            long oldislandCoverage = islandCoverage;
             // base case for min soultion
-            if (passedDes > islandNumbers || islandsWithShops > islandNumbers)
+            if (islandCoverage > islandNumbers)
                 return;
 
-            if (passedDes == islandNumbers)
+            if (islandCoverage == islandNumbers)
             {
                 if (minislands < minisl)
                 {
@@ -121,32 +122,39 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
+         //   bool test = ((islandCoverage & (1L << index)) != 0);
 
-            long value;
-            islandsAndFerries.TryGetValue(index, out value);
-            if (value == 0) // orphan cluase. 
-            {
-                minislands++;
-                passedDes = passedDes | (1L << index);
-                islandsWithShops = islandsWithShops | (1L << index);
-                findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-            }                                                                                                                       
-            else
-            {
-                passedDes = passedDes | value;
-                if (passedDes == islandNumbers) // if we already have those islands checked off exculde that island.
+
+                long value;
+                islandsAndFerries.TryGetValue(index, out value);
+                islandCoverage = islandCoverage | value;
+                if (value == 0) // orphan cluase. 
                 {
-                    findMinNumOfShops(islandsWithShops, temppassedDes, index + 1, minislands);
+                    minislands++;
+                    islandCoverage = islandCoverage | (1L << index);
+                    islandsWithShops = islandsWithShops | (1L << index);
+                    findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
                 }
-                    findMinNumOfShops(islandsWithShops, temppassedDes, index + 1, minislands);
+                else if (islandCoverage == oldislandCoverage)
+                {
+                    findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
+                }
+                else
+                {
+                    
+                /*  if (islandCoverage == islandNumbers) // if we already have those islands checked off exculde that island.
+                    {
+                        findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
+                    } */ 
+                    findMinNumOfShops(islandsWithShops, oldislandCoverage, index + 1, minislands);
                     minislands++;
                     islandsWithShops = islandsWithShops | (1L << index);
-                    findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                    findMinNumOfShops(islandsWithShops, islandCoverage, index + 1, minislands);
+                }
+
             }
 
 
-
-
         }
-    }
+    
 }
