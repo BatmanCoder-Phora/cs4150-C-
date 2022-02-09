@@ -1,4 +1,5 @@
-﻿/*
+﻿
+/*
 * Author: Sephora Bateman 
 * Class: CS 4150
 * Problem Set #3
@@ -40,9 +41,9 @@ namespace Problem_Set_3
         {
             string stringAnser = "";
             int minislands = 0;
-        // is there a way to get rid of all these loops.
+            // is there a way to get rid of all these loops.
 
-        string line = Console.ReadLine();
+            string line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
             numOfDestinations = Int32.Parse(linespilt[0]);
             numOfFerryRoutes = Int32.Parse(linespilt[1]);
@@ -55,8 +56,8 @@ namespace Problem_Set_3
             //   input all the ferry route data into a data structure. 
             for (int i = 0; i < numOfFerryRoutes; i++)
             {
-                  inputIslandAndFerryData(line);
-            } 
+                inputIslandAndFerryData(line);
+            }
 
             int index = 1;
             // locate the min number of shops 
@@ -87,12 +88,12 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
-                
+
             long value, valueferry;
-              islandsAndFerries.TryGetValue(island, out value);
-              islandsAndFerries.TryGetValue(ferry, out valueferry);
-              islandsAndFerries[island] = (value | (1L << ferry));
-              islandsAndFerries[ferry] = (valueferry | (1L << island));
+            islandsAndFerries.TryGetValue(island, out value);
+            islandsAndFerries.TryGetValue(ferry, out valueferry);
+            islandsAndFerries[island] = (value | (1L << ferry));
+            islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
 
         /// <summary>
@@ -103,10 +104,7 @@ namespace Problem_Set_3
         /// <param name="index">the island we are checking.</param>
         private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
-
-            long tempislandswithshops = islandsWithShops;
             long temppassedDes = passedDes;
-            int tempminisland = minislands;
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
@@ -125,7 +123,7 @@ namespace Problem_Set_3
 
             long value;
             islandsAndFerries.TryGetValue(index, out value);
-            if (value == 0) // orphan cluase. 
+       /*     if (value == 0) // orphan cluase. 
             {
                 minislands++;
                 passedDes = passedDes | (1L << index);
@@ -133,15 +131,18 @@ namespace Problem_Set_3
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
             else
-            {
+            { */
+                if(value == 0 )
+                    passedDes = passedDes | (1L << index);
+                else
+                    passedDes = passedDes | value;
 
-                passedDes = passedDes | value;
                 minislands++;
                 islandsWithShops = islandsWithShops | (1L << index);
 
                 if (passedDes != temppassedDes)
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-            }
+         //   }
         }
     }
 }
