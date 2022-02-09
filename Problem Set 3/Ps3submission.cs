@@ -1,6 +1,4 @@
-﻿
-
-/*
+﻿/*
 * Author: Sephora Bateman 
 * Class: CS 4150
 * Problem Set #3
@@ -89,20 +87,11 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
-
-            long value = getValueFromDictionary(island);
-            long valueferry = getValueFromDictionary(ferry);
-            //    islandsAndFerries.TryGetValue(island, out value);
-            //    islandsAndFerries.TryGetValue(ferry, out valueferry);
+            long value, valueferry;
+            islandsAndFerries.TryGetValue(island, out value);
+            islandsAndFerries.TryGetValue(ferry, out valueferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
-        }
-        private static long getValueFromDictionary(int key)
-        {
-            foreach (KeyValuePair<int, long> tester in islandsAndFerries)
-                if (tester.Key == key)
-                    return tester.Value;
-               return 0;
         }
 
         /// <summary>
@@ -116,21 +105,25 @@ namespace Problem_Set_3
 
             long oldislandCoverage = islandCoverage;
             // base case for min soultion
-
+            //       if (islandCoverage > islandNumbers)
+            //        return;
             if (minislands > minisl)
                 return;
             if (islandCoverage == islandNumbers)
             {
-                    minisl = minislands;
-                    result = islandsWithShops;
-                    return;
+                minisl = minislands;
+                result = islandsWithShops;
+                return;
             }
             // base case for no soultion. 
             if (index > numOfDestinations)
                 return;
 
-            long value = getValueFromDictionary(index);
-          //  islandsAndFerries.TryGetValue(index, out value);
+            //   bool test = ((islandCoverage & (1L << index)) != 0);
+
+
+            long value;
+            islandsAndFerries.TryGetValue(index, out value);
             islandCoverage = islandCoverage | value;
             if (value == 0) // orphan cluase. 
             {
