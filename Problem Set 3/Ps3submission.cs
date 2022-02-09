@@ -23,12 +23,12 @@ namespace Problem_Set_3
         public static int minisl = int.MaxValue;
         public static long result;
 
-
         // variables for comparison and storing.
         public static long islandNumbers;
         public static long passedDes = 0;
-        public static long islandsWithShops;
         public static long numOfDestinations;
+        public static long numOfFerryRoutes;
+        public static long islandsWithShops;
 
         // dictioanry to store everything. 
         public static SortedDictionary<int, long> islandsAndFerries = new SortedDictionary<int, long>();
@@ -44,8 +44,8 @@ namespace Problem_Set_3
 
         string line = Console.ReadLine();
             string[] linespilt = line.Split(' ');
-           long numOfDestinations = Int32.Parse(linespilt[0]);
-           long numOfFerryRoutes = Int32.Parse(linespilt[1]);
+            numOfDestinations = Int32.Parse(linespilt[0]);
+            numOfFerryRoutes = Int32.Parse(linespilt[1]);
 
             // grab the number of destinations. 
             for (int i = 1; i <= numOfDestinations; i++)
@@ -104,9 +104,9 @@ namespace Problem_Set_3
         private static void findMinNumOfShops(long islandsWithShops, long passedDes, int index, int minislands)
         {
 
-        long tempislandswithshops = islandsWithShops;
-        long temppassedDes = passedDes;
-        int  tempminisland = minislands;
+            long tempislandswithshops = islandsWithShops;
+            long temppassedDes = passedDes;
+            int tempminisland = minislands;
             // base case for min soultion
             if (passedDes == islandNumbers)
             {
@@ -121,8 +121,8 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-             findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-           
+            findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+
             long value;
             islandsAndFerries.TryGetValue(index, out value);
             if (value == 0) // orphan cluase. 
@@ -133,21 +133,15 @@ namespace Problem_Set_3
                 findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
             else
-            {    
-                
+            {
+
                 passedDes = passedDes | value;
                 minislands++;
                 islandsWithShops = islandsWithShops | (1L << index);
 
-                if(passedDes == temppassedDes)
-                  findMinNumOfShops(tempislandswithshops, temppassedDes, index + 1, tempminisland);
-                else
-                  findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
+                if (passedDes != temppassedDes)
+                    findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
             }
-            
-            
-
-
         }
     }
 }
