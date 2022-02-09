@@ -89,11 +89,20 @@ namespace Problem_Set_3
                 islandsAndFerries.Add(island, (1L << island));
             if (!islandsAndFerries.ContainsKey(ferry))
                 islandsAndFerries.Add(ferry, (1L << ferry));
-            long value, valueferry;
-            islandsAndFerries.TryGetValue(island, out value);
-            islandsAndFerries.TryGetValue(ferry, out valueferry);
+
+            long value = getValueFromDictionary(island);
+            long valueferry = getValueFromDictionary(ferry);
+            //    islandsAndFerries.TryGetValue(island, out value);
+            //    islandsAndFerries.TryGetValue(ferry, out valueferry);
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
+        }
+        private static long getValueFromDictionary(int key)
+        {
+            foreach (KeyValuePair<int, long> tester in islandsAndFerries)
+                if (tester.Key == key)
+                    return tester.Value;
+               return 0;
         }
 
         /// <summary>
@@ -107,6 +116,7 @@ namespace Problem_Set_3
 
             long oldislandCoverage = islandCoverage;
             // base case for min soultion
+
             if (minislands > minisl)
                 return;
             if (islandCoverage == islandNumbers)
@@ -119,8 +129,8 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-            long value;
-            islandsAndFerries.TryGetValue(index, out value);
+            long value = getValueFromDictionary(index);
+          //  islandsAndFerries.TryGetValue(index, out value);
             islandCoverage = islandCoverage | value;
             if (value == 0) // orphan cluase. 
             {
