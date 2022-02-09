@@ -105,6 +105,9 @@ namespace Problem_Set_3
         {
            long temppassedDes = passedDes;
             // base case for min soultion
+            if (passedDes > islandNumbers || islandsWithShops > islandNumbers)
+                return;
+
             if (passedDes == islandNumbers)
             {
                 if (minislands < minisl)
