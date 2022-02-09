@@ -26,9 +26,7 @@ namespace Problem_Set_3
 
         // variables for comparison and storing.
         public static long islandNumbers;
-        public static long passedDes = 0;
         public static long numOfDestinations;
-        public static long islandsWithShops;
 
         // dictioanry to store everything. 
         public static SortedDictionary<int, long> islandsAndFerries = new SortedDictionary<int, long>();
@@ -40,6 +38,8 @@ namespace Problem_Set_3
         static void Main(string[] args)
         {
             int minislands = 0;
+            long passedDes = 0;
+            long islandsWithShops = 0;
             string stringAnser = "";
             // is there a way to get rid of all these loops.
 
@@ -142,7 +142,6 @@ namespace Problem_Set_3
                     minislands++;
                     islandsWithShops = islandsWithShops | (1L << index);
                     findMinNumOfShops(islandsWithShops, passedDes, index + 1, minislands);
-
             }
 
 
