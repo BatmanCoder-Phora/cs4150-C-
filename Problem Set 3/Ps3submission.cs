@@ -29,7 +29,8 @@ namespace Problem_Set_3
 
         // dictioanry to store everything. 
         public static SortedDictionary<int, long> islandsAndFerries = new SortedDictionary<int, long>();
-
+        public static long[] inputislandsAndFerries = new long[37];
+        //array of longs. 
         /// <summary>
         /// main function to slove for min islands. 
         /// </summary>
@@ -53,11 +54,15 @@ namespace Problem_Set_3
                 islandNumbers = (islandNumbers | (1L << i));
             }
             //   input all the ferry route data into a data structure. 
-            for (int i = 0; i < numOfFerryRoutes; i++)
+       /*     for (int i = 0; i < numOfFerryRoutes; i++)
             {
                 inputIslandAndFerryData(line);
+            } */
+            //   input all the ferry route data into a data structure. 
+            for (int i = 0; i < numOfFerryRoutes; i++)
+            {
+                inputIslandAndFerryDataWithArray(line);
             }
-
             int index = 1;
             // locate the min number of shops 
             findMinNumOfShops(islandsWithShops, islandCoverage, index, minislands);
@@ -93,6 +98,27 @@ namespace Problem_Set_3
             islandsAndFerries[island] = (value | (1L << ferry));
             islandsAndFerries[ferry] = (valueferry | (1L << island));
         }
+        /// <summary>
+        ///  Stores the islands and the ferry routes in a dictionary also figure out the destination. 
+        /// </summary>
+        /// <param name="i"></param>
+        private static void inputIslandAndFerryDataWithArray(string line)
+        {
+            line = Console.ReadLine().Trim();
+            string[] spilt = line.Split(' ');
+            int island = Int32.Parse(spilt[0]);
+            int ferry = Int32.Parse(spilt[1]);
+
+            if (inputislandsAndFerries[island] == 0)
+                inputislandsAndFerries[island] = (1L << island);
+            if (inputislandsAndFerries[ferry] == 0)
+                inputislandsAndFerries[ferry] = (1L << ferry);
+
+            long value = inputislandsAndFerries[island];
+            long valueferry = inputislandsAndFerries[ferry];
+            inputislandsAndFerries[island] = (value | (1L << ferry));
+            inputislandsAndFerries[ferry] = (valueferry | (1L << island));
+        }
 
         /// <summary>
         /// Finds the smallest number of shops that need to be built. 
@@ -105,9 +131,8 @@ namespace Problem_Set_3
 
             long oldislandCoverage = islandCoverage;
             // base case for min soultion
-            //       if (islandCoverage > islandNumbers)
-            //        return;
-            if (minislands > minisl)
+
+            if (minislands >= minisl)
                 return;
             if (islandCoverage == islandNumbers)
             {
@@ -119,11 +144,7 @@ namespace Problem_Set_3
             if (index > numOfDestinations)
                 return;
 
-            //   bool test = ((islandCoverage & (1L << index)) != 0);
-
-
-            long value;
-            islandsAndFerries.TryGetValue(index, out value);
+            long value = inputislandsAndFerries[index];
             islandCoverage = islandCoverage | value;
             if (value == 0) // orphan cluase. 
             {
@@ -145,8 +166,5 @@ namespace Problem_Set_3
             }
 
         }
-
-
     }
-
 }
