@@ -27,10 +27,9 @@ namespace Problem_Set_3
         public static long islandNumbers;
         public static long numOfDestinations;
 
-        // dictioanry to store everything. 
-        public static SortedDictionary<int, long> islandsAndFerries = new SortedDictionary<int, long>();
+        //A long array that stores the bitmaps for all the islands. 
         public static long[] inputislandsAndFerries = new long[37];
-        //array of longs. 
+
         /// <summary>
         /// main function to slove for min islands. 
         /// </summary>
@@ -52,16 +51,11 @@ namespace Problem_Set_3
             for (int i = 1; i <= numOfDestinations; i++)
             {
                 islandNumbers = (islandNumbers | (1L << i));
-            }
-            //   input all the ferry route data into a data structure. 
-       /*     for (int i = 0; i < numOfFerryRoutes; i++)
-            {
-                inputIslandAndFerryData(line);
-            } */
+            } 
             //   input all the ferry route data into a data structure. 
             for (int i = 0; i < numOfFerryRoutes; i++)
             {
-                inputIslandAndFerryDataWithArray(line);
+                inputIslandAndFerryData(line);
             }
             int index = 1;
             // locate the min number of shops 
@@ -77,6 +71,7 @@ namespace Problem_Set_3
             Console.WriteLine(stringAnser.Trim());
 
         }
+
         /// <summary>
         ///  Stores the islands and the ferry routes in a dictionary also figure out the destination. 
         /// </summary>
@@ -87,33 +82,12 @@ namespace Problem_Set_3
             string[] spilt = line.Split(' ');
             int island = Int32.Parse(spilt[0]);
             int ferry = Int32.Parse(spilt[1]);
-
-            if (!islandsAndFerries.ContainsKey(island))
-                islandsAndFerries.Add(island, (1L << island));
-            if (!islandsAndFerries.ContainsKey(ferry))
-                islandsAndFerries.Add(ferry, (1L << ferry));
-            long value, valueferry;
-            islandsAndFerries.TryGetValue(island, out value);
-            islandsAndFerries.TryGetValue(ferry, out valueferry);
-            islandsAndFerries[island] = (value | (1L << ferry));
-            islandsAndFerries[ferry] = (valueferry | (1L << island));
-        }
-        /// <summary>
-        ///  Stores the islands and the ferry routes in a dictionary also figure out the destination. 
-        /// </summary>
-        /// <param name="i"></param>
-        private static void inputIslandAndFerryDataWithArray(string line)
-        {
-            line = Console.ReadLine().Trim();
-            string[] spilt = line.Split(' ');
-            int island = Int32.Parse(spilt[0]);
-            int ferry = Int32.Parse(spilt[1]);
-
+            // make sure every isalnd has it's self in the bit map.
             if (inputislandsAndFerries[island] == 0)
                 inputislandsAndFerries[island] = (1L << island);
             if (inputislandsAndFerries[ferry] == 0)
                 inputislandsAndFerries[ferry] = (1L << ferry);
-
+            // update the value to inculde the ferry routes. 
             long value = inputislandsAndFerries[island];
             long valueferry = inputislandsAndFerries[ferry];
             inputislandsAndFerries[island] = (value | (1L << ferry));
@@ -130,8 +104,7 @@ namespace Problem_Set_3
         {
 
             long oldislandCoverage = islandCoverage;
-            // base case for min soultion
-
+            // find the new soultion
             if (minislands >= minisl)
                 return;
             if (islandCoverage == islandNumbers)
