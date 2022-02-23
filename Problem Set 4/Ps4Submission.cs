@@ -52,6 +52,7 @@ namespace Problem_Set_4
                             trackSwitchs[row, col] = rowT;
                         }
                     }
+
                     soultionTable[row, col] = min;
                 }
                 // keep track of the switch costs. 
