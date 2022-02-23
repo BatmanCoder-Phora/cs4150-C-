@@ -41,7 +41,10 @@ namespace Problem_Set_4
 
             // insert first table. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
+            {
                 soultionTable[firstCol, 0] = productionLineInformation[firstCol, 0];
+                trackSwitchs[firstCol, 0] = firstCol + 1;
+            }
 
             int switchC = 0;
             // trying to fill in the rest of the table 
@@ -50,22 +53,22 @@ namespace Problem_Set_4
                 for (int row = 0; row < numOfProductionLines; row++)
                 {
                     min = soultionTable[row, col - 1] + productionLineInformation[row, col];
+                    trackSwitchs[row, col] = row + 1;
                     // loop through all the possiable costs. 
                     for (int rowT = 1; rowT <= numOfProductionLines; rowT++)
                     {
-                        int tempmin = soultionTable[rowT-1, col - 1] + productionLineInformation[row, col] + switchcost[switchC];
+                        int tempmin = soultionTable[rowT - 1, col - 1] + productionLineInformation[row, col] + switchcost[switchC];
                         if (tempmin < min)
                         {
                             min = tempmin;
                             trackSwitchs[row, col] = rowT;
                         }
                     }
-
                     soultionTable[row, col] = min;
                 }
                 // keep track of the switch costs. 
-               if(switchC+1 < numOfProductionSteps-1)
-                  switchC++;
+                if (switchC + 1 < numOfProductionSteps - 1)
+                    switchC++;
             }
 
             //// FINISH PRINT OUT THE MIN AND THE TRACKING///////
