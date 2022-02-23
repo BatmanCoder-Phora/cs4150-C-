@@ -3,9 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/*
+* Author: Sephora Bateman 
+* Class: CS 4150
+* Problem Set #4
+*/
+/// Work on the tracking.///
 namespace Problem_Set_4
 {
+    /// <summary>
+    /// Class to find the lowest cost of producing an item. 
+    /// </summary>
     public class Ps4Submission
     {
         public static int[,] productionLineInformation;
@@ -20,6 +28,7 @@ namespace Problem_Set_4
             string[] vs = line.Split(' ');
             numOfProductionLines = int.Parse(vs[0]);
             numOfProductionSteps = int.Parse(vs[1]);
+            // inialize the information array and the switch array.
             productionLineInformation = new int[numOfProductionLines, numOfProductionSteps];
             switchcost = new int[numOfProductionSteps - 1];
 
@@ -30,12 +39,11 @@ namespace Problem_Set_4
             int[,] soultionTable = new int[numOfProductionLines, numOfProductionSteps];
             int[,] trackSwitchs = new int[numOfProductionLines, numOfProductionSteps];
 
+            // insert first table. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
                 soultionTable[firstCol, 0] = productionLineInformation[firstCol, 0];
 
             int switchC = 0;
-
-
             // trying to fill in the rest of the table 
             for (int col = 1; col < numOfProductionSteps; col++)
             {

@@ -6,7 +6,6 @@
 
 /*
  * WHAT TO WORK ON FOR CODE:
- *  - work on the timing issue. 
  *     
  * */
 using System;
