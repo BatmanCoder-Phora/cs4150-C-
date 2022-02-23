@@ -37,23 +37,24 @@ namespace Problem_Set_4
 
             //create soultion table and track switches
             int[,] soultionTable = new int[numOfProductionLines, numOfProductionSteps];
-            int[,] trackSwitchs = new int[numOfProductionLines, numOfProductionSteps];
+            string[,] trackSwitchs = new string[numOfProductionLines, numOfProductionSteps];
 
             // insert first table. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
             {
                 soultionTable[firstCol, 0] = productionLineInformation[firstCol, 0];
-                trackSwitchs[firstCol, 0] = firstCol + 1;
+                trackSwitchs[firstCol, 0] = (firstCol+1).ToString();
             }
 
             int switchC = 0;
+            
             // trying to fill in the rest of the table 
             for (int col = 1; col < numOfProductionSteps; col++)
             {
                 for (int row = 0; row < numOfProductionLines; row++)
                 {
                     min = soultionTable[row, col - 1] + productionLineInformation[row, col];
-                    trackSwitchs[row, col] = row + 1;
+                    int oldLine = row + 1;
                     // loop through all the possiable costs. 
                     for (int rowT = 1; rowT <= numOfProductionLines; rowT++)
                     {
@@ -61,10 +62,11 @@ namespace Problem_Set_4
                         if (tempmin < min)
                         {
                             min = tempmin;
-                            trackSwitchs[row, col] = rowT;
+                            oldLine = rowT;
                         }
                     }
                     soultionTable[row, col] = min;
+                    trackSwitchs[row, col] = trackSwitchs[oldLine-1,col-1] + " " + (row + 1);
                 }
                 // keep track of the switch costs. 
                 if (switchC + 1 < numOfProductionSteps - 1)
@@ -73,15 +75,20 @@ namespace Problem_Set_4
 
             //// FINISH PRINT OUT THE MIN AND THE TRACKING///////
             int finalmin = int.MaxValue;
+            int finalIndex = 0;
             // find the minimum line and print that value. 
             for (int finalrow = 0; finalrow < numOfProductionLines; finalrow++)
             {
                 int  tempmin = soultionTable[finalrow, numOfProductionSteps - 1];
-                 if(tempmin < finalmin)
+                if (tempmin < finalmin)
+                {
+                    finalIndex = finalrow;
                     finalmin = tempmin;
+                }
             }
             Console.Write(finalmin);
-            
+            Console.WriteLine();
+            Console.Write(trackSwitchs.GetValue(finalIndex, numOfProductionSteps - 1));
             }
         
               
