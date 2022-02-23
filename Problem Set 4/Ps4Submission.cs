@@ -28,6 +28,7 @@ namespace Problem_Set_4
             string[] vs = line.Split(' ');
             numOfProductionLines = int.Parse(vs[0]);
             numOfProductionSteps = int.Parse(vs[1]);
+
             // inialize the information array and the switch array.
             productionLineInformation = new int[numOfProductionLines, numOfProductionSteps];
             switchcost = new int[numOfProductionSteps - 1];
@@ -35,10 +36,10 @@ namespace Problem_Set_4
             // store data 
             inputData(numOfProductionLines, numOfProductionSteps);
 
-            //create soultion table and track switches
+            //create soultion table and table to track switches
             int[,] soultionTable = new int[numOfProductionLines, numOfProductionSteps];
             string[,] trackSwitchs = new string[numOfProductionLines, numOfProductionSteps];
-
+            int switchC = 0;
             // insert first table. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
             {
@@ -46,16 +47,14 @@ namespace Problem_Set_4
                 trackSwitchs[firstCol, 0] = (firstCol+1).ToString();
             }
 
-            int switchC = 0;
-            
-            // trying to fill in the rest of the table 
+            // Fill in the rest of the table 
             for (int col = 1; col < numOfProductionSteps; col++)
             {
                 for (int row = 0; row < numOfProductionLines; row++)
                 {
                     min = soultionTable[row, col - 1] + productionLineInformation[row, col];
                     int oldLine = row + 1;
-                    // loop through all the possiable costs. 
+                    // another loop though loop through each row again.
                     for (int rowT = 1; rowT <= numOfProductionLines; rowT++)
                     {
                         int tempmin = soultionTable[rowT - 1, col - 1] + productionLineInformation[row, col] + switchcost[switchC];
@@ -65,6 +64,7 @@ namespace Problem_Set_4
                             oldLine = rowT;
                         }
                     }
+                    // put the min in the osultion table and add that path to the pathway. 
                     soultionTable[row, col] = min;
                     trackSwitchs[row, col] = trackSwitchs[oldLine-1,col-1] + " " + (row + 1);
                 }
@@ -86,6 +86,7 @@ namespace Problem_Set_4
                     finalmin = tempmin;
                 }
             }
+           // print min and path to min.  
             Console.Write(finalmin);
             Console.WriteLine();
             Console.Write(trackSwitchs.GetValue(finalIndex, numOfProductionSteps - 1));
