@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 * Class: CS 4150
 * Problem Set #4
 */
-/// Work on the tracking.///
+
 namespace Problem_Set_4
 {
     /// <summary>
@@ -40,6 +40,7 @@ namespace Problem_Set_4
             int[,] soultionTable = new int[numOfProductionLines, numOfProductionSteps];
             string[,] trackSwitchs = new string[numOfProductionLines, numOfProductionSteps];
             int switchC = 0;
+
             // insert first table. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
             {
@@ -73,10 +74,10 @@ namespace Problem_Set_4
                     switchC++;
             }
 
-            //// FINISH PRINT OUT THE MIN AND THE TRACKING///////
+            //// PRINT OUT THE MIN AND THE TRACKING///////
             int finalmin = int.MaxValue;
             int finalIndex = 0;
-            // find the minimum line and print that value. 
+
             for (int finalrow = 0; finalrow < numOfProductionLines; finalrow++)
             {
                 int  tempmin = soultionTable[finalrow, numOfProductionSteps - 1];
@@ -116,25 +117,5 @@ namespace Problem_Set_4
             for (int i = 0; i < numOfProductionSteps - 1; i++)
                 switchcost[i] = int.Parse(switchsteps[i]);
         }
-
-        /// <summary>
-        /// a little to min. 
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <param name="z"></param>
-        /// <returns></returns>
-        public static int min(int x, int y, int z)
-        {
-            if (x < y && x < z)
-            {
-                return x;
-            }
-            if (y < z && y < x)
-                return y;
-
-            return z;
-        }
-
     }
 }
