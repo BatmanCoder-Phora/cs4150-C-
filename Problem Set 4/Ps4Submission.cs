@@ -41,7 +41,7 @@ namespace Problem_Set_4
             string[,] trackSwitchs = new string[numOfProductionLines, numOfProductionSteps];
             int switchC = 0;
 
-            // insert first table. 
+            // insert first column. 
             for (int firstCol = 0; firstCol < numOfProductionLines; firstCol++)
             {
                 soultionTable[firstCol, 0] = productionLineInformation[firstCol, 0];
@@ -55,7 +55,7 @@ namespace Problem_Set_4
                 {
                     min = soultionTable[row, col - 1] + productionLineInformation[row, col];
                     int oldLine = row + 1;
-                    // another loop though loop through each row again.
+                    // another loop so we can compare each cost
                     for (int rowT = 1; rowT <= numOfProductionLines; rowT++)
                     {
                         int tempmin = soultionTable[rowT - 1, col - 1] + productionLineInformation[row, col] + switchcost[switchC];
