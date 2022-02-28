@@ -82,8 +82,8 @@ namespace Problem_Set_Five
                 if (markedtable[tuple.Item1, tuple.Item2] != 1)
                 {
                     markedtable[tuple.Item1, tuple.Item2] = 1;
-                //    bool thereIsAMonster = CheckForUnwatedNeighbor(tuple.Item1, tuple.Item2, "m");
-              //    if(!thereIsAMonster)
+                  bool thereIsAMonster = CheckForUnwatedNeighbor(tuple.Item1, tuple.Item2, "m");
+                  if(!thereIsAMonster)
                     addNeighbors(row, col);
                 }
 
@@ -96,10 +96,6 @@ namespace Problem_Set_Five
         /// <param name="item12"></param>
         private static void addNeighbors(int item11, int item12)
         {
-
-          bool thereIsAMonster = CheckForUnwatedNeighbor(item11, item12, "m");
-            if (thereIsAMonster == false)
-            {
                 if (inputTable[item11 + 1, item12].Trim() != "m" && inputTable[item11 + 1, item12].Trim() != "#")
                     Bag.Push((item11+1) + " " + item12);
                 if (inputTable[item11 - 1, item12].Trim() != "m" && inputTable[item11 - 1, item12].Trim() != "#")
@@ -108,7 +104,6 @@ namespace Problem_Set_Five
                     Bag.Push(item11 + " " + (item12+1));
                 if (inputTable[item11, item12 - 1].Trim() != "m" && inputTable[item11, item12 - 1].Trim() != "#")
                     Bag.Push(item11 + " " + (item12-1));
-            }
         }
         /// <summary>
         /// 
