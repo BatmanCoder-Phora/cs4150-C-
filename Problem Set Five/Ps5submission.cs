@@ -11,6 +11,7 @@ namespace Problem_Set_Five
         public static string[,] inputTable;
         public static Stack<string> Bag;
         public static int[,] markedtable;
+        
         public static string playerStarts;
         public static int ending = 0;
 
@@ -77,12 +78,14 @@ namespace Problem_Set_Five
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
+
                 Int32.TryParse(stringIamon, out treasure);
                 ending += treasure;
-                if (markedtable[tuple.Item1, tuple.Item2] != 1)
+
+                if (markedtable[row, col] != 1)
                 {
-                    markedtable[tuple.Item1, tuple.Item2] = 1;
-                  bool thereIsAMonster = CheckForUnwatedNeighbor(tuple.Item1, tuple.Item2, "m");
+                    markedtable[row, col] = 1;
+                  bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
                   if(!thereIsAMonster)
                     addNeighbors(row, col);
                 }
