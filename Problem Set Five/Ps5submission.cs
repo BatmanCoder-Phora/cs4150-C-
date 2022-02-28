@@ -8,11 +8,11 @@ namespace Problem_Set_Five
 {
     public class Ps5submission
     {
-        public static string[,] inputTable;
-        public static Stack<string> Bag;
-        public static int[,] markedtable;
-        
-        public static string playerStarts;
+        public static string[,]? inputTable;
+        public static int[,]? markedtable;
+        public static Stack<string>? Bag;
+
+        public static string? playerStarts;
         public static int ending = 0;
 
         static void Main(string[] args)
