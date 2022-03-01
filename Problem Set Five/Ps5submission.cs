@@ -39,8 +39,8 @@ namespace Problem_Set_Five
             int endMid = int.MaxValue;
 
             // Loop through every empty space in the graph and place a monster. 
-            for (int i = 1; i < numberOfRows; i++)
-                for (int j = 1; j < numberOfCols; j++)
+            for (int i = 1; i < numberOfRows-1; i++)
+                for (int j = 1; j < numberOfCols-1; j++)
                 {
                     // start inside the border and make sure no monster is placed adjcant to the player.  
                     if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
