@@ -88,9 +88,9 @@ namespace Problem_Set_Five
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
+                
 
-                Int32.TryParse(stringIamon, out treasure);
-                ending += treasure;
+
                 // Check to see if the position had been visied, if it hasn't mark it and add it's neighbors.
                 if (markedtable[row, col] != 1)
                 {
@@ -99,7 +99,8 @@ namespace Problem_Set_Five
                   if(!thereIsAMonster)
                     addNeighbors(row, col);
                 }
-
+                Int32.TryParse(stringIamon, out treasure);
+                ending += treasure;
             }   
         }
         /// <summary>
@@ -109,32 +110,32 @@ namespace Problem_Set_Five
         /// <param name="currentCol">Col of the position we are checking the neighbors for</param>
         private static void addNeighbors(int currentRow, int currentCol)
         {
-                if (inputTable[currentRow + 1, currentCol].Trim() != "m" && inputTable[currentRow + 1, currentCol].Trim() != "#")
+                if (inputTable[currentRow + 1, currentCol].Trim() != "#")
                     Bag.Push((currentRow+1) + " " + currentCol);
-                if (inputTable[currentRow - 1, currentCol].Trim() != "m" && inputTable[currentRow - 1, currentCol].Trim() != "#")
+                if (inputTable[currentRow - 1, currentCol].Trim() != "#")
                     Bag.Push((currentRow-1) + " " + currentCol);
-                if (inputTable[currentRow, currentCol + 1].Trim() != "m" && inputTable[currentRow, currentCol + 1].Trim() != "#")
+                if (inputTable[currentRow, currentCol + 1].Trim() != "#")
                     Bag.Push(currentRow + " " + (currentCol+1));
-                if (inputTable[currentRow, currentCol - 1].Trim() != "m" && inputTable[currentRow, currentCol - 1].Trim() != "#")
+                if (inputTable[currentRow, currentCol - 1].Trim() != "#")
                     Bag.Push(currentRow + " " + (currentCol-1));
         }
         /// <summary>
         /// Checks to see if any of the neighbors are a character that we don't want. 
         /// </summary>
-        /// <param name="item11"></param>
-        /// <param name="item12"></param>
-        /// <param name="lookFor"></param>
+        /// <param name="posRow">The row of the position</param>
+        /// <param name="posCol">The current col of the position</param>
+        /// <param name="lookFor">The character we want to make sure isn't there</param>
         /// <returns></returns>
-        private static bool CheckForUnwatedNeighbor(int item11, int item12,string lookFor)
+        private static bool CheckForUnwatedNeighbor(int posRow, int posCol,string lookFor)
         {
             bool result = false;
-            if (inputTable[item11 + 1, item12].Trim() == lookFor)
+            if (inputTable[posRow + 1, posCol].Trim() == lookFor)
                 result =  true;
-             if (inputTable[item11 - 1, item12].Trim() == lookFor)
+             if (inputTable[posRow - 1, posCol].Trim() == lookFor)
                 result = true;
-             if (inputTable[item11, item12 + 1].Trim() == lookFor)
+             if (inputTable[posRow, posCol + 1].Trim() == lookFor)
                 result = true;
-             if (inputTable[item11, item12 - 1].Trim() == lookFor)
+             if (inputTable[posRow, posCol - 1].Trim() == lookFor)
                 result = true;
 
             return result;
