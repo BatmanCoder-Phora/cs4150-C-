@@ -25,14 +25,12 @@ namespace Problem_Set_Five
             string[] spiltline = line.Split(' ');
             int numberOfRows = int.Parse(spiltline[0]);
             int numberOfCols = int.Parse(spiltline[1]);
-            //input data
+            // input data
             inputTable = new string[numberOfRows, numberOfCols];
             markedtable = new int[numberOfRows, numberOfCols];
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
-            /* create bag to input verticies*/
-            Bag = new Stack<string>();
 
             // Two variables to store soultions. 
             string currentRow = "";
@@ -47,6 +45,7 @@ namespace Problem_Set_Five
                     {
                         inputTable[i, j] = "m";
                         WhataeverFirstSearchAdapted(playerStarts);// finds the soultions. 
+
                         if (ending < endMid)
                         {
                             endMid = ending;
@@ -54,7 +53,7 @@ namespace Problem_Set_Five
                         }
                     }
                 }
-            // After a monster has been put in each  spot print the best location for the player to get minimum treasure. 
+            // After a monster has been put in each spot print the best location for the player to get minimum treasure. 
             Console.Write(currentRow);
             Console.WriteLine();
             Console.Write(endMid);
@@ -78,7 +77,9 @@ namespace Problem_Set_Five
         private static void WhataeverFirstSearchAdapted(string PlayersStartingPosition)
         {
             int treasure = 0;
-            
+            /* create bag to input verticies*/
+            Bag = new Stack<string>();
+
             Bag.Push(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
             while(Bag.Count > 0)
