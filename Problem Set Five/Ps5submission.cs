@@ -93,10 +93,11 @@ namespace Problem_Set_Five
                 // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
                 if (markedtable[row, col] != 1)
                 {
-                    markedtable[row, col] = 1;
+                  markedtable[row, col] = 1;
                   bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
                   if(!thereIsAMonster)
                     addNeighbors(row, col);
+
                   Int32.TryParse(stringIamon, out treasure);
                   ending += treasure;
                 }
