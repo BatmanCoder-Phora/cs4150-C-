@@ -88,10 +88,9 @@ namespace Problem_Set_Five
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
-                
 
 
-                // Check to see if the position had been visied, if it hasn't mark it and add it's neighbors.
+                // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
                 if (markedtable[row, col] != 1)
                 {
                     markedtable[row, col] = 1;
