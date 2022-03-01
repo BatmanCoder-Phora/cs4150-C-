@@ -98,9 +98,9 @@ namespace Problem_Set_Five
                   bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
                   if(!thereIsAMonster)
                     addNeighbors(row, col);
+                  Int32.TryParse(stringIamon, out treasure);
+                  ending += treasure;
                 }
-                Int32.TryParse(stringIamon, out treasure);
-                ending += treasure;
             }   
         }
         /// <summary>
