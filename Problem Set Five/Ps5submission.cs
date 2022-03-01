@@ -8,37 +8,45 @@ namespace Problem_Set_Five
 {
     public class Ps5submission
     {
-        public static string[,]? inputTable;
-        public static int[,]? markedtable;
-        public static Stack<string>? Bag;
+        // The input table sotres the data from the console and the markedTable keeps track of visited sqaures 
+        public static string[,] inputTable;
+        public static int[,] markedtable;
+        // The "bag" to pull from is in the from of a stack. 
+        public static Stack<string> Bag;
 
+        // Some global variables. 
         public static string? playerStarts;
         public static int ending = 0;
 
         static void Main(string[] args)
         {
+            // spilt the string to get the number of rows and columns. 
             string line = Console.ReadLine();
             string[] spiltline = line.Split(' ');
-            int row = int.Parse(spiltline[0]);
-            int col = int.Parse(spiltline[1]);
+            int numberOfRows = int.Parse(spiltline[0]);
+            int numberOfCols = int.Parse(spiltline[1]);
+            //input data
+            inputTable = new string[numberOfRows, numberOfCols];
+            markedtable = new int[numberOfRows, numberOfCols];
+            for (int i = 0; i < numberOfRows; i++)
+                inputGraphData(i, numberOfCols);
 
-            inputTable = new string[row, col];
-            markedtable = new int[row, col];
+            /* create bag to input verticies*/
             Bag = new Stack<string>();
 
+            // Two variables to store soultions. 
             string currentRow = "";
             int endMid = int.MaxValue;
 
-            for (int i = 0; i < row; i++)
-               inputGraphData(i,col);
-
-            for (int i = 1; i < row; i++)
-                for (int j = 1; j < col; j++)
+            // Loop through every empty space in the graph and place a monster. 
+            for (int i = 1; i < numberOfRows; i++)
+                for (int j = 1; j < numberOfCols; j++)
                 {
+                    // start inside the border and make sure no monster is placed adjcant to the player.  
                     if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
                     {
                         inputTable[i, j] = "m";
-                        WhataeverFirstSearchAdapted(playerStarts);
+                        WhataeverFirstSearchAdapted(playerStarts);// finds the soultions. 
                         if (ending < endMid)
                         {
                             endMid = ending;
@@ -46,14 +54,15 @@ namespace Problem_Set_Five
                         }
                     }
                 }
+            // After a monster has been put in each  spot print the best location for the player to get minimum treasure. 
             Console.Write(currentRow);
             Console.WriteLine();
             Console.Write(endMid);
         }
         /// <summary>
-        /// 
+        ///  This converts the string on the stcak into a tuple so they two values are easier to acess. 
         /// </summary>
-        /// <param name="input"></param>
+        /// <param name="input">The String from the stack</param>
         /// <returns></returns>
         public static Tuple<int,int> stringTotuple(string input)
         {
@@ -63,25 +72,26 @@ namespace Problem_Set_Five
             return Tuple.Create(row, col) ; 
         }
         /// <summary>
-        /// 
+        /// Our search through every position the player can go to. Applies a stack depth-first search. 
         /// </summary>
-        /// <param name="input"></param>
-        private static void WhataeverFirstSearchAdapted(string input)
+        /// <param name="PlayersStartingPosition">The players starting position</param>
+        private static void WhataeverFirstSearchAdapted(string PlayersStartingPosition)
         {
             int treasure = 0;
-
-            Bag.Push(input);
+            
+            Bag.Push(PlayersStartingPosition);
+            // while the bag is not empty, get the position.      
             while(Bag.Count > 0)
             {
-                string test = Bag.Pop();
-                Tuple<int,int> tuple = stringTotuple(test);
+                string positionAtTopOfStack = Bag.Pop();
+                Tuple<int,int> tuple = stringTotuple(positionAtTopOfStack);
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
 
                 Int32.TryParse(stringIamon, out treasure);
                 ending += treasure;
-
+                // Check to see if the position had been visied, if it hasn't mark it and add it's neighbors.
                 if (markedtable[row, col] != 1)
                 {
                     markedtable[row, col] = 1;
@@ -93,23 +103,23 @@ namespace Problem_Set_Five
             }   
         }
         /// <summary>
-        /// 
+        /// Makes sure that a wall isn't being added as a neighbor. 
         /// </summary>
-        /// <param name="item11"></param>
-        /// <param name="item12"></param>
-        private static void addNeighbors(int item11, int item12)
+        /// <param name="currentRow">Row of the position we are checking the neighbors for</param>
+        /// <param name="currentCol">Col of the position we are checking the neighbors for</param>
+        private static void addNeighbors(int currentRow, int currentCol)
         {
-                if (inputTable[item11 + 1, item12].Trim() != "m" && inputTable[item11 + 1, item12].Trim() != "#")
-                    Bag.Push((item11+1) + " " + item12);
-                if (inputTable[item11 - 1, item12].Trim() != "m" && inputTable[item11 - 1, item12].Trim() != "#")
-                    Bag.Push((item11-1) + " " + item12);
-                if (inputTable[item11, item12 + 1].Trim() != "m" && inputTable[item11, item12 + 1].Trim() != "#")
-                    Bag.Push(item11 + " " + (item12+1));
-                if (inputTable[item11, item12 - 1].Trim() != "m" && inputTable[item11, item12 - 1].Trim() != "#")
-                    Bag.Push(item11 + " " + (item12-1));
+                if (inputTable[currentRow + 1, currentCol].Trim() != "m" && inputTable[currentRow + 1, currentCol].Trim() != "#")
+                    Bag.Push((currentRow+1) + " " + currentCol);
+                if (inputTable[currentRow - 1, currentCol].Trim() != "m" && inputTable[currentRow - 1, currentCol].Trim() != "#")
+                    Bag.Push((currentRow-1) + " " + currentCol);
+                if (inputTable[currentRow, currentCol + 1].Trim() != "m" && inputTable[currentRow, currentCol + 1].Trim() != "#")
+                    Bag.Push(currentRow + " " + (currentCol+1));
+                if (inputTable[currentRow, currentCol - 1].Trim() != "m" && inputTable[currentRow, currentCol - 1].Trim() != "#")
+                    Bag.Push(currentRow + " " + (currentCol-1));
         }
         /// <summary>
-        /// 
+        /// Checks to see if any of the neighbors are a character that we don't want. 
         /// </summary>
         /// <param name="item11"></param>
         /// <param name="item12"></param>
@@ -130,10 +140,10 @@ namespace Problem_Set_Five
             return result;
         }
         /// <summary>
-        /// 
+        /// Stores all the information from the console. 
         /// </summary>
-        /// <param name="row"></param>
-        /// <param name="col"></param>
+        /// <param name="row">The rows from the input</param>
+        /// <param name="col">The cols from the input</param>
         private static void inputGraphData(int row, int col)
         {
             string line = Console.ReadLine();
