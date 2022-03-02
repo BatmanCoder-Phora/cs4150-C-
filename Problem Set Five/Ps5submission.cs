@@ -11,20 +11,26 @@ namespace Problem_Set_Five
         // The input table sotres the data from the console and the markedTable keeps track of visited sqaures 
         public static string[,] inputTable;
         public static int[,] markedtable;
+        public static int numberOfRows;
+        public static int numberOfCols;
+
+
         // The "bag" to pull from is in the from of a stack. 
         public static Stack<string> Bag;
 
         // Some global variables. 
         public static string? playerStarts;
         public static int ending = 0;
+        public static int endMid = int.MaxValue;
 
         static void Main(string[] args)
         {
             // spilt the string to get the number of rows and columns. 
             string line = Console.ReadLine();
             string[] spiltline = line.Split(' ');
-            int numberOfRows = int.Parse(spiltline[0]);
-            int numberOfCols = int.Parse(spiltline[1]);
+            numberOfRows = int.Parse(spiltline[0]);
+            numberOfCols = int.Parse(spiltline[1]);
+
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
             markedtable = new int[numberOfRows, numberOfCols];
@@ -44,6 +50,7 @@ namespace Problem_Set_Five
                     if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
                     {
                         inputTable[i, j] = "m";
+
                         WhataeverFirstSearchAdapted(playerStarts);// finds the soultions. 
 
                         if (ending < endMid)
@@ -51,6 +58,7 @@ namespace Problem_Set_Five
                             endMid = ending;
                             currentRow = i + " " + j;
                         }
+                        inputTable[i, j] = ".";
                     }
                 }
             // After a monster has been put in each spot print the best location for the player to get minimum treasure. 
@@ -77,8 +85,11 @@ namespace Problem_Set_Five
         private static void WhataeverFirstSearchAdapted(string PlayersStartingPosition)
         {
             int treasure = 0;
+            ending = 0;
+
             /* create bag to input verticies*/
             Bag = new Stack<string>();
+            markedtable = new int[numberOfRows, numberOfCols];
 
             Bag.Push(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
@@ -102,6 +113,8 @@ namespace Problem_Set_Five
                   Int32.TryParse(stringIamon, out treasure);
                   ending += treasure;
                 }
+                if (ending > endMid)
+                    break;
             }   
         }
         /// <summary>
@@ -156,7 +169,6 @@ namespace Problem_Set_Five
                     playerStarts = row.ToString() + " " + i.ToString();
 
                 inputTable[row, i] = tester[i].ToString();
-                markedtable[row, i] = 0;
             }
         }
     }
