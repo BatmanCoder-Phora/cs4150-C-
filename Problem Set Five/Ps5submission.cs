@@ -13,7 +13,7 @@ namespace Problem_Set_Five
         public static int[,] markedtable;
         public static int numberOfRows;
         public static int numberOfCols;
-
+        public static HashSet<string> marked;
 
         // The "bag" to pull from is in the from of a stack. 
         public static Stack<string> Bag;
@@ -33,7 +33,6 @@ namespace Problem_Set_Five
 
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
-            markedtable = new int[numberOfRows, numberOfCols];
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
@@ -89,10 +88,11 @@ namespace Problem_Set_Five
             /* create bag to input verticies*/
             Bag = new Stack<string>();
             markedtable = new int[numberOfRows, numberOfCols];
+            marked = new HashSet<string>();
 
             Bag.Push(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
-            while(Bag.Count > 0)
+            while (Bag.Count > 0)
             {
                 string positionAtTopOfStack = Bag.Pop();
                 Tuple<int,int> tuple = stringTotuple(positionAtTopOfStack);
@@ -102,16 +102,20 @@ namespace Problem_Set_Five
 
 
                 // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
-                if (markedtable[row, col] != 1)
+                //  if (markedtable[row, col] != 1)
+                // {
+                if (marked.Contains(row + " " + col) == false)
                 {
-                  markedtable[row, col] = 1;
-                  bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
-                  if(!thereIsAMonster)
-                    addNeighbors(row, col);
+                    // markedtable[row, col] = 1;
+                    marked.Add(row + " " + col);
+                    bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
+                    if (!thereIsAMonster)
+                        addNeighbors(row, col);
 
-                  Int32.TryParse(stringIamon, out treasure);
-                  ending += treasure;
+                    Int32.TryParse(stringIamon, out treasure);
+                    ending += treasure;
                 }
+               // }
                 // the the amount of treasure is already larger than the stored min, stop that caluclation. 
                 if (ending > endMid)
                     break;
