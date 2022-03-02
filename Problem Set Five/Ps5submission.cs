@@ -18,10 +18,10 @@ namespace Problem_Set_Five
 
 
         // The "bag" to pull from is in the from of a stack. 
-        public static Stack<string> Bag;
+        public static Stack<Tuple<int,int>> Bag;
 
         // Some global variables. 
-        public static string playerStarts;
+        public static Tuple<int, int> playerStarts;
         public static int ending = 0;
         public static int endMid = int.MaxValue;
 
@@ -35,7 +35,7 @@ namespace Problem_Set_Five
 
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
-            Bag = new Stack<string>();
+            Bag = new Stack<Tuple<int, int>>();
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
@@ -66,24 +66,12 @@ namespace Problem_Set_Five
             Console.WriteLine();
             Console.Write(endMid);
         }
-        /// <summary>
-        ///  This converts the string on the stcak into a tuple so they two values are easier to acess. 
-        /// </summary>
-        /// <param name="input">The String from the stack</param>
-        /// <returns></returns>
-        public static Tuple<int, int> stringTotuple(string input)
-        {
-            string[] spiltstring = input.Split(' ');
-            int row = int.Parse(spiltstring[0]);
-            int col = int.Parse(spiltstring[1]);
-            return Tuple.Create(row, col);
-        }
         
         /// <summary>
         /// Our search through every position the player can go to. Applies a stack depth-first search. 
         /// </summary>
         /// <param name="PlayersStartingPosition">The players starting position</param>
-        private static void WhataeverFirstSearchAdapted(string PlayersStartingPosition)
+        private static void WhataeverFirstSearchAdapted(Tuple<int, int> PlayersStartingPosition)
         {
             int treasure = 0;
             ending = 0;
@@ -96,8 +84,7 @@ namespace Problem_Set_Five
             // while the bag is not empty, get the position.      
             while (Bag.Count > 0)
             {
-                string positionAtTopOfStack = Bag.Pop();
-                Tuple<int, int> tuple = stringTotuple(positionAtTopOfStack);
+                Tuple<int, int> tuple = Bag.Pop();
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
@@ -127,13 +114,13 @@ namespace Problem_Set_Five
         private static void addNeighbors(int currentRow, int currentCol)
         {
             if (inputTable[currentRow + 1, currentCol].Trim() != "#" && markedtable[currentRow + 1, currentCol] != true)
-                Bag.Push((currentRow + 1) + " " + currentCol);
+                Bag.Push(Tuple.Create((currentRow + 1),currentCol));
             if (inputTable[currentRow - 1, currentCol].Trim() != "#" && markedtable[currentRow - 1, currentCol] != true)
-                Bag.Push((currentRow - 1) + " " + currentCol);
+                Bag.Push(Tuple.Create((currentRow - 1), currentCol));
             if (inputTable[currentRow, currentCol + 1].Trim() != "#" && markedtable[currentRow, currentCol + 1] != true)
-                Bag.Push(currentRow + " " + (currentCol + 1));
+                Bag.Push(Tuple.Create(currentRow, (currentCol + 1)));
             if (inputTable[currentRow, currentCol - 1].Trim() != "#" && markedtable[currentRow, currentCol - 1] != true)
-                Bag.Push(currentRow + " " + (currentCol - 1));
+                Bag.Push(Tuple.Create(currentRow, (currentCol-1)));
         }
         /// <summary>
         /// Checks to see if any of the neighbors are a character that we don't want. 
@@ -168,7 +155,7 @@ namespace Problem_Set_Five
             for (int i = 0; i < col; i++)
             {
                 if (tester[i] == 'p')
-                    playerStarts = row.ToString() + " " + i.ToString();
+                    playerStarts = Tuple.Create(row,i);
 
                 inputTable[row, i] = tester[i].ToString();
             }
