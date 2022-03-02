@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+// Tests: should be getting correct answers. Taking to long. //
+// current output 27/30.
 namespace Problem_Set_Five
 {
     public class Ps5submission
@@ -33,14 +35,14 @@ namespace Problem_Set_Five
 
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
-            markedtable = new int[numberOfRows, numberOfCols];
+            markedtable = new int[numberOfRows-1, numberOfCols-1];
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
 
             // Two variables to store soultions. 
             string currentRow = "";
-            //int endMid = int.MaxValue;
+
             // Loop through every empty space in the graph and place a monster. 
             for (int i = 1; i < numberOfRows - 1; i++)
                 for (int j = 1; j < numberOfCols - 1; j++)
@@ -88,7 +90,7 @@ namespace Problem_Set_Five
 
             /* create bag to input verticies*/
             Bag = new Stack<string>();
-            markedtable = new int[numberOfRows, numberOfCols];
+            markedtable = new int[numberOfRows-1, numberOfCols-1];
 
             Bag.Push(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
