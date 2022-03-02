@@ -19,7 +19,7 @@ namespace Problem_Set_Five
         public static Stack<string> Bag;
 
         // Some global variables. 
-        public static string? playerStarts;
+        public static string playerStarts;
         public static int ending = 0;
         public static int endMid = int.MaxValue;
 
@@ -40,8 +40,7 @@ namespace Problem_Set_Five
 
             // Two variables to store soultions. 
             string currentRow = "";
-            int endMid = int.MaxValue;
-
+            //int endMid = int.MaxValue;
             // Loop through every empty space in the graph and place a monster. 
             for (int i = 1; i < numberOfRows-1; i++)
                 for (int j = 1; j < numberOfCols-1; j++)
@@ -113,6 +112,7 @@ namespace Problem_Set_Five
                   Int32.TryParse(stringIamon, out treasure);
                   ending += treasure;
                 }
+                // the the amount of treasure is already larger than the stored min, stop that caluclation. 
                 if (ending > endMid)
                     break;
             }   
