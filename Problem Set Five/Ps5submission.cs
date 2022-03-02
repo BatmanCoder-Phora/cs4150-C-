@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Tests: taking to long
-
 namespace Problem_Set_Five
 {
     public class Ps5submission
@@ -95,6 +93,7 @@ namespace Problem_Set_Five
                 if (markedtable[row, col] != true)
                 {
                     markedtable[row, col] = true;
+
                     bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
                     if (!thereIsAMonster)
                         addNeighbors(row, col);
