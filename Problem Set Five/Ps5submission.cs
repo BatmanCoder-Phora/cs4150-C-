@@ -18,7 +18,8 @@ namespace Problem_Set_Five
 
 
         // The "bag" to pull from is in the from of a stack. 
-        public static Stack<string> Bag;
+      //  public static Stack<string> Bag;
+        public static Queue<string> qBag;
 
         // Some global variables. 
         public static string playerStarts;
@@ -36,6 +37,7 @@ namespace Problem_Set_Five
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
             markedtable = new int[numberOfRows-1, numberOfCols-1];
+            qBag = new Queue<string>();
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
@@ -89,14 +91,16 @@ namespace Problem_Set_Five
             ending = 0;
 
             /* create bag to input verticies*/
-            Bag = new Stack<string>();
+            // Bag = new Stack<string>();
+            qBag.Clear();
             markedtable = new int[numberOfRows-1, numberOfCols-1];
 
-            Bag.Push(PlayersStartingPosition);
+            //Bag.Push(PlayersStartingPosition);
+            qBag.Enqueue(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
-            while (Bag.Count > 0)
+            while (qBag.Count > 0)
             {
-                string positionAtTopOfStack = Bag.Pop();
+                string positionAtTopOfStack = qBag.Dequeue();
                 Tuple<int, int> tuple = stringTotuple(positionAtTopOfStack);
                 int row = tuple.Item1;
                 int col = tuple.Item2;
@@ -127,13 +131,13 @@ namespace Problem_Set_Five
         private static void addNeighbors(int currentRow, int currentCol)
         {
             if (inputTable[currentRow + 1, currentCol].Trim() != "#")
-                Bag.Push((currentRow + 1) + " " + currentCol);
+                qBag.Enqueue((currentRow + 1) + " " + currentCol);
             if (inputTable[currentRow - 1, currentCol].Trim() != "#")
-                Bag.Push((currentRow - 1) + " " + currentCol);
+                qBag.Enqueue((currentRow - 1) + " " + currentCol);
             if (inputTable[currentRow, currentCol + 1].Trim() != "#")
-                Bag.Push(currentRow + " " + (currentCol + 1));
+                qBag.Enqueue(currentRow + " " + (currentCol + 1));
             if (inputTable[currentRow, currentCol - 1].Trim() != "#")
-                Bag.Push(currentRow + " " + (currentCol - 1));
+                qBag.Enqueue(currentRow + " " + (currentCol - 1));
         }
         /// <summary>
         /// Checks to see if any of the neighbors are a character that we don't want. 
