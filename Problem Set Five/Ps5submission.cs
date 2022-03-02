@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-// Tests: should be getting correct answers. Taking to long. //
-//Test 26/30. Most under construction.
+// Tests: taking to long
+
 namespace Problem_Set_Five
 {
     public class Ps5submission
@@ -38,9 +38,6 @@ namespace Problem_Set_Five
             Bag = new Stack<string>();
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
-
-            // finds the players reachability in the table
-       //     WhataeverFirstSearchAdaptedReachability(playerStarts);
 
             // Two variables to store soultions. 
             string currentRow = "";
@@ -81,7 +78,7 @@ namespace Problem_Set_Five
             int col = int.Parse(spiltstring[1]);
             return Tuple.Create(row, col);
         }
-       
+        
         /// <summary>
         /// Our search through every position the player can go to. Applies a stack depth-first search. 
         /// </summary>
