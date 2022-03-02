@@ -17,10 +17,10 @@ namespace Problem_Set_Five
         public static int numberOfCols;
 
 
-        // The "bag" to pull from is in the from of a stack. 
+        // The "bag"  
         public static Stack<Tuple<int,int>> Bag;
 
-        // Some global variables. 
+        // Some global variables two get and store infomation.  
         public static Tuple<int, int> playerStarts;
         public static int ending = 0;
         public static int endMid = int.MaxValue;
@@ -39,7 +39,7 @@ namespace Problem_Set_Five
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
-            // Two variables to store soultions. 
+            // Variable to store soultions. 
             string currentRow = "";
 
             // Loop through every empty space that the player can reach and add a monster. 
@@ -80,15 +80,16 @@ namespace Problem_Set_Five
             Bag.Clear();
             markedtable = new bool[numberOfRows - 1, numberOfCols - 1];
 
+            // push first vertex
             Bag.Push(PlayersStartingPosition);
-            // while the bag is not empty, get the position.      
+            
+            // while the bag is not empty, check the next vertex.      
             while (Bag.Count > 0)
             {
                 Tuple<int, int> tuple = Bag.Pop();
                 int row = tuple.Item1;
                 int col = tuple.Item2;
-                string stringIamon = inputTable[row, col];
-
+                string ContentsForSquare = inputTable[row, col];
 
                 // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
                 if (markedtable[row, col] != true)
@@ -98,16 +99,16 @@ namespace Problem_Set_Five
                     if (!thereIsAMonster)
                         addNeighbors(row, col);
 
-                    Int32.TryParse(stringIamon, out treasure);
+                    Int32.TryParse(ContentsForSquare, out treasure);
                     ending += treasure;
                 }
-                // the the amount of treasure is already larger than the stored min, stop that caluclation. 
+                // the the amount of treasure is already larger than the stored min, stop calculating treasure. 
                 if (ending >= endMid)
                     return;
             }
         }
         /// <summary>
-        /// Makes sure that a wall isn't being added as a neighbor. 
+        /// Add the neighbors that are not a wall or have not been visited onto the stack.  
         /// </summary>2
         /// <param name="currentRow">Row of the position we are checking the neighbors for</param>
         /// <param name="currentCol">Col of the position we are checking the neighbors for</param>
