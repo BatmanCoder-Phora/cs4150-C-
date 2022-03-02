@@ -13,7 +13,7 @@ namespace Problem_Set_Five
         public static int[,] markedtable;
         public static int numberOfRows;
         public static int numberOfCols;
-        public static HashSet<string> marked;
+
 
         // The "bag" to pull from is in the from of a stack. 
         public static Stack<string> Bag;
@@ -33,6 +33,7 @@ namespace Problem_Set_Five
 
             // input data
             inputTable = new string[numberOfRows, numberOfCols];
+            markedtable = new int[numberOfRows, numberOfCols];
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
@@ -41,8 +42,8 @@ namespace Problem_Set_Five
             string currentRow = "";
             //int endMid = int.MaxValue;
             // Loop through every empty space in the graph and place a monster. 
-            for (int i = 1; i < numberOfRows-1; i++)
-                for (int j = 1; j < numberOfCols-1; j++)
+            for (int i = 1; i < numberOfRows - 1; i++)
+                for (int j = 1; j < numberOfCols - 1; j++)
                 {
                     // start inside the border and make sure no monster is placed adjcant to the player.  
                     if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
@@ -69,12 +70,12 @@ namespace Problem_Set_Five
         /// </summary>
         /// <param name="input">The String from the stack</param>
         /// <returns></returns>
-        public static Tuple<int,int> stringTotuple(string input)
+        public static Tuple<int, int> stringTotuple(string input)
         {
             string[] spiltstring = input.Split(' ');
             int row = int.Parse(spiltstring[0]);
             int col = int.Parse(spiltstring[1]);
-            return Tuple.Create(row, col) ; 
+            return Tuple.Create(row, col);
         }
         /// <summary>
         /// Our search through every position the player can go to. Applies a stack depth-first search. 
@@ -88,26 +89,22 @@ namespace Problem_Set_Five
             /* create bag to input verticies*/
             Bag = new Stack<string>();
             markedtable = new int[numberOfRows, numberOfCols];
-            marked = new HashSet<string>();
 
             Bag.Push(PlayersStartingPosition);
             // while the bag is not empty, get the position.      
             while (Bag.Count > 0)
             {
                 string positionAtTopOfStack = Bag.Pop();
-                Tuple<int,int> tuple = stringTotuple(positionAtTopOfStack);
+                Tuple<int, int> tuple = stringTotuple(positionAtTopOfStack);
                 int row = tuple.Item1;
                 int col = tuple.Item2;
                 string stringIamon = inputTable[row, col];
 
 
                 // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
-                //  if (markedtable[row, col] != 1)
-                // {
-                if (marked.Contains(row + " " + col) == false)
+                if (markedtable[row, col] != 1)
                 {
-                    // markedtable[row, col] = 1;
-                    marked.Add(row + " " + col);
+                    markedtable[row, col] = 1;
                     bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
                     if (!thereIsAMonster)
                         addNeighbors(row, col);
@@ -115,11 +112,10 @@ namespace Problem_Set_Five
                     Int32.TryParse(stringIamon, out treasure);
                     ending += treasure;
                 }
-               // }
                 // the the amount of treasure is already larger than the stored min, stop that caluclation. 
                 if (ending > endMid)
                     break;
-            }   
+            }
         }
         /// <summary>
         /// Makes sure that a wall isn't being added as a neighbor. 
@@ -128,14 +124,14 @@ namespace Problem_Set_Five
         /// <param name="currentCol">Col of the position we are checking the neighbors for</param>
         private static void addNeighbors(int currentRow, int currentCol)
         {
-                if (inputTable[currentRow + 1, currentCol].Trim() != "#")
-                    Bag.Push((currentRow+1) + " " + currentCol);
-                if (inputTable[currentRow - 1, currentCol].Trim() != "#")
-                    Bag.Push((currentRow-1) + " " + currentCol);
-                if (inputTable[currentRow, currentCol + 1].Trim() != "#")
-                    Bag.Push(currentRow + " " + (currentCol+1));
-                if (inputTable[currentRow, currentCol - 1].Trim() != "#")
-                    Bag.Push(currentRow + " " + (currentCol-1));
+            if (inputTable[currentRow + 1, currentCol].Trim() != "#")
+                Bag.Push((currentRow + 1) + " " + currentCol);
+            if (inputTable[currentRow - 1, currentCol].Trim() != "#")
+                Bag.Push((currentRow - 1) + " " + currentCol);
+            if (inputTable[currentRow, currentCol + 1].Trim() != "#")
+                Bag.Push(currentRow + " " + (currentCol + 1));
+            if (inputTable[currentRow, currentCol - 1].Trim() != "#")
+                Bag.Push(currentRow + " " + (currentCol - 1));
         }
         /// <summary>
         /// Checks to see if any of the neighbors are a character that we don't want. 
@@ -144,16 +140,16 @@ namespace Problem_Set_Five
         /// <param name="posCol">The current col of the position</param>
         /// <param name="lookFor">The character we want to make sure isn't there</param>
         /// <returns></returns>
-        private static bool CheckForUnwatedNeighbor(int posRow, int posCol,string lookFor)
+        private static bool CheckForUnwatedNeighbor(int posRow, int posCol, string lookFor)
         {
             bool result = false;
             if (inputTable[posRow + 1, posCol].Trim() == lookFor)
-                result =  true;
-             if (inputTable[posRow - 1, posCol].Trim() == lookFor)
                 result = true;
-             if (inputTable[posRow, posCol + 1].Trim() == lookFor)
+            if (inputTable[posRow - 1, posCol].Trim() == lookFor)
                 result = true;
-             if (inputTable[posRow, posCol - 1].Trim() == lookFor)
+            if (inputTable[posRow, posCol + 1].Trim() == lookFor)
+                result = true;
+            if (inputTable[posRow, posCol - 1].Trim() == lookFor)
                 result = true;
 
             return result;
