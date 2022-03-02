@@ -13,6 +13,7 @@ namespace Problem_Set_Five
         // The input table sotres the data from the console and the markedTable keeps track of visited sqaures 
         public static string[,] inputTable;
         public static int[,] markedtable;
+        public static bool[,] reachableTable;
         public static int numberOfRows;
         public static int numberOfCols;
 
@@ -40,16 +41,18 @@ namespace Problem_Set_Five
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
+            // finds the players reachability in the table
+            WhataeverFirstSearchAdaptedReachability(playerStarts);
 
             // Two variables to store soultions. 
             string currentRow = "";
 
-            // Loop through every empty space in the graph and place a monster. 
+            // Loop through every empty space that the player can reach and add a monster. 
             for (int i = 1; i < numberOfRows - 1; i++)
                 for (int j = 1; j < numberOfCols - 1; j++)
                 {
                     // start inside the border and make sure no monster is placed adjcant to the player.  
-                    if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
+                    if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true) && reachableTable[i,j])
                     {
                         inputTable[i, j] = "m";
 
@@ -79,6 +82,34 @@ namespace Problem_Set_Five
             int row = int.Parse(spiltstring[0]);
             int col = int.Parse(spiltstring[1]);
             return Tuple.Create(row, col);
+        }
+        /// <summary>
+        /// sees what is reachable in the table and marks that position as reachable. 
+        /// </summary>
+        /// <param name="PlayersStartingPosition">The players starting position</param>
+        private static void WhataeverFirstSearchAdaptedReachability(string PlayersStartingPosition)
+        {
+            Bag.Clear();
+            reachableTable = new bool[numberOfRows - 1, numberOfCols - 1];
+            Bag.Push(PlayersStartingPosition);
+            while (Bag.Count > 0)
+            {
+                string positionAtTopOfStack = Bag.Pop();
+                Tuple<int, int> tuple = stringTotuple(positionAtTopOfStack);
+                int row = tuple.Item1;
+                int col = tuple.Item2;
+                string stringIamon = inputTable[row, col];
+
+
+                // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
+                if (reachableTable[row, col] != true)
+                {
+                    reachableTable[row, col] = true;
+                    bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
+                    if (!thereIsAMonster)
+                        addNeighbors(row, col);
+                }
+            }
         }
         /// <summary>
         /// Our search through every position the player can go to. Applies a stack depth-first search. 
