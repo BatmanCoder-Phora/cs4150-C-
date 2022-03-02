@@ -116,8 +116,8 @@ namespace Problem_Set_Five
                     ending += treasure;
                 }
                 // the the amount of treasure is already larger than the stored min, stop that caluclation. 
-                if (ending > endMid)
-                    break;
+                if (ending >= endMid)
+                    return;
             }
         }
         /// <summary>
