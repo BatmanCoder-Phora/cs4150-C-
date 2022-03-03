@@ -8,7 +8,7 @@ namespace Problem_Set_Five
 {
     public class Ps5submission
     {
-        // The input table sotres the data from the console and the markedTable keeps track of visited sqaures 
+        // The input table stores the data from the console and the markedtable keeps track of visited squares 
         public static string[,] inputTable;
         public static bool[,] markedtable;
         public static int numberOfRows;
@@ -18,75 +18,75 @@ namespace Problem_Set_Five
         // The "bag"  
         public static Stack<Tuple<int,int>> Bag;
 
-        // Some global variables two get and store infomation.  
+        // Global variables that store information. 
         public static Tuple<int, int> playerStarts;
-        public static int ending = 0;
-        public static int endMid = int.MaxValue;
+        public static int currentTreasure = 0;
+        public static int currentMinTreasure = int.MaxValue;
 
         static void Main(string[] args)
         {
-            // spilt the string to get the number of rows and columns. 
+            // Split the string to get the number of rows and columns. 
             string line = Console.ReadLine();
             string[] spiltline = line.Split(' ');
             numberOfRows = int.Parse(spiltline[0]);
             numberOfCols = int.Parse(spiltline[1]);
 
-            // input data
+            // Input data
             inputTable = new string[numberOfRows, numberOfCols];
             Bag = new Stack<Tuple<int, int>>();
             for (int i = 0; i < numberOfRows; i++)
                 inputGraphData(i, numberOfCols);
 
-            // Variable to store soultions. 
-            string currentRow = "";
+            // Variable to store solutions. 
+            string currentMonster = "";
 
-            // Loop through every empty space that the player can reach and add a monster. 
+            // Loop through every empty space that the player can reach and try adding a monster. 
             for (int i = 1; i < numberOfRows - 1; i++)
                 for (int j = 1; j < numberOfCols - 1; j++)
                 {
-                    // start inside the border and make sure no monster is placed adjcant to the player.  
-                    if (inputTable[i, j] == "." && (CheckForUnwatedNeighbor(i, j, "p") != true))
+                    // Start inside the border and make sure no monster is placed adjacent to the player.  
+                    if (inputTable[i, j] == "." && (checkForUnwantedNeighbor(i, j, "p") != true))
                     {
                         inputTable[i, j] = "m";
 
-                        WhataeverFirstSearchAdapted(playerStarts);// finds the soultions. 
+                        whataeverFirstSearchAdapted(playerStarts);// Find the solutions by stepping through the maze with the added monster. 
 
-                        if (ending < endMid)
+                        if (currentTreasure < currentMinTreasure)
                         {
-                            endMid = ending;
-                            currentRow = i + " " + j;
+                            currentMinTreasure = currentTreasure;
+                            currentMonster = i + " " + j;
                         }
                         inputTable[i, j] = ".";
                     }
                 }
             // After a monster has been put in each spot print the best location for the player to get minimum treasure. 
-            Console.Write(currentRow);
+            Console.Write(currentMonster);
             Console.WriteLine();
-            Console.Write(endMid);
+            Console.Write(currentMinTreasure);
         }
         
         /// <summary>
         /// Our search through every position the player can go to. Applies a stack depth-first search. 
         /// </summary>
         /// <param name="PlayersStartingPosition">The players starting position</param>
-        private static void WhataeverFirstSearchAdapted(Tuple<int, int> PlayersStartingPosition)
+        private static void whataeverFirstSearchAdapted(Tuple<int, int> PlayersStartingPosition)
         {
             int treasure = 0;
-            ending = 0;
+            currentTreasure = 0;
 
-            /* create bag to input verticies*/
+            /* Create bag to input coordinates*/
             Bag.Clear();
             markedtable = new bool[numberOfRows - 1, numberOfCols - 1];
 
-            // push first vertex
+            // Push first coordinates
             Bag.Push(PlayersStartingPosition);
             
             // while the bag is not empty, check the next vertex.      
             while (Bag.Count > 0)
             {
-                Tuple<int, int> tuple = Bag.Pop();
-                int row = tuple.Item1;
-                int col = tuple.Item2;
+                Tuple<int, int> currenttuple = Bag.Pop();
+                int row = currenttuple.Item1;
+                int col = currenttuple.Item2;
                 string ContentsForSquare = inputTable[row, col];
 
                 // Check to see if the position had been visited, if it hasn't mark it and add it's neighbors.
@@ -94,15 +94,15 @@ namespace Problem_Set_Five
                 {
                     markedtable[row, col] = true;
 
-                    bool thereIsAMonster = CheckForUnwatedNeighbor(row, col, "m");
+                    bool thereIsAMonster = checkForUnwantedNeighbor(row, col, "m");
                     if (!thereIsAMonster)
                         addNeighbors(row, col);
 
                     Int32.TryParse(ContentsForSquare, out treasure);
-                    ending += treasure;
+                    currentTreasure += treasure;
                 }
                 // the the amount of treasure is already larger than the stored min, stop calculating treasure. 
-                if (ending >= endMid)
+                if (currentTreasure >= currentMinTreasure)
                     return;
             }
         }
@@ -129,7 +129,7 @@ namespace Problem_Set_Five
         /// <param name="posCol">The current col of the position</param>
         /// <param name="lookFor">The character we want to make sure isn't there</param>
         /// <returns></returns>
-        private static bool CheckForUnwatedNeighbor(int posRow, int posCol, string lookFor)
+        private static bool checkForUnwantedNeighbor(int posRow, int posCol, string lookFor)
         {
             bool result = false;
             if (inputTable[posRow + 1, posCol].Trim() == lookFor)
