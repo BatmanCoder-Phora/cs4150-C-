@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem Set 3", "Problem Se
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem Set 4", "Problem Set 4\Problem Set 4.csproj", "{25E09BC4-7F4F-4400-BA37-4E500B02BA0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem Set Five", "Problem Set Five\Problem Set Five.csproj", "{F4485E28-5C4F-400C-BC09-AD66EB085064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Problem Set Five", "Problem Set Five\Problem Set Five.csproj", "{F4485E28-5C4F-400C-BC09-AD66EB085064}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Problem Set 6", "Problem Set 6\Problem Set 6.csproj", "{4974246C-13F2-4408-A636-C980E928CA2F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F4485E28-5C4F-400C-BC09-AD66EB085064}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4485E28-5C4F-400C-BC09-AD66EB085064}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4485E28-5C4F-400C-BC09-AD66EB085064}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4974246C-13F2-4408-A636-C980E928CA2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4974246C-13F2-4408-A636-C980E928CA2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4974246C-13F2-4408-A636-C980E928CA2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4974246C-13F2-4408-A636-C980E928CA2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
