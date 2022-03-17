@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+/**
+ * 
+ */
 namespace Problem_Set_6
 {
     public class PS6submission
@@ -11,6 +13,14 @@ namespace Problem_Set_6
         static void Main(string[] args)
         {
         
+        }
+        static public void TopologicalSort()
+        {
+    
+        }
+        static public void TopSOrtDFS()
+        {
+     
         }
     }
 }
