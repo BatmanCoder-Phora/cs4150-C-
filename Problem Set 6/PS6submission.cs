@@ -13,18 +13,21 @@ using System.Threading.Tasks;
 
 /*
  * Steps:
- *  represents the player requried quests in two sperate graphs 
- *  use topological sort tow find the order the player can either complete the quest 
- *  print weather both players were able to complete the quest. 
+ *  Have a graph repersentes by a dictionary, now moving on to the topological order. 
+ *  How to do the topological order 
+ *  How to do the clock 
+ *  How to repsesnt the status
  */
 namespace Problem_Set_6
 {
     public class PS6submission
     {
-       
-       public static Dictionary<string,HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
+
+        public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
+
         static void Main(string[] args)
         {
+
             //player One
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
@@ -43,56 +46,75 @@ namespace Problem_Set_6
             line = Console.ReadLine();
             int comQuests = int.Parse(line);
             for (int i = 0; i < comQuests; i++)
-                Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
-
-            StoreInfomation(playerOne, playerTwo,playerOneNumOfQ,playerTwoNumOfQ);
-        }
-
-        private static void StoreInfomation(string playerOne, string playerTwo, int v,int z)
-        {
-            string[] spiltOneQuests = playerOne.Split('/');
-            string[] spiltTwoQuests = playerTwo.Split('/');
-            int total = v+z;
-            for (int i = 0; i < total; i++)
-                if (i < v)
-                    inputGraphdata(spiltOneQuests[i], "1");
-                else
-                    inputGraphdata(spiltOneQuests[i], "2");
-        }
-
-        private static void inputGraphdata(string quests,string player)
-        {
-            string[] spiltline = quests.Split(" ");
-            string questA = spiltline[0];
-            string questB = spiltline[1];
-
-            if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
-                Graph[questA].Add(questB);
-            else if (Graph.ContainsKey(questA))
-                Graph[questA].Add(questB + "-" + player);
-            else if (Graph.ContainsKey(questB))
-                Graph[questA + "-" + player].Add(questB);
-            else
             {
-                Graph.Add(questA + "-" + player, new HashSet<string>());
-                Graph.Add(questB + "-" + player, new HashSet<string>());
-                Graph[questA + "-" + player].Add(questB + "-" + player);
+                Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
             }
+
+            StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
+
+            TopologicalSort();
         }
 
         static public void TopologicalSort()
         {
+
             foreach (string s in Graph.Keys)
             {
-                // mark them
+
             }
-                  // run topSort DFS
-            
+            foreach (string s in Graph.Keys)
+            {
+
+            }
+
         }
-        static public void TopSOrtDFS()
+        static public void TopSOrtDFS(string s)
         {
-     
+
         }
-        
+
+
+
+        /* Storing the graph helper functions */
+        private static void StoreInfomation(string playerOne, string playerTwo, int one, int two)
+        {
+            string[] spiltOneQuests = playerOne.Split('/');
+            string[] spiltTwoQuests = playerTwo.Split('/');
+            int total = one + two;
+            for (int i = 0; i < one; i++)
+                inputGraphdata(spiltOneQuests[i], "1");
+            for (int i = 0; i < two; i++)
+                inputGraphdata(spiltTwoQuests[i], "2");
+        }
+
+        private static void inputGraphdata(string quests, string player)
+        {
+            string[] spiltline = quests.Split(" ");
+            string questA = spiltline[0];
+            string questB = spiltline[1];
+            string inputQuestA = spiltline[0] + "-" + player;
+            string inputQuestB = spiltline[1] + "-" + player;
+
+            if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
+                Graph[questA].Add(questB);
+            else if (Graph.ContainsKey(questA))
+                Graph[questA].Add(inputQuestB);
+            else if (Graph.ContainsKey(questB))
+                Graph[inputQuestA].Add(questB);
+            else
+            {
+                if (!Graph.ContainsKey(inputQuestA))
+                    Graph.Add(inputQuestA, new HashSet<string>());
+                if (!Graph.ContainsKey(inputQuestB))
+                    Graph.Add(inputQuestB, new HashSet<string>());
+
+                Graph[inputQuestA].Add(inputQuestB);
+            }
+        }
+
+
+
     }
+    
+
 }
