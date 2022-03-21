@@ -24,7 +24,9 @@ namespace Problem_Set_6
     {
 
         public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
-
+        public static Dictionary<string,string> markedGraph = new Dictionary<string, string>();
+        public static string[] output;
+        public static bool cycledeteced = false;
         static void Main(string[] args)
         {
 
@@ -51,31 +53,74 @@ namespace Problem_Set_6
             }
 
             StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
+            output = new string[playerOneNumOfQ+playerTwoNumOfQ+comQuests];
 
             TopologicalSort();
-        }
 
+            Console.WriteLine(output);
+        }
+        /// <summary>
+        /// Use a topological sort to find the order of visited vertexs. 
+        /// </summary>
         static public void TopologicalSort()
         {
+            int counter;
+            foreach (string key in Graph.Keys)
+                if(!markedGraph.ContainsKey(key))
+                markedGraph.Add(key, "New");
 
-            foreach (string s in Graph.Keys)
+            counter = markedGraph.Count-1;
+
+            foreach (string vertex in Graph.Keys)
             {
-
+                if (cycledeteced == true)
+                {
+                    break;
+                    Console.WriteLine("Unsolvable");
+                }
+                if (markedGraph[vertex] == "New")
+                    counter = TopSOrtDFS(vertex, counter);
             }
-            foreach (string s in Graph.Keys)
-            {
-
-            }
-
         }
-        static public void TopSOrtDFS(string s)
+        /// <summary>
+        /// A helper function for topological sort, that follow a Depth first Search style organization. 
+        /// </summary>
+        /// <param name="currentVertex"></param>
+        /// <param name="counter"></param>
+        /// <returns></returns>
+        static public int TopSOrtDFS(string currentVertex,int counter)
         {
+            markedGraph[currentVertex] = "Active";
+            HashSet<string> neigh = new HashSet<string>();
+            Graph.TryGetValue(currentVertex, out neigh);
+
+          if(neigh != null)
+            foreach (string neighborvertex in neigh) 
+                if (markedGraph[neighborvertex] == "New")
+                    counter = TopSOrtDFS(neighborvertex, counter);
+                else if (markedGraph[neighborvertex] == "Active")
+                {
+                    cycledeteced = true;
+                    break;
+                }
+
+            markedGraph[currentVertex] = "Finished";
+            output[counter] = currentVertex;
+            counter = counter - 1;
+            return counter;
 
         }
 
 
 
-        /* Storing the graph helper functions */
+                                                            /* Storing the graph helper functions */
+        /// <summary>
+        /// ReStores the infomation saved about player ones and player two's quests.
+        /// </summary>
+        /// <param name="playerOne">player one quests</param>
+        /// <param name="playerTwo">player two quests</param>
+        /// <param name="one">number of quest for one</param>
+        /// <param name="two">number of quest for two</param>
         private static void StoreInfomation(string playerOne, string playerTwo, int one, int two)
         {
             string[] spiltOneQuests = playerOne.Split('/');
@@ -86,7 +131,11 @@ namespace Problem_Set_6
             for (int i = 0; i < two; i++)
                 inputGraphdata(spiltTwoQuests[i], "2");
         }
-
+        /// <summary>
+        /// Puts in the rest of the graph data 
+        /// </summary>
+        /// <param name="quests">The quests</param>
+        /// <param name="player">which player they belong to</param>
         private static void inputGraphdata(string quests, string player)
         {
             string[] spiltline = quests.Split(" ");
@@ -98,9 +147,15 @@ namespace Problem_Set_6
             if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
                 Graph[questA].Add(questB);
             else if (Graph.ContainsKey(questA))
+            {
                 Graph[questA].Add(inputQuestB);
+                markedGraph.Add(inputQuestB, "New");
+            }
             else if (Graph.ContainsKey(questB))
+            {
                 Graph[inputQuestA].Add(questB);
+                markedGraph.Add(inputQuestA, "New");
+            }
             else
             {
                 if (!Graph.ContainsKey(inputQuestA))
