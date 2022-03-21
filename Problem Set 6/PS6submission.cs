@@ -18,15 +18,15 @@ namespace Problem_Set_6
 {
     public class PS6submission
     {
-
+        // Two different "maps". One to keep track of neighbors and the other to keep track of visited nodes
         public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
         public static Dictionary<string,string> markedGraph = new Dictionary<string, string>();
-     
+    
+        // Any resulting path is saved here. 
         public static string[] resultingPath;
-        
+    
+        // confrims of a cycle has been found. 
         public static bool cycledeteced = false;
-        public static int questcounter = 0;
-
 
         static void Main(string[] args)
         {
@@ -34,36 +34,33 @@ namespace Problem_Set_6
             //player One Info
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
-            string playerOne = "";
+            string playerOneQuests = "";
             for (int i = 0; i < playerOneNumOfQ; i++)
-                playerOne += Console.ReadLine() + "/";
+                playerOneQuests += Console.ReadLine() + "/";
 
             // player two Info
             line = Console.ReadLine();
             int playerTwoNumOfQ = int.Parse(line);
-            string playerTwo = "";
+            string playerTwoQuests = "";
             for (int i = 0; i < playerTwoNumOfQ; i++)
-                playerTwo += Console.ReadLine() + "/";
+                playerTwoQuests += Console.ReadLine() + "/";
 
             // Combined quests
             line = Console.ReadLine();
             int comQuests = int.Parse(line);
             for (int i = 0; i < comQuests; i++)
-            {
                 Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
-                questcounter++;
-            }
 
-            StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
+
+            StoreSavedInfomation(playerOneQuests, playerTwoQuests, playerOneNumOfQ, playerTwoNumOfQ);
 
             resultingPath = new string[Graph.Count];
 
-            // Find an order of the vertices. 
+            // Find the order the vertcies are completed in. 
             TopologicalSort();
-            
-            Console.WriteLine();
 
-            // Print Weather a path was found or not. 
+            // Print wheather a path was found or not. 
+            Console.WriteLine();
             if (cycledeteced)
                 Console.WriteLine("Unsolvable");
             else
@@ -75,7 +72,7 @@ namespace Problem_Set_6
         static public void TopologicalSort()
         {
             int counter;
-            
+            // mark each node as new.
             foreach (string key in Graph.Keys)
                 if(!markedGraph.ContainsKey(key))
                      markedGraph.Add(key, "New");
@@ -99,14 +96,15 @@ namespace Problem_Set_6
         static public int TopSOrtDFS(string currentVertex,int counter)
         {
             markedGraph[currentVertex] = "Active";
-            HashSet<string> neigh = new HashSet<string>();
-            Graph.TryGetValue(currentVertex, out neigh);
 
-          if(neigh != null)
-            foreach (string neighborvertex in neigh) 
-                if (markedGraph[neighborvertex] == "New")
-                    counter = TopSOrtDFS(neighborvertex, counter);
-                else if (markedGraph[neighborvertex] == "Active") // checks to see if there are any cycles. 
+            HashSet<string> neighbors;
+            Graph.TryGetValue(currentVertex, out neighbors);
+
+         if (neighbors != null)
+            foreach (string neighborVertex in neighbors) 
+                if (markedGraph[neighborVertex] == "New")
+                    counter = TopSOrtDFS(neighborVertex, counter);
+                else if (markedGraph[neighborVertex] == "Active") // checks to see if there are any cycles. 
                 {
                     cycledeteced = true;
                     break;
@@ -129,7 +127,7 @@ namespace Problem_Set_6
         /// <param name="playerTwo">player two quests</param>
         /// <param name="one">number of quest for one</param>
         /// <param name="two">number of quest for two</param>
-        private static void StoreInfomation(string playerOne, string playerTwo, int one, int two)
+        private static void StoreSavedInfomation(string playerOne, string playerTwo, int one, int two)
         {
             string[] spiltOneQuests = playerOne.Split('/');
             string[] spiltTwoQuests = playerTwo.Split('/');
