@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 /**
  * CS 4150: Algorithms 
  * 
- * Assignment Six: Adventures with firends '
+ * Assignment Six: Adventures with firends 
  * 
  * Author: Sephora Bateman 
  */
 
 /*
- * Steps:
- *  Have a graph repersentes by a dictionary, now moving on to the topological order. 
- *  How to do the topological order 
- *  How to do the clock 
- *  How to repsesnt the status
+ * Have yet to test it
  */
 namespace Problem_Set_6
 {
