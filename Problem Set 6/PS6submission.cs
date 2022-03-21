@@ -27,24 +27,25 @@ namespace Problem_Set_6
         public static Dictionary<string,string> markedGraph = new Dictionary<string, string>();
         public static string[] output;
         public static bool cycledeteced = false;
+
         static void Main(string[] args)
         {
 
-            //player One
+            //player One Info
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
             string playerOne = "";
             for (int i = 0; i < playerOneNumOfQ; i++)
                 playerOne += Console.ReadLine() + "/";
 
-            // player two
+            // player two Info
             line = Console.ReadLine();
             int playerTwoNumOfQ = int.Parse(line);
             string playerTwo = "";
             for (int i = 0; i < playerTwoNumOfQ; i++)
                 playerTwo += Console.ReadLine() + "/";
 
-            // combined quests
+            // Combined quests
             line = Console.ReadLine();
             int comQuests = int.Parse(line);
             for (int i = 0; i < comQuests; i++)
@@ -55,9 +56,16 @@ namespace Problem_Set_6
             StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
             output = new string[playerOneNumOfQ+playerTwoNumOfQ+comQuests];
 
+            // Find an order of the vertices. 
             TopologicalSort();
+            
+            Console.WriteLine();
 
-            Console.WriteLine(output);
+            // Print Weather a path was found or not. 
+            if (cycledeteced)
+                Console.WriteLine("Unsolvable");
+            else
+                output.ToList().ForEach(x => Console.WriteLine(x));
         }
         /// <summary>
         /// Use a topological sort to find the order of visited vertexs. 
@@ -65,6 +73,7 @@ namespace Problem_Set_6
         static public void TopologicalSort()
         {
             int counter;
+            
             foreach (string key in Graph.Keys)
                 if(!markedGraph.ContainsKey(key))
                 markedGraph.Add(key, "New");
@@ -74,10 +83,7 @@ namespace Problem_Set_6
             foreach (string vertex in Graph.Keys)
             {
                 if (cycledeteced == true)
-                {
                     break;
-                    Console.WriteLine("Unsolvable");
-                }
                 if (markedGraph[vertex] == "New")
                     counter = TopSOrtDFS(vertex, counter);
             }
@@ -98,7 +104,7 @@ namespace Problem_Set_6
             foreach (string neighborvertex in neigh) 
                 if (markedGraph[neighborvertex] == "New")
                     counter = TopSOrtDFS(neighborvertex, counter);
-                else if (markedGraph[neighborvertex] == "Active")
+                else if (markedGraph[neighborvertex] == "Active") // checks to see if there are any cycles. 
                 {
                     cycledeteced = true;
                     break;
@@ -113,7 +119,7 @@ namespace Problem_Set_6
 
 
 
-                                                            /* Storing the graph helper functions */
+                                              /* Storing the graph helper functions */
         /// <summary>
         /// ReStores the infomation saved about player ones and player two's quests.
         /// </summary>
@@ -144,6 +150,7 @@ namespace Problem_Set_6
             string inputQuestA = spiltline[0] + "-" + player;
             string inputQuestB = spiltline[1] + "-" + player;
 
+            // Depending on wheather one of the quests is a combined quest, different variables are added to the list. 
             if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
                 Graph[questA].Add(questB);
             else if (Graph.ContainsKey(questA))
