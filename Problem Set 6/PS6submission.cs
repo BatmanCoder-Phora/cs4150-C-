@@ -84,7 +84,7 @@ namespace Problem_Set_6
                 if (cycledeteced)
                     break;
                 if (markedGraph[vertex] == "New")
-                    counter = TopSOrtDFS(vertex, counter);
+                    counter = TopSortDFS(vertex, counter);
             }
         }
         /// <summary>
@@ -93,7 +93,7 @@ namespace Problem_Set_6
         /// <param name="currentVertex"></param>
         /// <param name="counter"></param>
         /// <returns></returns>
-        static public int TopSOrtDFS(string currentVertex,int counter)
+        static public int TopSortDFS(string currentVertex,int counter)
         {
             markedGraph[currentVertex] = "Active";
 
@@ -103,7 +103,7 @@ namespace Problem_Set_6
          if (neighbors != null)
             foreach (string neighborVertex in neighbors) 
                 if (markedGraph[neighborVertex] == "New")
-                    counter = TopSOrtDFS(neighborVertex, counter);
+                    counter = TopSortDFS(neighborVertex, counter);
                 else if (markedGraph[neighborVertex] == "Active") // checks to see if there are any cycles. 
                 {
                     cycledeteced = true;
