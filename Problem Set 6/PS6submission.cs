@@ -25,7 +25,7 @@ namespace Problem_Set_6
 
         public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
         public static Dictionary<string,string> markedGraph = new Dictionary<string, string>();
-        public static string[] output;
+        public static string[] resultingPath;
         public static bool cycledeteced = false;
 
         static void Main(string[] args)
@@ -54,7 +54,7 @@ namespace Problem_Set_6
             }
 
             StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
-            output = new string[playerOneNumOfQ+playerTwoNumOfQ+comQuests];
+            resultingPath = new string[playerOneNumOfQ+playerTwoNumOfQ+comQuests];
 
             // Find an order of the vertices. 
             TopologicalSort();
@@ -65,7 +65,7 @@ namespace Problem_Set_6
             if (cycledeteced)
                 Console.WriteLine("Unsolvable");
             else
-                output.ToList().ForEach(x => Console.WriteLine(x));
+                resultingPath.ToList().ForEach(x => Console.WriteLine(x));
         }
         /// <summary>
         /// Use a topological sort to find the order of visited vertexs. 
@@ -82,7 +82,7 @@ namespace Problem_Set_6
 
             foreach (string vertex in Graph.Keys)
             {
-                if (cycledeteced == true)
+                if (cycledeteced)
                     break;
                 if (markedGraph[vertex] == "New")
                     counter = TopSOrtDFS(vertex, counter);
@@ -111,7 +111,7 @@ namespace Problem_Set_6
                 }
 
             markedGraph[currentVertex] = "Finished";
-            output[counter] = currentVertex;
+            resultingPath[counter] = currentVertex;
             counter = counter - 1;
             return counter;
 
