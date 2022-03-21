@@ -155,17 +155,15 @@ namespace Problem_Set_6
             string inputQuestA = spiltline[0] + "-" + player;
             string inputQuestB = spiltline[1] + "-" + player;
 
-            // Depending on wheather one of the quests is a combined quest, different variables are added to the list. 
+            // Depending on wheather one of the quests is a combined quest, different labels are added to the list. 
             if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
                 Graph[questA].Add(questB);
             else if (Graph.ContainsKey(questA))
             {
-
-                if (!Graph.ContainsKey(inputQuestB))
-                    Graph.Add(inputQuestB, new HashSet<string>());
+              if (!Graph.ContainsKey(inputQuestB))
+                Graph.Add(inputQuestB, new HashSet<string>());
               
                 Graph[questA].Add(inputQuestB);
-                markedGraph.Add(inputQuestB, "New");
 
             }
             else if (Graph.ContainsKey(questB))
@@ -174,8 +172,6 @@ namespace Problem_Set_6
                 Graph.Add(inputQuestA, new HashSet<string>());
             
                 Graph[inputQuestA].Add(questB);
-                markedGraph.Add(inputQuestA, "New");
-
             }
             else
             {
@@ -187,10 +183,5 @@ namespace Problem_Set_6
                 Graph[inputQuestA].Add(inputQuestB);
             }
         }
-
-
-
     }
-    
-
 }
