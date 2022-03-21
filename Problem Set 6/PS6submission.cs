@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 
 /*
  * Have yet to test it
+ * based on basic infomation: When there are three combined nodes, It becomes unsloved.
  */
 namespace Problem_Set_6
 {
