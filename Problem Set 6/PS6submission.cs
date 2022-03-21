@@ -25,8 +25,12 @@ namespace Problem_Set_6
 
         public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
         public static Dictionary<string,string> markedGraph = new Dictionary<string, string>();
+     
         public static string[] resultingPath;
+        
         public static bool cycledeteced = false;
+        public static int questcounter = 0;
+
 
         static void Main(string[] args)
         {
@@ -51,10 +55,12 @@ namespace Problem_Set_6
             for (int i = 0; i < comQuests; i++)
             {
                 Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
+                questcounter++;
             }
 
             StoreInfomation(playerOne, playerTwo, playerOneNumOfQ, playerTwoNumOfQ);
-            resultingPath = new string[playerOneNumOfQ+playerTwoNumOfQ+comQuests];
+
+            resultingPath = new string[Graph.Count];
 
             // Find an order of the vertices. 
             TopologicalSort();
@@ -76,7 +82,7 @@ namespace Problem_Set_6
             
             foreach (string key in Graph.Keys)
                 if(!markedGraph.ContainsKey(key))
-                markedGraph.Add(key, "New");
+                     markedGraph.Add(key, "New");
 
             counter = markedGraph.Count-1;
 
@@ -131,7 +137,6 @@ namespace Problem_Set_6
         {
             string[] spiltOneQuests = playerOne.Split('/');
             string[] spiltTwoQuests = playerTwo.Split('/');
-            int total = one + two;
             for (int i = 0; i < one; i++)
                 inputGraphdata(spiltOneQuests[i], "1");
             for (int i = 0; i < two; i++)
@@ -155,13 +160,22 @@ namespace Problem_Set_6
                 Graph[questA].Add(questB);
             else if (Graph.ContainsKey(questA))
             {
+
+                if (!Graph.ContainsKey(inputQuestB))
+                    Graph.Add(inputQuestB, new HashSet<string>());
+              
                 Graph[questA].Add(inputQuestB);
                 markedGraph.Add(inputQuestB, "New");
+
             }
             else if (Graph.ContainsKey(questB))
             {
+              if(!Graph.ContainsKey(inputQuestA))
+                Graph.Add(inputQuestA, new HashSet<string>());
+            
                 Graph[inputQuestA].Add(questB);
                 markedGraph.Add(inputQuestA, "New");
+
             }
             else
             {
