@@ -12,8 +12,8 @@ using System.Threading.Tasks;
  */
 
 /*
- * Have yet to test it
- * based on basic infomation: When there are three combined nodes, It becomes unsloved.
+ * 3/21 submission:
+ *    21/30 - failing three test due to Invalid solution
  */
 namespace Problem_Set_6
 {
@@ -144,7 +144,7 @@ namespace Problem_Set_6
         /// <param name="player">which player they belong to</param>
         private static void inputGraphdata(string quests, string player)
         {
-            string[] spiltline = quests.Split(" ");
+            string[] spiltline = quests.Split(' ');
             string questA = spiltline[0];
             string questB = spiltline[1];
             string inputQuestA = spiltline[0] + "-" + player;
