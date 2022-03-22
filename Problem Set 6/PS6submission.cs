@@ -127,6 +127,7 @@ namespace Problem_Set_6
             Graph.Add(line, new HashSet<string>());
             HashSet<string> value;
             HashSet<string> newList = new HashSet<string>();
+            List<string> removable = new List<string>();   
             foreach (string key in Graph.Keys)
             {
                 bool keyWasRemoved = false;
@@ -142,7 +143,7 @@ namespace Problem_Set_6
                     if (key.Substring(0, key.Length - 2).Equals(line))
                     {
                         Graph[line].Add(neighbor);
-                        Graph.Remove(key);
+                        removable.Add(neighbor);
                         keyWasRemoved = true;
                     }
                 
@@ -153,7 +154,8 @@ namespace Problem_Set_6
                 }
                 newList = new HashSet<string>();
             }
-
+            foreach(string remove in removable)
+                Graph.Remove(remove);
                
         }
         /// <summary>
