@@ -143,7 +143,7 @@ namespace Problem_Set_6
                     if (key.Substring(0, key.Length - 2).Equals(line))
                     {
                         Graph[line].Add(neighbor);
-                        removable.Add(neighbor);
+                        removable.Add(key);
                         keyWasRemoved = true;
                     }
                 
