@@ -20,7 +20,7 @@ namespace Problem_Set_6
     public class PS6submission
     {
         // Two different "maps". One to keep track of neighbors and the other to keep track of visited nodes
-        public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
+        //public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
         public static Dictionary<string, string> markedGraph = new Dictionary<string, string>();
 
         // Any resulting path is saved here. 
@@ -32,6 +32,7 @@ namespace Problem_Set_6
         static void Main(string[] args)
         {
 
+            Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
             //player One Info
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
@@ -53,16 +54,16 @@ namespace Problem_Set_6
                 Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
 
 
-            StoreSavedInfomation(playerOneQuests, playerTwoQuests, playerOneNumOfQ, playerTwoNumOfQ);
+            Graph = StoreSavedInfomation(playerOneQuests, playerTwoQuests, playerOneNumOfQ, playerTwoNumOfQ, Graph);
 
             resultingPath = new string[Graph.Count];
 
             // Find the order the vertcies are completed in. 
-            TopologicalSort();
+            TopologicalSort(Graph);
 
             // Print wheather a path was found or not. 
             Console.WriteLine();
-            if (cycledeteced) 
+            if (cycledeteced)
                 Console.WriteLine("Unsolvable");
             else
                 resultingPath.ToList().ForEach(x => Console.WriteLine(x));
@@ -70,7 +71,7 @@ namespace Problem_Set_6
         /// <summary>
         /// Use a topological sort to find the order of visited vertexs. 
         /// </summary>
-        static public void TopologicalSort()
+        static public void TopologicalSort(Dictionary<string, HashSet<string>> Graph)
         {
             int counter;
             // mark each node as new.
@@ -85,9 +86,9 @@ namespace Problem_Set_6
                 if (cycledeteced)
                     return;
                 if (markedGraph[vertex] == "New")
-                    counter = TopSortDFS(vertex, counter);
+                    counter = TopSortDFS(vertex, counter,Graph);
             }
-            
+
         }
         /// <summary>
         /// A helper function for topological sort, that follow a Depth first Search style organization. 
@@ -95,18 +96,18 @@ namespace Problem_Set_6
         /// <param name="currentVertex"></param>
         /// <param name="counter"></param>
         /// <returns></returns>
-        static public int TopSortDFS(string currentVertex, int counter)
+        static public int TopSortDFS(string currentVertex, int counter, Dictionary<string, HashSet<string>> Graph)
         {
             markedGraph[currentVertex] = "Active";
 
             HashSet<string> neighbors;
             Graph.TryGetValue(currentVertex, out neighbors);
 
-            if (neighbors != null)
+             if(neighbors != null)
                 foreach (string neighborVertex in neighbors)
                 {
                     if (markedGraph[neighborVertex] == "New")
-                        counter = TopSortDFS(neighborVertex, counter);
+                        counter = TopSortDFS(neighborVertex, counter,Graph);
                     else if (markedGraph[neighborVertex] == "Active") // checks to see if there are any cycles. 
                     {
                         cycledeteced = true;
@@ -131,21 +132,23 @@ namespace Problem_Set_6
         /// <param name="playerTwo">player two quests</param>
         /// <param name="one">number of quest for one</param>
         /// <param name="two">number of quest for two</param>
-        private static void StoreSavedInfomation(string playerOne, string playerTwo, int one, int two)
+        private static Dictionary<string, HashSet<string>> StoreSavedInfomation(string playerOne, string playerTwo, int one, int two, Dictionary<string, HashSet<string>> graph)
         {
             string[] spiltOneQuests = playerOne.Split('/');
             string[] spiltTwoQuests = playerTwo.Split('/');
             for (int i = 0; i < one; i++)
-                inputGraphdata(spiltOneQuests[i], "1");
+              graph =  inputGraphdata(spiltOneQuests[i], "1",graph);
             for (int i = 0; i < two; i++)
-                inputGraphdata(spiltTwoQuests[i], "2");
+              graph =  inputGraphdata(spiltTwoQuests[i], "2",graph);
+
+            return graph;
         }
         /// <summary>
         /// Puts in the rest of the graph data 
         /// </summary>
         /// <param name="quests">The quests</param>
         /// <param name="player">which player they belong to</param>
-        private static void inputGraphdata(string quests, string player)
+        private static Dictionary<string, HashSet<string>> inputGraphdata(string quests, string player, Dictionary<string, HashSet<string>> Graph)
         {
             string[] spiltline = quests.Split(' ');
             string questA = spiltline[0];
@@ -180,6 +183,7 @@ namespace Problem_Set_6
 
                 Graph[inputQuestA].Add(inputQuestB);
             }
+            return Graph;
         }
     }
 }
