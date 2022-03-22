@@ -35,25 +35,20 @@ namespace Problem_Set_6
             //player One Info
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
-            string playerOneQuests = "";
             for (int i = 0; i < playerOneNumOfQ; i++)
-                playerOneQuests += Console.ReadLine() + "/";
+                inputGraphdata("1");
 
             // player two Info
             line = Console.ReadLine();
             int playerTwoNumOfQ = int.Parse(line);
-            string playerTwoQuests = "";
             for (int i = 0; i < playerTwoNumOfQ; i++)
-                playerTwoQuests += Console.ReadLine() + "/";
+                inputGraphdata("2");
 
             // Combined quests
             line = Console.ReadLine();
             int comQuests = int.Parse(line);
             for (int i = 0; i < comQuests; i++)
-                Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
-
-
-            StoreSavedInfomation(playerOneQuests, playerTwoQuests, playerOneNumOfQ, playerTwoNumOfQ);
+                CombinedQuests();
 
             resultingPath = new string[Graph.Count];
 
@@ -67,6 +62,8 @@ namespace Problem_Set_6
             else
                 resultingPath.ToList().ForEach(x => Console.WriteLine(x));
         }
+
+
         /// <summary>
         /// Use a topological sort to find the order of visited vertexs. 
         /// </summary>
@@ -120,63 +117,64 @@ namespace Problem_Set_6
 
 
 
-                                              /* Storing the graph helper functions */
+        /* Storing the graph helper functions */
         /// <summary>
-        /// ReStores the infomation saved about player ones and player two's quests.
+        /// 
         /// </summary>
-        /// <param name="playerOne">player one quests</param>
-        /// <param name="playerTwo">player two quests</param>
-        /// <param name="one">number of quest for one</param>
-        /// <param name="two">number of quest for two</param>
-        private static void StoreSavedInfomation(string playerOne, string playerTwo, int one, int two)
+        private static void CombinedQuests()
         {
-            string[] spiltOneQuests = playerOne.Split('/');
-            string[] spiltTwoQuests = playerTwo.Split('/');
-            for (int i = 0; i < one; i++)
-                inputGraphdata(spiltOneQuests[i], "1");
-            for (int i = 0; i < two; i++)
-                inputGraphdata(spiltTwoQuests[i], "2");
+            string line = Console.ReadLine();
+            Graph.Add(line, new HashSet<string>());
+            HashSet<string> value;
+            HashSet<string> newList = new HashSet<string>();
+            foreach (string key in Graph.Keys)
+            {
+                bool keyWasRemoved = false;
+                Graph.TryGetValue(key, out value);
+                foreach (string neighbor in value)
+                {
+                    newList.Add(neighbor);
+                    if (neighbor.Substring(0, neighbor.Length - 2).Equals(line))
+                    {
+                        newList.Remove(neighbor);
+                        newList.Add(line);
+                    }
+                    if (key.Substring(0, key.Length - 2).Equals(line))
+                    {
+                        Graph[line].Add(neighbor);
+                        Graph.Remove(key);
+                        keyWasRemoved = true;
+                    }
+                
+                }
+                if (!keyWasRemoved)
+                {
+                    Graph[key] = newList;
+                }
+                newList = new HashSet<string>();
+            }
+
+               
         }
         /// <summary>
         /// Puts in the rest of the graph data 
         /// </summary>
         /// <param name="quests">The quests</param>
         /// <param name="player">which player they belong to</param>
-        private static void inputGraphdata(string quests, string player)
+        private static void inputGraphdata(string player)
         {
+            string quests = Console.ReadLine();
             string[] spiltline = quests.Split(' ');
-            string questA = spiltline[0];
-            string questB = spiltline[1];
             string inputQuestA = spiltline[0] + "-" + player;
             string inputQuestB = spiltline[1] + "-" + player;
 
-            // Depending on wheather one of the quests is a combined quest, different labels are added to the list. 
-            if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
-                Graph[questA].Add(questB);
-            else if (Graph.ContainsKey(questA))
-            {
-              if (!Graph.ContainsKey(inputQuestB))
-                Graph.Add(inputQuestB, new HashSet<string>());
-              
-                Graph[questA].Add(inputQuestB);
-
-            }
-            else if (Graph.ContainsKey(questB))
-            {
-              if(!Graph.ContainsKey(inputQuestA))
-                Graph.Add(inputQuestA, new HashSet<string>());
-            
-                Graph[inputQuestA].Add(questB);
-            }
-            else
-            {
                 if (!Graph.ContainsKey(inputQuestA))
                     Graph.Add(inputQuestA, new HashSet<string>());
                 if (!Graph.ContainsKey(inputQuestB))
                     Graph.Add(inputQuestB, new HashSet<string>());
 
                 Graph[inputQuestA].Add(inputQuestB);
-            }
+            
         }
     }
 }
