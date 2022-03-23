@@ -12,40 +12,43 @@ using System.Threading.Tasks;
  */
 
 /*
- * Have yet to test it
- * based on basic infomation: When there are three combined nodes, It becomes unsloved.
+ * Is a dictionary really okay? 
+ * passing thrity out of thrity 
  */
 namespace Problem_Set_6
 {
     public class PS6submission
     {
-        // Two different "maps". One to keep track of neighbors and the other to keep track of visited nodes
-        //public static Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
+        // "Map" to be used to keep track of visited nodes
         public static Dictionary<string, string> markedGraph = new Dictionary<string, string>();
 
+        // used to store the players quests, until joint quests are in the graph. 
+        public static string[] PlayerOnePath;
+        public static string[] PlayerTwoPath;
         // Any resulting path is saved here. 
         public static string[] resultingPath;
 
-        // confrims of a cycle has been found. 
+        // Shows if a cycle has been found. 
         public static bool cycledeteced = false;
 
         static void Main(string[] args)
         {
+            // The graph
 
             Dictionary<string, HashSet<string>> Graph = new Dictionary<string, HashSet<string>>();
             //player One Info
             string line = Console.ReadLine();
             int playerOneNumOfQ = int.Parse(line);
-            string playerOneQuests = "";
+            PlayerOnePath = new string[playerOneNumOfQ];
             for (int i = 0; i < playerOneNumOfQ; i++)
-                playerOneQuests += Console.ReadLine() + "/";
+                PlayerOnePath[i] += Console.ReadLine();
 
             // player two Info
             line = Console.ReadLine();
             int playerTwoNumOfQ = int.Parse(line);
-            string playerTwoQuests = "";
+            PlayerTwoPath = new string[playerTwoNumOfQ];
             for (int i = 0; i < playerTwoNumOfQ; i++)
-                playerTwoQuests += Console.ReadLine() + "/";
+                PlayerTwoPath[i] += Console.ReadLine();
 
             // Combined quests
             line = Console.ReadLine();
@@ -54,7 +57,7 @@ namespace Problem_Set_6
                 Graph.Add(Console.ReadLine().Trim(), new HashSet<string>());
 
 
-            Graph = StoreSavedInfomation(playerOneQuests, playerTwoQuests, playerOneNumOfQ, playerTwoNumOfQ, Graph);
+            Graph = StoreSavedInfomation(PlayerOnePath, PlayerTwoPath, playerOneNumOfQ, playerTwoNumOfQ, Graph);
 
             resultingPath = new string[Graph.Count];
 
@@ -86,7 +89,7 @@ namespace Problem_Set_6
                 if (cycledeteced)
                     return;
                 if (markedGraph[vertex] == "New")
-                    counter = TopSortDFS(vertex, counter,Graph);
+                    counter = TopSortDFS(vertex, counter, Graph);
             }
 
         }
@@ -103,18 +106,18 @@ namespace Problem_Set_6
             HashSet<string> neighbors;
             Graph.TryGetValue(currentVertex, out neighbors);
 
-             if(neighbors != null)
+            if (neighbors != null)
                 foreach (string neighborVertex in neighbors)
                 {
                     if (markedGraph[neighborVertex] == "New")
-                        counter = TopSortDFS(neighborVertex, counter,Graph);
+                        counter = TopSortDFS(neighborVertex, counter, Graph);
                     else if (markedGraph[neighborVertex] == "Active") // checks to see if there are any cycles. 
                     {
                         cycledeteced = true;
                         break;
                     }
                 }
-
+            // write the node to the resultingPath and mark the node as finished 
             markedGraph[currentVertex] = "Finished";
             resultingPath[counter] = currentVertex;
             counter = counter - 1;
@@ -124,7 +127,7 @@ namespace Problem_Set_6
 
 
 
-        /* Storing the graph helper functions */
+                                /* Storing the graph helper functions */
         /// <summary>
         /// ReStores the infomation saved about player ones and player two's quests.
         /// </summary>
@@ -132,14 +135,12 @@ namespace Problem_Set_6
         /// <param name="playerTwo">player two quests</param>
         /// <param name="one">number of quest for one</param>
         /// <param name="two">number of quest for two</param>
-        private static Dictionary<string, HashSet<string>> StoreSavedInfomation(string playerOne, string playerTwo, int one, int two, Dictionary<string, HashSet<string>> graph)
+        private static Dictionary<string, HashSet<string>> StoreSavedInfomation(string[] playerOne, string[] playerTwo, int one, int two, Dictionary<string, HashSet<string>> graph)
         {
-            string[] spiltOneQuests = playerOne.Split('/');
-            string[] spiltTwoQuests = playerTwo.Split('/');
             for (int i = 0; i < one; i++)
-              graph =  inputGraphdata(spiltOneQuests[i], "1",graph);
+                graph = inputGraphdata(playerOne[i], "1", graph);
             for (int i = 0; i < two; i++)
-              graph =  inputGraphdata(spiltTwoQuests[i], "2",graph);
+                graph = inputGraphdata(playerTwo[i], "2", graph);
 
             return graph;
         }
@@ -156,10 +157,10 @@ namespace Problem_Set_6
             string inputQuestA = spiltline[0] + "-" + player;
             string inputQuestB = spiltline[1] + "-" + player;
 
-            // Depending on wheather one of the quests is a combined quest, different labels are added to the list. 
-            if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB))
+
+            if (Graph.ContainsKey(questA) && Graph.ContainsKey(questB)) // if both A and B are joint quests
                 Graph[questA].Add(questB);
-            else if (Graph.ContainsKey(questA))
+            else if (Graph.ContainsKey(questA)) // If quest A is a joint quest
             {
                 if (!Graph.ContainsKey(inputQuestB))
                     Graph.Add(inputQuestB, new HashSet<string>());
@@ -167,14 +168,14 @@ namespace Problem_Set_6
                 Graph[questA].Add(inputQuestB);
 
             }
-            else if (Graph.ContainsKey(questB))
+            else if (Graph.ContainsKey(questB)) // if quest B is a joint quest
             {
                 if (!Graph.ContainsKey(inputQuestA))
                     Graph.Add(inputQuestA, new HashSet<string>());
 
                 Graph[inputQuestA].Add(questB);
             }
-            else
+            else // if neither are joint quests.
             {
                 if (!Graph.ContainsKey(inputQuestA))
                     Graph.Add(inputQuestA, new HashSet<string>());
