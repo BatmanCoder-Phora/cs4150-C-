@@ -3,23 +3,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-/*
- * Author: Sepora Bateman 
- * Class: cs4150 Algorithms 
- * Assignment: 7 
- * 
- * 
- * Minimum Spanning Tree Algorithms
- * 
- */
+
 namespace Problem_Set_Seven
 {
     public class Ps7submission
     {
-        public static void main(string[] args)
+        public static void Main(string[] args)
         {
+            string line = Console.ReadLine();
+            string[] lines = line.Split(' ');
+            string algorhim = lines[5];
+            algorhim = algorhim.Trim();
+
+            if (algorhim == "Jarnik")
+            {
+                string startingVertex = lines[6];
+                JarníksAlgorithm();
+            }
+            else if (algorhim == "Kruskal")
+            {
+                KruskalsAlgorithm();
+            }
+            else
+            {
+                BorůvkasAlgorithm();
+            }
 
         }
 
+        public static void JarníksAlgorithm()
+        {
+
+        }
+        public static void KruskalsAlgorithm()
+        {
+
+        }
+        public static void BorůvkasAlgorithm()
+        {
+
+        }
     }
 }
