@@ -95,7 +95,7 @@ namespace Problem_Set_8
                 if (i != driversStart)
                 {
                     dist[i] = Int32.MaxValue;
-                    pred[driversStart] = null;
+                    pred[i] = null;
                 }
             }
                 
