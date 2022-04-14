@@ -102,11 +102,20 @@ namespace Problem_Set_8
                         }
 
                         // if key is in queue decrease key 
+                        if(ContainsKey(i,pathBag) == true)
+                        {
+
+                        }
                         // not add it to the queue
                     }
             }
 
             BackStep(pred, driversEnd, driversStart, roadMap);
+        }
+
+        private static bool ContainsKey(int i, PriorityQueue<int, Tuple<int, int, int>> pathBag)
+        {
+            return true;
         }
 
         /// <summary>
@@ -189,9 +198,9 @@ namespace Problem_Set_8
             public int CompareTo(object? obj)
             {
                 Edge edge = (Edge)obj;
-                if (numOfLeft < edge.numOfLeft || numOfrights < edge.numOfrights || numofStraights < edge.numofStraights)
-                    return 1;
                 if (numOfLeft > edge.numOfLeft || numOfrights > edge.numOfrights || numofStraights > edge.numofStraights)
+                    return 1;
+                if (numOfLeft < edge.numOfLeft || numOfrights < edge.numOfrights || numofStraights < edge.numofStraights)
                     return -1;
                 else
                     return 0;
