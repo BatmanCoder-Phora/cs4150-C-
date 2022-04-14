@@ -17,13 +17,15 @@ using System.Threading.Tasks;
 /// DELETE THIS:
 /* WHAT I NEED TO DO:
  *    - Find How to Generate the weights. 
- *    - figure out how that gives us our answer. 
+ *    - Figure out how the search give sus our answer. 
+ *            Then compare mutilpe answers to give most wanted one. 
 */
 namespace Problem_Set_8
 {
     public class PS8submission
     {
         public static int roadSegNumber;
+        public static List<string> AnswerSet = new List<string>();
         static void Main(string[] args)
         {
             // get the road number and intersections 
@@ -48,36 +50,89 @@ namespace Problem_Set_8
                 y = int.Parse(parts[2]);
                 roadMap[x, y] = parts[1];           
             }
-            FindShortestPathAlgorithm(driversStart, roadMap);
+            //Find the shorest path 
+            FindShortestPathAlgorithm(driversStart, driversEnd, roadMap);
+
+            //Print the shorest path
+            Console.WriteLine();
+            Console.Write(AnswerSet.Count+ " ");
+            AnswerSet.Reverse();
+            Console.Write(String.Join(" ", AnswerSet));
         }
+
         /// <summary>
         ///  This is the algorithm that finds the shortest path from any start point to any end point. 
         /// </summary>
         /// <param name="driversStart"></param>
         /// <param name="driversEnd"></param>
         /// <exception cref="NotImplementedException"></exception>
-        private static void FindShortestPathAlgorithm(int driversStart, string[,] roadMap)
+        private static void FindShortestPathAlgorithm(int driversStart, int driversEnd,string[,] roadMap)
         {
-            int?[] dist = new int?[roadSegNumber];
+            int[] dist = new int[roadSegNumber];
             int?[] pred = new int?[roadSegNumber];
 
             InitSSSP(driversStart, dist, pred,roadMap);
             
             PriorityQueue<int,int> pathBag = new PriorityQueue<int, int>();
-            pathBag.Enqueue(driversStart,driversStart);
+            pathBag.Enqueue(driversStart,dist[driversStart]);
             while (pathBag.Count > 0)
             {
                 int popVertex = pathBag.Dequeue();
                 for (int i = 0; i < roadSegNumber; i++)
                     if (roadMap[popVertex, i] != null)
-                        if (dist[i] > dist[popVertex] + 1) // tense 1 = w(u->v)
+                        if (dist[i] > dist[popVertex] + GenerateWeight(roadMap[popVertex,i])) // tense 1 = w(u->v)
                         {
-                            dist[i] = dist[popVertex] + 1; // relax 1 = w(u->v)
+                            dist[i] = dist[popVertex] + GenerateWeight(roadMap[popVertex, i]); // relax 1 = w(u->v)
                             pred[i] = popVertex;
-                            pathBag.Enqueue(i,i);
+                            pathBag.Enqueue(i,dist[i]);
                         }
             }
 
+            BackStep(pred,driversEnd,driversStart,roadMap);
+        }
+
+        /// <summary>
+        /// Steps back through the transverals to find the path. 
+        /// </summary>
+        /// <param name="pred">The list of preds for each vertex</param>
+        /// <param name="end">The ending vertes</param>
+        /// <param name="start">The starting vertex</param>
+        /// <param name="roadMap">The map to add the directions</param>
+        private static void BackStep(int?[] pred, int end, int start, string[,] roadMap)
+        {
+            Queue<int> bag = new Queue<int>();
+            bag.Enqueue(end);
+            while (bag.Count > 0)
+            {
+                int vertex = bag.Dequeue();
+                int predVertex = pred[vertex].Value;
+                if (pred[vertex].Equals(start))
+                {
+                    AnswerSet.Add(roadMap[predVertex, vertex]);
+                    break;
+                }
+                else
+                {
+                    AnswerSet.Add(roadMap[predVertex, vertex]);
+                    bag.Enqueue(predVertex);
+                }
+            }
+        }
+        /// <summary>
+        /// Based on which way the turn goes it calculates a route. 
+        /// </summary>
+        /// <param name="weight"></param>
+        /// <returns></returns>
+        public static int GenerateWeight(string weight)
+        {
+            if (weight.Equals("right"))
+                return 10;
+            else if (weight.Equals("left"))
+                return 200000;
+            else if (weight.Equals("straight"))
+                return 10000;
+            else
+                return 0;
         }
         /// <summary>
         /// Sets up the distance and perdessor tables
@@ -86,7 +141,7 @@ namespace Problem_Set_8
         /// <param name="dist"> The distance array </param>
         /// <param name="pred">the parent vertex</param>
         /// <param name="roadMap">The road map </param>
-        private static void InitSSSP(int driversStart, int?[] dist, int?[] pred, string[,] roadMap)
+        private static void InitSSSP(int driversStart, int[] dist, int?[] pred, string[,] roadMap)
         {
             dist[driversStart] = 0;
             pred[driversStart] = null;
