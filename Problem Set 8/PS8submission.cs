@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 */
 namespace Problem_Set_8
 {
-    public class PS8submission
+    public class PS8submission 
     {
         public static int roadSegNumber;
         public static List<string> AnswerSet = new List<string>();
@@ -68,24 +68,39 @@ namespace Problem_Set_8
         /// <exception cref="NotImplementedException"></exception>
         private static void FindShortestPathAlgorithm(int driversStart, int driversEnd,string[,] roadMap)
         {
-            int[] dist = new int[roadSegNumber];
+            Tuple<int,int,int>[] dist = new Tuple<int, int, int>[roadSegNumber];
             int?[] pred = new int?[roadSegNumber];
 
             InitSSSP(driversStart, dist, pred,roadMap);
             
-            PriorityQueue<int,int> pathBag = new PriorityQueue<int, int>();
-            pathBag.Enqueue(driversStart,dist[driversStart]);
+            PriorityQueue<int, Tuple<int, int, int>> pathBag = new PriorityQueue<int, Tuple<int, int, int>>();
+            
+            for (int i = 0; i < roadSegNumber; i++)
+                pathBag.Enqueue(i,dist[i]);
+
             while (pathBag.Count > 0)
             {
                 int popVertex = pathBag.Dequeue();
                 for (int i = 0; i < roadSegNumber; i++)
-                    if (roadMap[popVertex, i] != null)
-                        if (dist[i] > dist[popVertex] + GenerateWeight(roadMap[popVertex,i])) // tense 1 = w(u->v)
+                    if (roadMap[popVertex, i] != null && i != driversStart)
+                    {
+                        Tuple<int, int, int> newtuple = GenerateWeight(roadMap[popVertex, i],dist[popVertex]);
+                        if (dist[i].Item2 > newtuple.Item2)
                         {
-                            dist[i] = dist[popVertex] + GenerateWeight(roadMap[popVertex, i]); // relax 1 = w(u->v)
+                            dist[i] = newtuple; // relax
                             pred[i] = popVertex;
-                            pathBag.Enqueue(i,dist[i]);
                         }
+                        else if(dist[i].Item3 > newtuple.Item3)
+                        {
+                            dist[i] = newtuple; // relax
+                            pred[i] = popVertex;
+                        }
+                        else if(dist[i].Item3 > newtuple.Item3)
+                        {
+                            dist[i] = newtuple; // relax
+                            pred[i] = popVertex;
+                        }
+                    }
             }
 
             BackStep(pred,driversEnd,driversStart,roadMap);
@@ -123,16 +138,19 @@ namespace Problem_Set_8
         /// </summary>
         /// <param name="weight"></param>
         /// <returns></returns>
-        public static int GenerateWeight(string weight)
+        public static Tuple<int, int, int> GenerateWeight(string weight, Tuple<int,int,int> item1)
         {
+            int addition1 = item1.Item1 + 1;
+            int addition2 = item1.Item2 + 1;
+            int addition3 = item1.Item3 + 1;
             if (weight.Equals("right"))
-                return 1;
-            else if (weight.Equals("left"))
-                return 20000000;
+                return Tuple.Create(addition1, item1.Item2,item1.Item3);
+            else if (weight.Equals("Left"))
+                return Tuple.Create(item1.Item1, addition2, item1.Item3);
             else if (weight.Equals("straight"))
-                return 1000;
+                return Tuple.Create(item1.Item1, item1.Item2, addition3);
             else
-                return 0;
+                return item1;
         }
         /// <summary>
         /// Sets up the distance and perdessor tables
@@ -141,15 +159,15 @@ namespace Problem_Set_8
         /// <param name="dist"> The distance array </param>
         /// <param name="pred">the parent vertex</param>
         /// <param name="roadMap">The road map </param>
-        private static void InitSSSP(int driversStart, int[] dist, int?[] pred, string[,] roadMap)
+        private static void InitSSSP(int driversStart, Tuple<int, int, int>[] dist, int?[] pred, string[,] roadMap)
         {
-            dist[driversStart] = 0;
+            dist[driversStart] = Tuple.Create(0,0,0);
             pred[driversStart] = null;
             for (int i = 0; i < roadSegNumber; i++)
             {
                 if (i != driversStart)
                 {
-                    dist[i] = Int32.MaxValue;
+                    dist[i] = Tuple.Create(Int32.MaxValue,Int32.MaxValue,Int32.MaxValue);
                     pred[i] = null;
                 }
             }
