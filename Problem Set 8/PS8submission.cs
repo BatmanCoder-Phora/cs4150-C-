@@ -126,11 +126,11 @@ namespace Problem_Set_8
         public static int GenerateWeight(string weight)
         {
             if (weight.Equals("right"))
-                return 10;
+                return 1;
             else if (weight.Equals("left"))
-                return 200000;
+                return 20000000;
             else if (weight.Equals("straight"))
-                return 10000;
+                return 1000;
             else
                 return 0;
         }
