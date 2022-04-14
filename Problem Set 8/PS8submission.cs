@@ -143,11 +143,11 @@ namespace Problem_Set_8
             int addition1 = item1.Item1 + 1;
             int addition2 = item1.Item2 + 1;
             int addition3 = item1.Item3 + 1;
-            if (weight.Equals("right"))
+            if (weight.Equals("right")||weight.Equals("Right"))
                 return Tuple.Create(addition1, item1.Item2,item1.Item3);
-            else if (weight.Equals("Left"))
+            else if (weight.Equals("Left")|| weight.Equals("left"))
                 return Tuple.Create(item1.Item1, addition2, item1.Item3);
-            else if (weight.Equals("straight"))
+            else if (weight.Equals("straight")|| weight.Equals("Straight"))
                 return Tuple.Create(item1.Item1, item1.Item2, addition3);
             else
                 return item1;
