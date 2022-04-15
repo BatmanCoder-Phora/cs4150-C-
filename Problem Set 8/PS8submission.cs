@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 */
 namespace Problem_Set_8
 {
-    public class PS8submission
+    public class PS8submission 
     {
         public static int roadSegNumber;
         public static List<string> AnswerSet = new List<string>();
@@ -49,6 +49,7 @@ namespace Problem_Set_8
                 x = int.Parse(parts[0]);
                 y = int.Parse(parts[2]);
                 roadMap[x, y] = parts[1];
+
             }
             //Find the shorest path 
             FindShortestPathAlgorithm(driversStart, driversEnd, roadMap);
@@ -70,17 +71,19 @@ namespace Problem_Set_8
         {
             Tuple<int, int, int>[] dist = new Tuple<int, int, int>[roadSegNumber];
             int?[] pred = new int?[roadSegNumber];
+            bool[,] marked = new bool[roadSegNumber, roadSegNumber];
+
 
             InitSSSP(driversStart, dist, pred, roadMap);
 
-            PriorityQueue<int, Tuple<int, int, int>> pathBag = new PriorityQueue<int, Tuple<int, int, int>>();
-
+            PriorityQueue<int, Tuple<int,int,int>> pathBag = new PriorityQueue<int, Tuple<int, int, int>>();
             for (int i = 0; i < roadSegNumber; i++)
-                pathBag.Enqueue(i, dist[i]);
+                pathBag.Enqueue(driversStart,dist[i]);
 
             while (pathBag.Count > 0)
             {
                 int popVertex = pathBag.Dequeue();
+
                 for (int i = 0; i < roadSegNumber; i++)
                     if (roadMap[popVertex, i] != null && i != driversStart)
                     {
@@ -90,33 +93,21 @@ namespace Problem_Set_8
                             dist[i] = newtuple; // relax
                             pred[i] = popVertex;
                         }
-                        else if (dist[i].Item3 > newtuple.Item3)
+                        else if (dist[i].Item2 == newtuple.Item2 && dist[i].Item3 > newtuple.Item3)
                         {
                             dist[i] = newtuple; // relax
                             pred[i] = popVertex;
                         }
-                        else if (dist[i].Item3 > newtuple.Item3)
+                        else if (dist[i].Item3 == newtuple.Item3 && dist[i].Item1 > newtuple.Item1)
                         {
                             dist[i] = newtuple; // relax
                             pred[i] = popVertex;
                         }
-
-                        // if key is in queue decrease key 
-                        if(ContainsKey(i,pathBag) == true)
-                        {
-
-                        }
-                        // not add it to the queue
                     }
             }
-
             BackStep(pred, driversEnd, driversStart, roadMap);
         }
 
-        private static bool ContainsKey(int i, PriorityQueue<int, Tuple<int, int, int>> pathBag)
-        {
-            return true;
-        }
 
         /// <summary>
         /// Steps back through the transverals to find the path. 
@@ -185,28 +176,29 @@ namespace Problem_Set_8
             }
 
         }
-
-    /*    class Edge : IComparable
-        {
-
-            public int numOfLeft;
-            public int numOfrights;
-            public int numofStraights;
-            public Edge(int r, int l, int s)
-            { numOfrights = r; numOfLeft = l; numofStraights = s; }
-
-            public int CompareTo(object? obj)
+          class Edge : IComparable
             {
-                Edge edge = (Edge)obj;
-                if (numOfLeft > edge.numOfLeft || numOfrights > edge.numOfrights || numofStraights > edge.numofStraights)
-                    return 1;
-                if (numOfLeft < edge.numOfLeft || numOfrights < edge.numOfrights || numofStraights < edge.numofStraights)
-                    return -1;
-                else
-                    return 0;
 
+                public int numOfLeft;
+                public int numOfrights;
+                public int numofStraights;
+                public Edge(int r, int l, int s)
+                { numOfrights = r; numOfLeft = l; numofStraights = s; }
+
+                public int CompareTo(object? obj)
+                {
+                    Edge edge = (Edge)obj;
+                    if (this.numOfLeft < edge.numOfLeft)
+                        return -1;
+                    else if (this.numofStraights < edge.numofStraights && this.numOfLeft == edge.numOfLeft)
+                        return -1;
+                    else if (this.numOfrights < edge.numOfrights && this.numofStraights == edge.numofStraights)
+                        return -1;
+                    else
+                        return 0;
+
+                }
             }
-        }*/
 
     }
 }
