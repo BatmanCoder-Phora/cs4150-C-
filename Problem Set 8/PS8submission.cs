@@ -102,6 +102,7 @@ namespace Problem_Set_8
                             pred[i] = popVertex;
 
                         }
+                        // this attempt
                         if (marked[i] == true)
                             pathBag = DecreaseKey(i, pathBag, dist);
                         else
@@ -211,6 +212,9 @@ namespace Problem_Set_8
             }
 
         }
+        /// <summary>
+        /// \Edge class to store the path. 
+        /// </summary>
           class Edge : IComparable
             {
 
@@ -219,7 +223,11 @@ namespace Problem_Set_8
                 public int numofStraights;
                 public Edge(int r, int l, int s)
                 { numOfrights = r; numOfLeft = l; numofStraights = s; }
-
+            /// <summary>
+            /// Override the compareTo. 
+            /// </summary>
+            /// <param name="obj"></param>
+            /// <returns></returns>
                 public int CompareTo(object? obj)
                 {
                     Edge edge = (Edge)obj;
@@ -231,7 +239,6 @@ namespace Problem_Set_8
                         return -1;
                     else
                         return 0;
-
                 }
             }
 
