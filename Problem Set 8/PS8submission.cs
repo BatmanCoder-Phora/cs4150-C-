@@ -106,7 +106,7 @@ namespace Problem_Set_8
                             pathBag = DecreaseKey(i, pathBag, dist);
                         else
                         {
-                            pathBag.Enqueue(driversStart, new Edge(dist[i].Item1, dist[i].Item2, dist[i].Item3));
+                            pathBag.Enqueue(i, new Edge(dist[i].Item1, dist[i].Item2, dist[i].Item3));
                             marked[i] = true;
                         }
                     }
@@ -217,12 +217,12 @@ namespace Problem_Set_8
                 public int CompareTo(object? obj)
                 {
                     Edge edge = (Edge)obj;
-                    if (this.numOfLeft < edge.numOfLeft)
-                        return 1;
+                    if (this.numOfLeft > edge.numOfrights)
+                        return -1;
                     else if (this.numofStraights < edge.numofStraights && this.numOfLeft == edge.numOfLeft)
-                        return 1;
+                        return -1;
                     else if (this.numOfrights < edge.numOfrights && this.numofStraights == edge.numofStraights)
-                        return 1;
+                        return -1;
                     else
                         return 0;
 
