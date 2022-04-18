@@ -26,6 +26,11 @@ namespace Problem_Set_8
         public static List<string> AnswerSet = new List<string>();
         static void Main(string[] args)
         {
+            PS8submission pS8Submission = new PS8submission();
+            pS8Submission.slove();
+        }
+            public void slove()
+            { 
             // get the road number and intersections 
             string line = Console.ReadLine();
             string[] parts = line.Split(' ');
