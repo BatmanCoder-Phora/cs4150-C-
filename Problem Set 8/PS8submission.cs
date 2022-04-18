@@ -71,14 +71,14 @@ namespace Problem_Set_8
         {
             Tuple<int, int, int>[] dist = new Tuple<int, int, int>[roadSegNumber];
             int?[] pred = new int?[roadSegNumber];
-            bool[,] marked = new bool[roadSegNumber, roadSegNumber];
+            bool[] marked = new bool[roadSegNumber];
 
 
             InitSSSP(driversStart, dist, pred, roadMap);
 
             PriorityQueue<int, Tuple<int,int,int>> pathBag = new PriorityQueue<int, Tuple<int, int, int>>();
-            for (int i = 0; i < roadSegNumber; i++)
-                pathBag.Enqueue(driversStart,dist[i]);
+            pathBag.Enqueue(driversStart, dist[driversStart]);
+            marked[driversStart] = true;
 
             while (pathBag.Count > 0)
             {
@@ -102,8 +102,15 @@ namespace Problem_Set_8
                         {
                             dist[i] = newtuple; // relax
                             pred[i] = popVertex;
+
                         }
-                        pathBag = DecreaseKey(i, pathBag,dist);
+                        if (marked[i] == true)
+                            pathBag = DecreaseKey(i, pathBag, dist);
+                        else
+                        {
+                            pathBag.Enqueue(i, dist[i]);
+                            marked[i] = true;
+                        }
                     }
             }
             BackStep(pred, driversEnd, driversStart, roadMap);
@@ -117,8 +124,8 @@ namespace Problem_Set_8
                 int v =pathBag.Dequeue();
                 if (v == i)
                 {
-                    dist[i] = Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
-                    newAnser.Enqueue(i, dist[i]);
+                  //  dist[i] = Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
+                    newAnser.Enqueue(i, Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue));
                 }
                 else
                 {
@@ -191,6 +198,11 @@ namespace Problem_Set_8
                 if (i != driversStart)
                 {
                     dist[i] = Tuple.Create(Int32.MaxValue-500, Int32.MaxValue-500, Int32.MaxValue-500);
+                    pred[i] = null;
+                }
+                else
+                {
+                    dist[i] = Tuple.Create(0, 0, 0);
                     pred[i] = null;
                 }
             }
