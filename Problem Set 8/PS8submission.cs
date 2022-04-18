@@ -103,9 +103,29 @@ namespace Problem_Set_8
                             dist[i] = newtuple; // relax
                             pred[i] = popVertex;
                         }
+                        pathBag = DecreaseKey(i, pathBag,dist);
                     }
             }
             BackStep(pred, driversEnd, driversStart, roadMap);
+        }
+
+        private static PriorityQueue<int, Tuple<int, int, int>> DecreaseKey(int i, PriorityQueue<int, Tuple<int, int, int>> pathBag, Tuple<int, int, int>[] dist)
+        {
+            PriorityQueue<int, Tuple<int, int, int>> newAnser = new PriorityQueue<int, Tuple<int, int, int>>();
+            while (pathBag.Count > 0)
+            {
+                int v =pathBag.Dequeue();
+                if (v == i)
+                {
+                    dist[i] = Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
+                    newAnser.Enqueue(i, dist[i]);
+                }
+                else
+                {
+                    newAnser.Enqueue(v, dist[v]);
+                }
+            }
+            return newAnser;
         }
 
 
@@ -170,7 +190,7 @@ namespace Problem_Set_8
             {
                 if (i != driversStart)
                 {
-                    dist[i] = Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
+                    dist[i] = Tuple.Create(Int32.MaxValue-500, Int32.MaxValue-500, Int32.MaxValue-500);
                     pred[i] = null;
                 }
             }
@@ -189,11 +209,11 @@ namespace Problem_Set_8
                 {
                     Edge edge = (Edge)obj;
                     if (this.numOfLeft < edge.numOfLeft)
-                        return -1;
+                        return 1;
                     else if (this.numofStraights < edge.numofStraights && this.numOfLeft == edge.numOfLeft)
-                        return -1;
+                        return 1;
                     else if (this.numOfrights < edge.numOfrights && this.numofStraights == edge.numofStraights)
-                        return -1;
+                        return 1;
                     else
                         return 0;
 
