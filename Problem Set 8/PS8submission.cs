@@ -17,8 +17,6 @@ using System.Threading.Tasks;
 /// DELETE THIS:
 /* WHAT I NEED TO DO:
  *    - Find How to Generate the weights. 
- *    - Figure out how the search give sus our answer. 
- *            Then compare mutilpe answers to give most wanted one. 
 */
 namespace Problem_Set_8
 {
@@ -76,8 +74,8 @@ namespace Problem_Set_8
 
             InitSSSP(driversStart, dist, pred, roadMap);
 
-            PriorityQueue<int, Tuple<int,int,int>> pathBag = new PriorityQueue<int, Tuple<int, int, int>>();
-            pathBag.Enqueue(driversStart, dist[driversStart]);
+            PriorityQueue<int, Edge> pathBag = new PriorityQueue<int, Edge>();
+            pathBag.Enqueue(driversStart, new Edge(dist[driversStart].Item1,dist[driversStart].Item2, dist[driversStart].Item3));
             marked[driversStart] = true;
 
             while (pathBag.Count > 0)
@@ -108,7 +106,7 @@ namespace Problem_Set_8
                             pathBag = DecreaseKey(i, pathBag, dist);
                         else
                         {
-                            pathBag.Enqueue(i, dist[i]);
+                            pathBag.Enqueue(driversStart, new Edge(dist[i].Item1, dist[i].Item2, dist[i].Item3));
                             marked[i] = true;
                         }
                     }
@@ -116,20 +114,19 @@ namespace Problem_Set_8
             BackStep(pred, driversEnd, driversStart, roadMap);
         }
 
-        private static PriorityQueue<int, Tuple<int, int, int>> DecreaseKey(int i, PriorityQueue<int, Tuple<int, int, int>> pathBag, Tuple<int, int, int>[] dist)
+        private static PriorityQueue<int, Edge> DecreaseKey(int i, PriorityQueue<int, Edge> pathBag, Tuple<int, int, int>[] dist)
         {
-            PriorityQueue<int, Tuple<int, int, int>> newAnser = new PriorityQueue<int, Tuple<int, int, int>>();
+            PriorityQueue<int, Edge> newAnser = new PriorityQueue<int, Edge>();
             while (pathBag.Count > 0)
             {
                 int v =pathBag.Dequeue();
                 if (v == i)
                 {
-                  //  dist[i] = Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue);
-                    newAnser.Enqueue(i, Tuple.Create(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue));
+                    newAnser.Enqueue(i, new Edge(Int32.MaxValue, Int32.MaxValue, Int32.MaxValue));
                 }
                 else
                 {
-                    newAnser.Enqueue(v, dist[v]);
+                    newAnser.Enqueue(v,new Edge(dist[v].Item1, dist[v].Item2, dist[v].Item3));
                 }
             }
             return newAnser;
